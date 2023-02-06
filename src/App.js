@@ -1,17 +1,30 @@
-import React, {useContext, useEffect} from "react";
-import {useTransition, animated} from "react-spring";
+import React, {useContext, useEffect, useState} from "react";
 import AppRouter from "./components/AppRouter";
 import {BrowserRouter as Router} from "react-router-dom";
 import {Context} from ".";
 import {observer} from "mobx-react-lite";
 import HomeHeader from "./components/HomeHeader";
+import {check} from "./http/userAPI";
 
 const App = observer(() => {
     const {user} = useContext(Context);
+    const [loading,setLoading] = useState(true);
+
     useEffect(() => {
-        user.setIsAuth(true);
+        check().then(data => {
+            user.setUser(data);
+            user.setIsAuth(true);
+        }).finally(() => setLoading(false)).catch(e => {
+
+        });
     },[]);
 
+
+    if(loading) {
+        return(
+            <div>Spinner</div>
+        );
+    }
 
   return (
             <Router>
