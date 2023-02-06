@@ -6,6 +6,7 @@ import {observer} from "mobx-react-lite";
 import HomeHeader from "./components/HomeHeader";
 import {check} from "./http/userAPI";
 
+
 const App = observer(() => {
     const {user} = useContext(Context);
     const [loading,setLoading] = useState(true);
@@ -28,7 +29,6 @@ const App = observer(() => {
 
   return (
             <Router>
-                <HomeHeader/>
                 <AppRouter/>
             </Router>
   );

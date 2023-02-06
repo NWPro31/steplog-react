@@ -1,8 +1,14 @@
+import HomeHeader from "../components/HomeHeader";
+import React from "react";
+
 const Sites = () => {
     return(
-        <div className="container">
-            <h1>Sites</h1>
-        </div>
+        <>
+            <HomeHeader/>
+            <div className="container">
+                <h1>Sites</h1>
+            </div>
+        </>
     );
 };
 

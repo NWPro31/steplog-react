@@ -1,8 +1,15 @@
+import HomeHeader from "../components/HomeHeader";
+import React from "react";
+
 const Domains = () => {
     return(
-        <div className="container">
-            <h1>Domains</h1>
-        </div>
+        <>
+            <HomeHeader/>
+            <div className="container">
+                <h1>Domains</h1>
+            </div>
+        </>
+
     );
 };
 

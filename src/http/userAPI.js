@@ -20,3 +20,9 @@ export const check = async () => {
     localStorage.setItem('token', data.access_token);
     return jwt_decode(data.access_token);
 };
+
+export const logout = async () => {
+    const {data} = await $authHost.post('api/auth/logout', {});
+    localStorage.removeItem('token');
+    return data;
+};

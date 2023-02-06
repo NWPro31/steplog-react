@@ -7,11 +7,26 @@ import {DOMAINS_ROUTE, HOME_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE, SITES_ROUTE} fro
 import {useContext} from "react";
 import {Context} from "..";
 import {observer} from "mobx-react-lite";
+import {logout} from "../http/userAPI";
 
 const HomeHeader = observer(() => {
     const navigate = useNavigate();
     const {user} = useContext(Context);
 
+    const click = async () => {
+        try {
+            let data;
+            data = await logout();
+            user.setUser({});
+            user.setIsAuth(false);
+            navigate(HOME_ROUTE);
+        } catch (e) {
+            user.setUser({});
+            user.setIsAuth(false);
+            navigate(HOME_ROUTE);
+        }
+
+    };
 
     return(
         <Navbar collapseOnSelect expand="lg" bg="light">
@@ -47,7 +62,7 @@ const HomeHeader = observer(() => {
                         :
                             <NavDropdown title="Логин" id="collasible-nav-dropdown">
                                 <NavDropdown.Item>Панель управления</NavDropdown.Item>
-                                <NavDropdown.Item>
+                                <NavDropdown.Item onClick={click}>
                                     Выход
                                 </NavDropdown.Item>
                             </NavDropdown>
