@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useContext, useEffect} from "react";
+import {useTransition, animated} from "react-spring";
+import AppRouter from "./components/AppRouter";
+import {BrowserRouter as Router} from "react-router-dom";
+import {Context} from ".";
+import {observer} from "mobx-react-lite";
+import HomeHeader from "./components/HomeHeader";
 
-function App() {
+const App = observer(() => {
+    const {user} = useContext(Context);
+    useEffect(() => {
+        user.setIsAuth(true);
+    },[]);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+            <Router>
+                <HomeHeader/>
+                <AppRouter/>
+            </Router>
   );
-}
+});
 
 export default App;
