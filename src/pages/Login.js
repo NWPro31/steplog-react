@@ -27,7 +27,7 @@ const Login = observer(() => {
                 data = await login(email, password);
             }
 
-            user.setUser(user);
+            user.setUser(data);
             user.setIsAuth(true);
             navigate(HOME_ROUTE);
         } catch (e) {
@@ -58,7 +58,7 @@ const Login = observer(() => {
 
                         <Form>
                             <Form.Group className="input-group mb-3" controlId="formBasicEmail">
-                                <Form.Control class="form-control" type="email" placeholder="Введите email" value={email}
+                                <Form.Control className="form-control" type="email" placeholder="Введите email" value={email}
                                               onChange={e => setEmail(e.target.value)} />
                                 <div className="input-group-append">
                                     <div className="input-group-text">
@@ -68,7 +68,7 @@ const Login = observer(() => {
                             </Form.Group>
 
                             <Form.Group className="input-group mb-3" controlId="formBasicPassword">
-                                <Form.Control class="form-control" type="password" placeholder="Пароль" value={password}
+                                <Form.Control className="form-control" type="password" placeholder="Пароль" value={password}
                                               onChange={e => setPassword(e.target.value)}/>
                                 <div className="input-group-append">
                                     <div className="input-group-text">

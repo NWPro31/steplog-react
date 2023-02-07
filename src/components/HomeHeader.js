@@ -3,15 +3,25 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import {useNavigate} from "react-router-dom";
-import {DOMAINS_ROUTE, HOME_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE, SITES_ROUTE} from "../utils/consts";
-import {useContext} from "react";
+import {DASHBOARD_ROUTE, DOMAINS_ROUTE, HOME_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE, SITES_ROUTE} from "../utils/consts";
+import {useContext, useEffect, useState} from "react";
 import {Context} from "..";
 import {observer} from "mobx-react-lite";
-import {logout} from "../http/userAPI";
+import {check, logout} from "../http/userAPI";
 
 const HomeHeader = observer(() => {
     const navigate = useNavigate();
     const {user} = useContext(Context);
+    const [userName, setUserName] = useState('');
+
+
+    useEffect(() => {
+        try{
+            setUserName(user.user.user.name);
+        }catch (e) {
+
+        }
+    },[]);
 
     const click = async () => {
         try {
@@ -60,8 +70,8 @@ const HomeHeader = observer(() => {
                             </NavDropdown.Item>
                         </NavDropdown>
                         :
-                            <NavDropdown title="Логин" id="collasible-nav-dropdown">
-                                <NavDropdown.Item>Панель управления</NavDropdown.Item>
+                            <NavDropdown title={userName} id="collasible-nav-dropdown">
+                                <NavDropdown.Item onClick={() => {navigate(DASHBOARD_ROUTE);}}>Панель управления</NavDropdown.Item>
                                 <NavDropdown.Item onClick={click}>
                                     Выход
                                 </NavDropdown.Item>
