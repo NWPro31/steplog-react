@@ -1,7 +1,10 @@
-import HomeHeader from "./HomeHeader";
 import React from "react";
+import Nav from 'react-bootstrap/Nav';
+import {useNavigate} from "react-router-dom";
 
 const DashHeader = () => {
+    const navigate = useNavigate();
+
 
      return (
          <nav className="main-header navbar navbar-expand navbar-white navbar-light">
@@ -12,7 +15,7 @@ const DashHeader = () => {
                          className="fas fa-bars"></i></a>
                  </li>
                  <li className="nav-item d-none d-sm-inline-block">
-                     <a href="index3.html" className="nav-link">Home</a>
+                     <Nav.Link onClick={() => {navigate('/dashboard');}} className="nav-link">Главная</Nav.Link>
                  </li>
                  <li className="nav-item d-none d-sm-inline-block">
                      <a href="#" className="nav-link">Contact</a>
