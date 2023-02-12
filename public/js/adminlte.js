@@ -8,7 +8,7 @@
   typeof define === 'function' && define.amd ? define(['exports', 'jquery'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.adminlte = {}, global.jQuery));
 })(this, (function (exports, $) { 'use strict';
-  console.log('start');
+
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
   var $__default = /*#__PURE__*/_interopDefaultLegacy($);
@@ -52,7 +52,6 @@
     },
     onLoadFail: function onLoadFail(_jqXHR, _textStatus, _errorThrown) {}
   };
-
   var CardRefresh = /*#__PURE__*/function () {
     function CardRefresh(element, settings) {
       this._element = element;
@@ -463,7 +462,6 @@
 
 
     var _proto = ControlSidebar.prototype;
-
     _proto.collapse = function collapse() {
       var _this = this;
 
@@ -1585,7 +1583,6 @@
         }
       });
     };
-
     _proto._setItemActive = function _setItemActive(href) {
       $__default["default"](SELECTOR_SIDEBAR_MENU_ITEM + ", " + SELECTOR_HEADER_DROPDOWN_ITEM).removeClass('active');
       $__default["default"](SELECTOR_HEADER_MENU_ITEM).parent().removeClass('active');

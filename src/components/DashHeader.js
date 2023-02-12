@@ -1,10 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Nav from 'react-bootstrap/Nav';
 import {useNavigate} from "react-router-dom";
 
 const DashHeader = () => {
     const navigate = useNavigate();
-
 
      return (
          <nav className="main-header navbar navbar-expand navbar-white navbar-light">

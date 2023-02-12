@@ -1,10 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Nav from 'react-bootstrap/Nav';
 import {useNavigate} from "react-router-dom";
-
+import $ from 'jquery';
 
 const DashSidebar = ()=>{
     const navigate = useNavigate();
+
+    useEffect(() => {
+        $('[data-widget="treeview"]').each(function () {
+            adminlte.Treeview._jQueryInterface.call($(this), "init");
+        });
+        $('[data-widget="sidebar-search"]').each(function () {
+            adminlte.SidebarSearch._jQueryInterface.call($(this), "init");
+        });
+    },[]);
+
     return (
         <div>
         <aside className="main-sidebar sidebar-dark-primary elevation-4">
