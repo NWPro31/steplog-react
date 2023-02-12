@@ -5,6 +5,7 @@ export default class UserStore {
         this._user = {};
         this._userName = '';
         this._role = '';
+        this._usersList = {};
     }
 
     setIsAuth(bool){
@@ -19,6 +20,10 @@ export default class UserStore {
         this._user = user;
     }
 
+    setUsers(users){
+        this._users = users;
+    }
+
     setRole(role){
         this._role = role;
     }
@@ -29,6 +34,10 @@ export default class UserStore {
 
     get user(){
         return this._user;
+    }
+
+    get users(){
+        return this._users;
     }
 
     get role(){

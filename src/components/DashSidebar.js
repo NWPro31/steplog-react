@@ -5,6 +5,7 @@ import $ from 'jquery';
 import {Context} from "../index";
 import {HOME_ROUTE} from "../utils/consts";
 import {menuItems} from "../menuItems";
+import {check} from "../http/userAPI";
 
 const DashSidebar = ()=>{
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ const DashSidebar = ()=>{
     const {user} = useContext(Context);
     const [userEmail, setUserEmail] = useState('');
     const [select, setSelect] = useState(0);
+    const [parent, setParent] = useState(0);
     useEffect(() => {
         if (!user.treeview) {
             $('[data-widget="treeview"]').each(function () {
@@ -27,26 +29,27 @@ const DashSidebar = ()=>{
                 let child;
                 child = menuItem.path === location.pathname ? menuItem.id : 0;
                 if(child > 0){
+                    setSelect(child);
                     return child;
                 }
                 child = menuItem.children && menuItem.children.filter(child => child.path === location.pathname).map(data => data.id);
                 if(child > 0) {
+                    setParent(menuItem.id);
+                    setSelect(child[0]);
                     return child[0];
                 }
                 return 0;
 
             }
         );
-        let row = dir();
-        let num = row.map(child, i => {
-            child.id;
-        }) ?? 0;
-        console.log(num);
+        dir();
+        console.log(user.user.user.role);
         //setSelect(num);
         setUserEmail(user.user.user.email);
     },[]);
 
     useEffect(() => {
+
         console.log(location.pathname);
     }, [location]);
     return (
@@ -87,8 +90,8 @@ const DashSidebar = ()=>{
                     <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         {
-                            menuItems.map(menuItem => (
-                                <li key={menuItem.id} className="nav-item">
+                            menuItems.filter(itemsPerm => itemsPerm.perm.match(user.user.user.role)).map(menuItem => (
+                                <li key={menuItem.id} className={`nav-item ${menuItem.id === parent ? ' menu-open' : ''}`}>
                                     <Nav.Link onClick={() => {{
                                         navigate(menuItem.path);
                                         setSelect(menuItem.id);

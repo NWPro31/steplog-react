@@ -26,3 +26,8 @@ export const logout = async () => {
     localStorage.removeItem('token');
     return data;
 };
+
+export const usersList = async () => {
+    const {data} = await $authHost.post('api/users', {});
+    return data;
+};
