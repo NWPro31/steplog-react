@@ -4,12 +4,15 @@ import Sites from "./pages/Sites";
 import Domains from "./pages/Domains";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./components/Dashboard";
 
 export const authRoutes = [
     {
         path: 'sites',
         Component: Sites
+    },
+    {
+        path: 'domains',
+        Component: Domains
     }
 ];
 

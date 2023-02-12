@@ -1,6 +1,7 @@
 export default class UserStore {
     constructor () {
         this._isAuth = false;
+        this._treeview = false;
         this._user = {};
         this._userName = '';
         this._role = '';
@@ -8,6 +9,10 @@ export default class UserStore {
 
     setIsAuth(bool){
         this._isAuth = bool;
+    }
+
+    setTreeview(bool){
+        this._treeview = bool;
     }
 
     setUser(user){
@@ -35,6 +40,10 @@ export default class UserStore {
     }
     get isAuth(){
         return this._isAuth;
+    }
+
+    get treeview(){
+        return this._treeview;
     }
 
 };

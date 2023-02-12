@@ -2208,7 +2208,7 @@
 
     _proto.init = function init() {
       var _this = this;
-
+      SearchItems.length = 0;
       if ($__default["default"](SELECTOR_DATA_WIDGET$1).length === 0) {
         return;
       }
@@ -2236,7 +2236,6 @@
       var _this2 = this;
 
       var searchValue = $__default["default"](SELECTOR_SEARCH_INPUT$1).val().toLowerCase();
-
       if (searchValue.length < this.options.minLength) {
         $__default["default"](SELECTOR_SEARCH_RESULTS_GROUP).empty();
 
@@ -2249,6 +2248,9 @@
       var searchResults = SearchItems.filter(function (item) {
         return item.name.toLowerCase().includes(searchValue);
       });
+
+
+
       var endResults = $__default["default"](searchResults.slice(0, this.options.maxResults));
       $__default["default"](SELECTOR_SEARCH_RESULTS_GROUP).empty();
 

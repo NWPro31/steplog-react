@@ -60,7 +60,7 @@ const HomeHeader = observer(() => {
                         <Nav.Link eventKey="2" onClick={() => {navigate(DOMAINS_ROUTE);}}>Домены</Nav.Link>
                         <Nav.Link eventKey="3" href="#pricing">Хостинг</Nav.Link>
                     </Nav>
-                    <Nav>
+                    <Nav className="ml-auto">
                         <Nav.Link eventKey="4" href="#deets">Контакты</Nav.Link>
                         {!user.isAuth ?
                         <NavDropdown title="Авторизация" id="collasible-nav-dropdown">
