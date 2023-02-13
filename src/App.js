@@ -16,10 +16,12 @@ const App = observer(() => {
             user.setUser(data);
             user.setIsAuth(true);
         }).finally(() => setLoading(false)).catch(e => {
-
+            if(e.response.status === 401) {
+                user.setIsAuth(false);
+                user.setUser({});
+            }
         });
     },[]);
-
 
     if(loading) {
         return(

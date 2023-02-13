@@ -23,6 +23,7 @@ const HomeHeader = observer(() => {
         }
     },[]);
 
+
     const click = async () => {
         try {
             let data;
@@ -71,7 +72,9 @@ const HomeHeader = observer(() => {
                         </NavDropdown>
                         :
                             <NavDropdown title={userName} id="collasible-nav-dropdown">
-                                <NavDropdown.Item onClick={() => {navigate(DASHBOARD_ROUTE);}}>Панель управления</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => {
+                                    navigate(DASHBOARD_ROUTE);
+                                }}>Панель управления</NavDropdown.Item>
                                 <NavDropdown.Item onClick={click}>
                                     Выход
                                 </NavDropdown.Item>

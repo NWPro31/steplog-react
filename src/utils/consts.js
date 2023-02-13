@@ -5,3 +5,4 @@ export const SITES_ROUTE = '/sites';
 export const DOMAINS_ROUTE = '/domains';
 export const DASHBOARD_ROUTE = '/dashboard';
 export const USERS_ROUTE = 'users';
+export const CREATE_HOSTING_ROUTE = 'createhosting';

@@ -8,9 +8,10 @@ const Dashboard = () => {
     const [isAppLoaded, setIsAppLoaded] = useState(false);
 
     useEffect(() => {
+
         const timeout = setTimeout(() => {
             setIsAppLoaded(true);
-        }, 1000);
+        }, 500);
 
         return () => {
             // clears timeout before running the new effect

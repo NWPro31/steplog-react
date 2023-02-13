@@ -1,4 +1,5 @@
 import {
+    CREATE_HOSTING_ROUTE,
     DASHBOARD_ROUTE,
     DOMAINS_ROUTE,
     HOME_ROUTE,
@@ -13,6 +14,7 @@ import Domains from "./pages/Domains";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Users from "./pages/dashboard/Users";
+import CreateHosting from "./pages/dashboard/hosting/CreateHosting";
 
 export const authRoutes = [
     {
@@ -26,6 +28,10 @@ export const authRoutes = [
     {
         path: USERS_ROUTE,
         Component: Users
+    },
+    {
+        path: CREATE_HOSTING_ROUTE,
+        Component: CreateHosting
     }
 ];
 

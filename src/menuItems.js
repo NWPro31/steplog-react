@@ -51,5 +51,12 @@ export const menuItems = [
         icon: 'fas fa-wrench nav-icon',
         path: '/dashboard/users',
         perm: 'admin'
+    },
+    {
+        id: 8,
+        name: 'Создать хостинг',
+        icon: 'fas fa-wrench nav-icon',
+        path: '/dashboard/createhosting',
+        perm: 'admin'
     }
 ];

@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import {observer} from "mobx-react-lite";
 import {Context} from "..";
 import {login} from "../http/userAPI";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {LOGIN_ROUTE, HOME_ROUTE} from "../utils/consts";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -26,7 +26,6 @@ const Login = observer(() => {
             if (isLogin) {
                 data = await login(email, password);
             }
-
             user.setUser(data);
             user.setIsAuth(true);
             navigate(HOME_ROUTE);

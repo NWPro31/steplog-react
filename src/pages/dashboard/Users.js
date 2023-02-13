@@ -10,16 +10,25 @@ const Users = observer(() => {
     const navigate = useNavigate();
     const {user} = useContext(Context);
     const [users, setUsers] = useState([]);
-
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         //fetchType().then(data => product.setTypes(data));
-        usersList().then(data => user.setUsers(data.users))
+        setLoading(true);
+        usersList().then(data => {
+            user.setUsers(data.users);
+            setUsers(data.users);
+        })
+            .finally(()=>{
+                setLoading(false);
+        })
             .catch(err => console.log(err));
     },[]);
 
     useEffect(() => {
-        setUsers(user.users);
-    },[user.users]);
+        //loading
+    },[users]);
+
+
 
     return (
         <>
@@ -62,7 +71,18 @@ const Users = observer(() => {
                             </tr>
                             </thead>
                             <tbody>
-                            {users.map(user => (
+                            {loading ?
+                                <tr>
+                                    <td colSpan={4}>
+                                        <div className="d-flex justify-content-center">
+                                            <div className="spinner-border" role="status">
+                                                <span className="visually-hidden"></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                : ''}
+                            {users && users.map(user => (
                                 <tr key={user.id}>
                                     <td>{user.id}</td>
                                     <td>{user.name}</td>

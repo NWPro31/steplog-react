@@ -5,7 +5,7 @@ export default class UserStore {
         this._user = {};
         this._userName = '';
         this._role = '';
-        this._usersList = {};
+        this._users = {};
     }
 
     setIsAuth(bool){
