@@ -54,9 +54,24 @@ export const menuItems = [
     },
     {
         id: 8,
-        name: 'Создать хостинг',
-        icon: 'fas fa-wrench nav-icon',
-        path: '/dashboard/createhosting',
-        perm: 'admin'
+        name: 'Хостинг',
+        icon: 'far fa-caret-square-down nav-icon',
+        perm: 'admin',
+        children: [
+        {
+            id: 9,
+            name: 'Список тарифов',
+            icon: 'fas fa-wrench nav-icon',
+            path: '/dashboard/indexhosting',
+            perm: 'admin'
+        },
+        {
+            id: 10,
+            name: 'Создать тариф',
+            icon: 'fas fa-wrench nav-icon',
+            path: '/dashboard/createhosting',
+            perm: 'admin'
+        }
+        ]
     }
 ];

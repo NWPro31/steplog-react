@@ -5,6 +5,7 @@ import {Context} from ".";
 import {observer} from "mobx-react-lite";
 import HomeHeader from "./components/HomeHeader";
 import {check} from "./http/userAPI";
+import "./app.css";
 
 
 const App = observer(() => {
@@ -25,7 +26,13 @@ const App = observer(() => {
 
     if(loading) {
         return(
-            <div>Spinner</div>
+            <div className="overlay">
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden"></span>
+                    </div>
+                </div>
+            </div>
         );
     }
 

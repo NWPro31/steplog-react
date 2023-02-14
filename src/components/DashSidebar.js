@@ -14,6 +14,26 @@ const DashSidebar = ()=>{
     const [userEmail, setUserEmail] = useState('');
     const [select, setSelect] = useState(0);
     const [parent, setParent] = useState(0);
+
+    const dir = () => menuItems.map(menuItem =>
+        {
+            let child;
+            child = menuItem.path === location.pathname ? menuItem.id : 0;
+            if(child > 0){
+                setSelect(child);
+                return child;
+            }
+            child = menuItem.children && menuItem.children.filter(child => child.path === location.pathname).map(data => data.id);
+            if(child > 0) {
+                setParent(menuItem.id);
+                setSelect(child[0]);
+                return child[0];
+            }
+            return 0;
+
+        }
+    );
+
     useEffect(() => {
         if (!user.treeview) {
             $('[data-widget="treeview"]').each(function () {
@@ -24,24 +44,7 @@ const DashSidebar = ()=>{
             $('[data-widget="sidebar-search"]').each(function () {
                 adminlte.SidebarSearch._jQueryInterface.call($(this), "init");
             });
-        const dir = () => menuItems.map(menuItem =>
-            {
-                let child;
-                child = menuItem.path === location.pathname ? menuItem.id : 0;
-                if(child > 0){
-                    setSelect(child);
-                    return child;
-                }
-                child = menuItem.children && menuItem.children.filter(child => child.path === location.pathname).map(data => data.id);
-                if(child > 0) {
-                    setParent(menuItem.id);
-                    setSelect(child[0]);
-                    return child[0];
-                }
-                return 0;
 
-            }
-        );
         dir();
         console.log(user.user.user.role);
         //setSelect(num);
@@ -49,7 +52,7 @@ const DashSidebar = ()=>{
     },[]);
 
     useEffect(() => {
-
+        dir();
         console.log(location.pathname);
     }, [location]);
     return (

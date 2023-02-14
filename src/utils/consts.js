@@ -6,3 +6,5 @@ export const DOMAINS_ROUTE = '/domains';
 export const DASHBOARD_ROUTE = '/dashboard';
 export const USERS_ROUTE = 'users';
 export const CREATE_HOSTING_ROUTE = 'createhosting';
+export const INDEX_HOSTING_ROUTE = 'indexhosting';
+export const UPDATE_HOSTING_ROUTE = 'updatehosting';

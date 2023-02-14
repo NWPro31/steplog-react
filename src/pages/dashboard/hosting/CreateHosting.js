@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import React, {useState} from "react";
-import {DASHBOARD_ROUTE, USERS_ROUTE} from "../../../utils/consts";
+import {DASHBOARD_ROUTE, INDEX_HOSTING_ROUTE, USERS_ROUTE} from "../../../utils/consts";
 import {createHosting} from "../../../http/hostingAPI";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
@@ -31,12 +31,12 @@ const CreateHosting = () => {
                 <div className="container-fluid">
                     <div className="row mb-2">
                         <div className="col-sm-6">
-                            <h1 className="m-0 mt-1">Создание нового тарифа хостинга</h1>
+                            <h1 className="m-0 mt-1">Создание нового хостинг тарифа</h1>
                         </div>
                         <div className="col-sm-6">
                             <ol className="breadcrumb float-sm-right">
-                                <li className="breadcrumb-item"><Nav.Link onClick={() => {navigate('/dashboard');}} className="nav-link">Главная</Nav.Link></li>
-                                <li className="breadcrumb-item active nav-link">Создание нового тарифа хостинга</li>
+                                <li className="breadcrumb-item"><Nav.Link onClick={() => {navigate(DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE);}} className="nav-link">Список тарифов</Nav.Link></li>
+                                <li className="breadcrumb-item active nav-link">Создание нового хостинг тарифа</li>
                             </ol>
                         </div>
                     </div>
@@ -77,9 +77,11 @@ const CreateHosting = () => {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        <a href="#" className="btn btn-secondary">Отменить</a>
-
-                        <Button onClick={click} className="btn btn-primary btn-block"
+                        <Button onClick={() => {navigate(DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE);}} className="btn btn-secondary "
+                                variant="primary">
+                            Отменить
+                        </Button>
+                        <Button onClick={click} className="btn btn-primary float-right"
                                 variant="primary">
                             {loading ?
                                 <Spinner
