@@ -21,3 +21,8 @@ export const updateHosting = async (title, description, price, is_stored, hostin
     const {data} = await $authHost.patch('api/hostings/'+ hostingId, {title, description, price, is_stored});
     return data;
 };
+
+export const deleteHosting = async (hostingId) => {
+    const {data} = await $authHost.delete('api/hostings/' + hostingId, {});
+    return data;
+};

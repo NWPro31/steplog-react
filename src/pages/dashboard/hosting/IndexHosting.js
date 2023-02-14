@@ -2,7 +2,7 @@ import {observer} from "mobx-react-lite";
 import Nav from "react-bootstrap/Nav";
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../../index";
-import {indexHosting} from "../../../http/hostingAPI";
+import {deleteHosting, indexHosting} from "../../../http/hostingAPI";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {useNavigate} from "react-router-dom";
@@ -14,6 +14,7 @@ const IndexHosting = observer(() => {
     const {hosting} = useContext(Context);
     const [hostings,setHostings] = useState([]);
     const [loading,setLoading] = useState(true);
+    const [deleteId,setDeleteId] = useState(null);
 
     useEffect(()=>{
         setLoading(true);
@@ -28,7 +29,29 @@ const IndexHosting = observer(() => {
 
     useEffect(() => {
         //loading
-    },[hostings]);
+    },[hostings, deleteId]);
+
+    const click = async () => {
+        try {
+            setLoading(true);
+            document.getElementById('close-button').click();
+            let data;
+            data = await deleteHosting(deleteId);
+            if(data.success) {
+                setDeleteId(null);
+                indexHosting().then(data => {
+                    hosting.setHosting(data.hostings);
+                    setHostings(data.hostings);
+                }).finally(()=>{
+                    setLoading(false);
+                })
+                    .catch(err => console.log(err));
+            }
+        } catch (e) {
+            alert(e);
+        }
+
+    };
 
     return(
         <>
@@ -71,7 +94,7 @@ const IndexHosting = observer(() => {
                         </div>
                     </div>
                     <div className="card-body p-0">
-                        <Table striped hover>
+                        <Table striped>
                             <thead>
                             <tr>
                                 <th width={'10%'}>#</th>
@@ -84,7 +107,7 @@ const IndexHosting = observer(() => {
                             <tbody>
                             {loading ?
                                 <tr>
-                                    <td colSpan={4}>
+                                    <td colSpan={5}>
                                         <div className="d-flex justify-content-center">
                                             <div className="spinner-border" role="status">
                                                 <span className="visually-hidden"></span>
@@ -111,16 +134,39 @@ const IndexHosting = observer(() => {
                                             </i>
                                             ред.
                                         </Button>
-                                        <a className="btn btn-danger btn-sm m-1" href="#">
+                                        <button type="button"
+                                                onClick={() => {setDeleteId(hosting.id);}}
+                                                className="btn btn-danger btn-sm m-1"
+                                                data-toggle="modal"
+                                                data-target="#modal-default">
                                             <i className="fas fa-trash m-1">
                                             </i>
                                             Удалить
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
                             </tbody>
                         </Table>
+                    </div>
+                </div>
+            </div>
+            <div className="modal fade" id="modal-default">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Удаление тарифа</h4>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <p>Вы действительно хотите удалить тариф <b>{deleteId && hostings.filter(host => host.id === deleteId).map(item => item.title)}</b>?</p>
+                        </div>
+                        <div className="modal-footer justify-content-between">
+                            <button type="button" id="close-button" className="btn btn-default" data-dismiss="modal">Отмена</button>
+                            <button type="button" className="btn btn-danger" onClick={click}>Удалить</button>
+                        </div>
                     </div>
                 </div>
             </div>

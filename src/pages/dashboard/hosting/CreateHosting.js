@@ -18,7 +18,7 @@ const CreateHosting = () => {
             setLoading(true);
             let data;
             data = await createHosting(title, description, price);
-            if(data.success) navigate(DASHBOARD_ROUTE + '/' + USERS_ROUTE);
+            if(data.success) navigate(DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE);
         } catch (e) {
             alert(e.response.data.message);
         }
