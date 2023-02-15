@@ -1,10 +1,10 @@
 import {useNavigate} from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
 import React, {useState} from "react";
-import {DASHBOARD_ROUTE, INDEX_HOSTING_ROUTE, USERS_ROUTE} from "../../../utils/consts";
+import {DASHBOARD_ROUTE, INDEX_HOSTING_ROUTE} from "../../../utils/consts";
 import {createHosting} from "../../../http/hostingAPI";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+import ContentHeader from "../../../components/ContentHeader";
 
 const Create = () => {
     const navigate = useNavigate();
@@ -12,6 +12,11 @@ const Create = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
+    const hrefs = [
+        { href: DASHBOARD_ROUTE, name: "Главная" },
+        { href: DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE, name: "Список тарифов" },
+        { name: "Создание нового хостинг тарифа" },
+    ];
 
     const click = async () => {
         try {
@@ -27,21 +32,7 @@ const Create = () => {
 
     return(
         <>
-            <section className="content-header">
-                <div className="container-fluid">
-                    <div className="row mb-2">
-                        <div className="col-sm-6">
-                            <h1 className="m-0 mt-1">Создание нового хостинг тарифа</h1>
-                        </div>
-                        <div className="col-sm-6">
-                            <ol className="breadcrumb float-sm-right">
-                                <li className="breadcrumb-item"><Nav.Link onClick={() => {navigate(DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE);}} className="nav-link">Список тарифов</Nav.Link></li>
-                                <li className="breadcrumb-item active nav-link">Создание нового хостинг тарифа</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <ContentHeader hrefs={hrefs} name="Создание нового хостинг тарифа"/>
             <section className="content">
                 <div className="card card-primary">
                     <div className="card-header">

@@ -1,12 +1,17 @@
 import {observer} from "mobx-react-lite";
-import Nav from "react-bootstrap/Nav";
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../../index";
 import {deleteHosting, indexHosting} from "../../../http/hostingAPI";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {useNavigate} from "react-router-dom";
-import {CREATE_HOSTING_ROUTE, DASHBOARD_ROUTE, SHOW_HOSTING_ROUTE, UPDATE_HOSTING_ROUTE} from "../../../utils/consts";
+import {
+    CREATE_HOSTING_ROUTE,
+    DASHBOARD_ROUTE,
+    SHOW_HOSTING_ROUTE,
+    UPDATE_HOSTING_ROUTE
+} from "../../../utils/consts";
+import ContentHeader from "../../../components/ContentHeader";
 
 
 const Index = observer(() => {
@@ -15,6 +20,10 @@ const Index = observer(() => {
     const [hostings,setHostings] = useState([]);
     const [loading,setLoading] = useState(true);
     const [deleteId,setDeleteId] = useState(null);
+    const hrefs = [
+        { href: DASHBOARD_ROUTE, name: "Главная" },
+        { name: "Список тарифов" },
+    ];
 
     useEffect(()=>{
         setLoading(true);
@@ -55,21 +64,7 @@ const Index = observer(() => {
 
     return(
         <>
-            <div className="content-header">
-                <div className="container-fluid">
-                    <div className="row mb-2">
-                        <div className="col-sm-6">
-                            <h1 className="m-0 mt-1">Список хостинг тарифов</h1>
-                        </div>
-                        <div className="col-sm-6">
-                            <ol className="breadcrumb float-sm-right">
-                                <li className="breadcrumb-item"><Nav.Link onClick={() => {navigate('/dashboard');}} className="nav-link">Главная</Nav.Link></li>
-                                <li className="breadcrumb-item active nav-link">Список хостинг тарифов</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ContentHeader hrefs={hrefs} name="Список тарифов"/>
             <div className="content">
                 <div className="container-fluid">
                     <div className="row mb-2">

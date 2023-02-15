@@ -1,16 +1,20 @@
-import {useNavigate} from "react-router-dom";
-import Nav from 'react-bootstrap/Nav';
 import Table from 'react-bootstrap/Table';
 import {observer} from "mobx-react-lite";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../index";
 import {usersList} from "../../http/userAPI";
+import {DASHBOARD_ROUTE} from "../../utils/consts";
+import ContentHeader from "../../components/ContentHeader";
 
 const Users = observer(() => {
-    const navigate = useNavigate();
     const {user} = useContext(Context);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const hrefs = [
+        { href: DASHBOARD_ROUTE, name: "Главная" },
+        { name: "Клиенты" },
+    ];
+
     useEffect(() => {
         //fetchType().then(data => product.setTypes(data));
         setLoading(true);
@@ -32,21 +36,7 @@ const Users = observer(() => {
 
     return (
         <>
-            <div className="content-header">
-                <div className="container-fluid">
-                    <div className="row mb-2">
-                        <div className="col-sm-6">
-                            <h1 className="m-0 mt-1">Клиенты</h1>
-                        </div>
-                        <div className="col-sm-6">
-                            <ol className="breadcrumb float-sm-right">
-                                <li className="breadcrumb-item"><Nav.Link onClick={() => {navigate('/dashboard');}} className="nav-link">Главная</Nav.Link></li>
-                                <li className="breadcrumb-item active nav-link">Клиенты</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ContentHeader hrefs={hrefs} name="Клиенты"/>
             <div className="content">
                 <div className="card">
                     <div className="card-header">

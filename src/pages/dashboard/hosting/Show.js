@@ -1,199 +1,173 @@
 import {observer} from "mobx-react-lite";
-import {useNavigate, useParams} from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
+import {useParams} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../../index";
+import ContentHeader from "../../../components/ContentHeader";
+import {DASHBOARD_ROUTE, INDEX_HOSTING_ROUTE} from "../../../utils/consts";
+import {indexHosting} from "../../../http/hostingAPI";
 
 
 const Show = observer(() => {
     const {id} = useParams();
-    const navigate = useNavigate();
     const {hosting} = useContext(Context);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price,setPrice] = useState(0);
+    const [loadingData, setLoadingData] = useState(false);
+    const hrefs = [
+        { href: DASHBOARD_ROUTE, name: "Главная" },
+        { href: DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE, name: "Список тарифов" },
+        { name: "Детали тарифа" },
+    ];
+    const show = async () => {
+        indexHosting().then(data => {
+            hosting.setHosting(data.hostings);
+        }).finally(()=>{
+            setLoadingData(false);
+        }).catch(err => console.log(err));
+    };
+    useEffect(()=>{
+        if(typeof hosting.hosting === 'object' && !Array.isArray(hosting.hosting)){
+            setLoadingData(true);
+            void show();
+        }
+    },[id]);
 
     useEffect(()=>{
-        let host = hosting.hosting.filter(host => host.id == id).map(item => item)[0];
-        setTitle(host.title);
-        setDescription(host.description);
-        setPrice(host.price);
-    },[id]);
+        if(hosting.hosting.length > 0) {
+            let host = hosting.hosting.filter(host => host.id === Number(id)).map(item => item)[0];
+            setTitle(host.title);
+            setDescription(host.description);
+            setPrice(host.price);
+        }
+    },[hosting.hosting]);
 
     return (
         <>
-            <section className="content-header">
-                <div className="container-fluid">
-                    <div className="row mb-2">
-                        <div className="col-sm-6">
-                            <h1 className="m-0 mt-1">Детали тарифа</h1>
-                        </div>
-                        <div className="col-sm-6">
-                            <ol className="breadcrumb float-sm-right">
-                                <li className="breadcrumb-item"><Nav.Link onClick={() => {navigate('/dashboard');}} className="nav-link">Главная</Nav.Link></li>
-                                <li className="breadcrumb-item active nav-link">Детали тарифа</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <ContentHeader hrefs={hrefs} name="Детали тарифа"/>
             <section className="content">
-                <div className="card">
-                    <div className="card-header">
-                        <h3 className="card-title">Детали тарифа - {title}</h3>
-
-                        <div className="card-tools">
-                            <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i className="fas fa-minus"></i>
-                            </button>
-                            <button type="button" className="btn btn-tool" data-card-widget="remove" title="Remove">
-                                <i className="fas fa-times"></i>
-                            </button>
+                {!loadingData ?
+                    <div className="card">
+                        <div className="card-header">
+                            <h3 className="card-title">Детали тарифа - {title}</h3>
+                            <div className="card-tools">
+                                <button type="button" className="btn btn-tool" data-card-widget="collapse"
+                                        title="Collapse">
+                                    <i className="fas fa-minus"></i>
+                                </button>
+                                <button type="button" className="btn btn-tool" data-card-widget="remove" title="Remove">
+                                    <i className="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div className="card-body">
-                        <div className="row">
-                            <div className="col-12 col-md-12 col-lg-8 order-2 order-md-1">
-                                <div className="row">
-                                    <div className="col-12 col-sm-4">
-                                        <div className="info-box bg-light">
-                                            <div className="info-box-content">
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                                    <div className="row">
+                                        <div className="col-12 col-sm-4">
+                                            <div className="info-box bg-light">
+                                                <div className="info-box-content">
                                                 <span
                                                     className="info-box-text text-center text-muted">Стоимость за день</span>
-                                                <span
-                                                    className="info-box-number text-center text-muted mb-0">{(price / 30).toFixed(2)}р.</span>
+                                                    <span
+                                                        className="info-box-number text-center text-muted mb-0">{(price / 30).toFixed(2)}р.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-12 col-sm-4">
+                                            <div className="info-box bg-light">
+                                                <div className="info-box-content">
+                                                    <span className="info-box-text text-center text-muted">Стоимость за месяц</span>
+                                                    <span
+                                                        className="info-box-number text-center text-muted mb-0">{price}р.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-12 col-sm-4">
+                                            <div className="info-box bg-light">
+                                                <div className="info-box-content">
+                                                    <span className="info-box-text text-center text-muted">Стоимость за год</span>
+                                                    <span
+                                                        className="info-box-number text-center text-muted mb-0">{price * 12}р.</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-sm-4">
-                                        <div className="info-box bg-light">
-                                            <div className="info-box-content">
-                                                <span className="info-box-text text-center text-muted">Стоимость за месяц</span>
-                                                <span
-                                                    className="info-box-number text-center text-muted mb-0">{price}р.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 col-sm-4">
-                                        <div className="info-box bg-light">
-                                            <div className="info-box-content">
-                                                <span className="info-box-text text-center text-muted">Стоимость за год</span>
-                                                <span className="info-box-number text-center text-muted mb-0">{price * 12}р.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-12">
-                                        <h4>Recent Activity</h4>
-                                        <div className="post">
-                                            <div className="user-block">
-                                                <img className="img-circle img-bordered-sm"
-                                                     src="/img/user1-128x128.jpg" alt="user image"/>
-                        <span className="username">
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <h4>Новые клиенты</h4>
+                                            <div className="post">
+                                                <div className="user-block">
+                                                    <img className="img-circle img-bordered-sm"
+                                                         src="/img/user1-128x128.jpg" alt="user image"/>
+                                                    <span className="username">
                           <a href="#">Jonathan Burke Jr.</a>
                         </span>
-                                                    <span className="description">Shared publicly - 7:45 PM today</span>
+                                                    <span className="description">Заказ тарифа - 7:45 сегодня</span>
+                                                </div>
+                                                <p>
+                                                    Сайт такой-то
+                                                </p>
                                             </div>
-                                            <p>
-                                                Lorem ipsum represents a long-held tradition for designers,
-                                                typographers and the like. Some people hate it and argue for
-                                                its demise, but others ignore.
-                                            </p>
 
-                                            <p>
-                                                <a href="#" className="link-black text-sm"><i
-                                                    className="fas fa-link mr-1"></i> Demo File 1 v2</a>
-                                            </p>
-                                        </div>
-
-                                        <div className="post clearfix">
-                                            <div className="user-block">
-                                                <img className="img-circle img-bordered-sm"
-                                                     src="/img/user7-128x128.jpg" alt="User Image"/>
-                        <span className="username">
+                                            <div className="post clearfix">
+                                                <div className="user-block">
+                                                    <img className="img-circle img-bordered-sm"
+                                                         src="/img/user7-128x128.jpg" alt="User Image"/>
+                                                    <span className="username">
                           <a href="#">Sarah Ross</a>
                         </span>
-                                                    <span className="description">Sent you a message - 3 days ago</span>
+                                                    <span className="description">Заказ тарифа - 3 дня назад</span>
+                                                </div>
+                                                <p>
+                                                    Сайт такой-то
+                                                </p>
                                             </div>
-                                            <p>
-                                                Lorem ipsum represents a long-held tradition for designers,
-                                                typographers and the like. Some people hate it and argue for
-                                                its demise, but others ignore.
-                                            </p>
-                                            <p>
-                                                <a href="#" className="link-black text-sm"><i
-                                                    className="fas fa-link mr-1"></i> Demo File 2</a>
-                                            </p>
-                                        </div>
 
-                                        <div className="post">
-                                            <div className="user-block">
-                                                <img className="img-circle img-bordered-sm"
-                                                     src="/img/user1-128x128.jpg" alt="user image"/>
-                        <span className="username">
+                                            <div className="post">
+                                                <div className="user-block">
+                                                    <img className="img-circle img-bordered-sm"
+                                                         src="/img/user1-128x128.jpg" alt="user image"/>
+                                                    <span className="username">
                           <a href="#">Jonathan Burke Jr.</a>
                         </span>
-                                                    <span className="description">Shared publicly - 5 days ago</span>
+                                                    <span className="description">Заказ тарифа - 7 дней назад</span>
+                                                </div>
+                                                <p>
+                                                    Сайт такой-то
+                                                </p>
                                             </div>
-                                            <p>
-                                                Lorem ipsum represents a long-held tradition for designers,
-                                                typographers and the like. Some people hate it and argue for
-                                                its demise, but others ignore.
-                                            </p>
-
-                                            <p>
-                                                <a href="#" className="link-black text-sm"><i
-                                                    className="fas fa-link mr-1"></i> Demo File 1 v1</a>
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                                <h3 className="text-primary"><i className="fas fa-paint-brush"></i> {title}</h3>
-                                <p className="text-muted">{description}</p>
-                                <br/>
+                                <div className="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                                    <h3 className="text-primary"><i className="fas fa-paint-brush"></i> {title}</h3>
+                                    <p className="text-muted">{description}</p>
+                                    <br/>
                                     <div className="text-muted">
-                                        <p className="text-sm">Client Company
-                                            <b className="d-block">Deveint Inc</b>
+                                        <p className="text-sm">Клиентов на тарифе
+                                            <b className="d-block">25</b>
                                         </p>
-                                        <p className="text-sm">Project Leader
-                                            <b className="d-block">Tony Chicken</b>
+                                        <p className="text-sm">Характеристики тарифа
+                                            <b className="d-block">2 Гб</b><br/>
+                                            <b className="d-block">SSD</b><br/>
+                                            <b className="d-block">PHP, MYSQL</b>
                                         </p>
                                     </div>
-
-                                    <h5 className="mt-5 text-muted">Project files</h5>
-                                    <ul className="list-unstyled">
-                                        <li>
-                                            <a href="" className="btn-link text-secondary"><i
-                                                className="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
-                                        </li>
-                                        <li>
-                                            <a href="" className="btn-link text-secondary"><i
-                                                className="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
-                                        </li>
-                                        <li>
-                                            <a href="" className="btn-link text-secondary"><i
-                                                className="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
-                                        </li>
-                                        <li>
-                                            <a href="" className="btn-link text-secondary"><i
-                                                className="far fa-fw fa-image "></i> Logo.png</a>
-                                        </li>
-                                        <li>
-                                            <a href="" className="btn-link text-secondary"><i
-                                                className="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
-                                        </li>
-                                    </ul>
                                     <div className="text-center mt-5 mb-3">
-                                        <a href="#" className="btn btn-sm btn-primary">Add files</a>
-                                        <a href="#" className="btn btn-sm btn-warning">Report contact</a>
+                                        <a href="#" className="btn btn-sm btn-primary">Редактировать тариф</a>
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    :
+                    <div className="d-flex justify-content-center m-5">
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden"></span>
+                        </div>
+                    </div>
+                }
             </section>
         </>
     );

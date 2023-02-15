@@ -1,10 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
 import React, {useEffect, useState} from "react";
 import {DASHBOARD_ROUTE, INDEX_HOSTING_ROUTE} from "../../../utils/consts";
 import {editHosting, updateHosting} from "../../../http/hostingAPI";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+import ContentHeader from "../../../components/ContentHeader";
 
 const Update = () => {
     const navigate = useNavigate();
@@ -15,10 +15,15 @@ const Update = () => {
     const [stored, setStored] = useState(false);
     const {id} = useParams();
     const [loadingData, setLoadingData] = useState(true);
+    const hrefs = [
+        { href: DASHBOARD_ROUTE, name: "Главная" },
+        { href: DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE, name: "Список тарифов" },
+        { name: "Редактирование хостинг тарифа" },
+    ];
 
 
     useEffect(()=>{
-        edit();
+        void edit();
     },[]);
 
     const edit = async () => {
@@ -46,21 +51,7 @@ const Update = () => {
 
     return(
         <>
-            <section className="content-header">
-                <div className="container-fluid">
-                    <div className="row mb-2">
-                        <div className="col-sm-6">
-                            <h1 className="m-0 mt-1">Редактирование хостинг тарифа</h1>
-                        </div>
-                        <div className="col-sm-6">
-                            <ol className="breadcrumb float-sm-right">
-                                <li className="breadcrumb-item"><Nav.Link onClick={() => {navigate(DASHBOARD_ROUTE + '/' + INDEX_HOSTING_ROUTE);}} className="nav-link">Список тарифов</Nav.Link></li>
-                                <li className="breadcrumb-item active nav-link">Редактирование хостинг тарифа</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <ContentHeader hrefs={hrefs} name="Редактирование хостинг тарифа"/>
             <section className="content">
                 <div className="card card-primary">
                     <div className="card-header">
@@ -94,7 +85,7 @@ const Update = () => {
                             </div>
                             <div className="form-check">
                                 <input type="checkbox" name="is_stored" checked={stored}
-                                       onChange={e => setStored(!stored)}
+                                       onChange={() => setStored(!stored)}
                                        className="form-check-input" id="isStored"/>
                                     <label className="form-check-label" htmlFor="isStored">активный тариф</label>
                             </div>
