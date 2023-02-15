@@ -6,7 +6,7 @@ import {editHosting, updateHosting} from "../../../http/hostingAPI";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
-const UpdateHosting = () => {
+const Update = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -135,4 +135,4 @@ const UpdateHosting = () => {
     );
 };
 
-export default UpdateHosting;
+export default Update;

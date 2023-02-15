@@ -6,7 +6,7 @@ import {createHosting} from "../../../http/hostingAPI";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
-const CreateHosting = () => {
+const Create = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -103,4 +103,4 @@ const CreateHosting = () => {
     );
 };
 
-export default CreateHosting;
+export default Create;

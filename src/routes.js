@@ -4,7 +4,7 @@ import {
     DOMAINS_ROUTE,
     HOME_ROUTE, INDEX_HOSTING_ROUTE,
     LOGIN_ROUTE,
-    REGISTER_ROUTE,
+    REGISTER_ROUTE, SHOW_HOSTING_ROUTE,
     SITES_ROUTE, UPDATE_HOSTING_ROUTE,
     USERS_ROUTE
 } from "./utils/consts";
@@ -14,9 +14,10 @@ import Domains from "./pages/Domains";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Users from "./pages/dashboard/Users";
-import CreateHosting from "./pages/dashboard/hosting/CreateHosting";
-import IndexHosting from "./pages/dashboard/hosting/IndexHosting";
-import UpdateHosting from "./pages/dashboard/hosting/UpdateHosting";
+import Create from "./pages/dashboard/hosting/Create";
+import Index from "./pages/dashboard/hosting/Index";
+import Update from "./pages/dashboard/hosting/Update";
+import Show from "./pages/dashboard/hosting/Show";
 
 export const authRoutes = [
     {
@@ -33,15 +34,19 @@ export const authRoutes = [
     },
     {
         path: INDEX_HOSTING_ROUTE,
-        Component: IndexHosting
+        Component: Index
     },
     {
         path: CREATE_HOSTING_ROUTE,
-        Component: CreateHosting
+        Component: Create
     },
     {
         path: UPDATE_HOSTING_ROUTE  + '/:id',
-        Component: UpdateHosting
+        Component: Update
+    },
+    {
+        path: SHOW_HOSTING_ROUTE  + '/:id',
+        Component: Show
     }
 ];
 

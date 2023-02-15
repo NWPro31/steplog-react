@@ -62,14 +62,14 @@ export const menuItems = [
             id: 9,
             name: 'Список тарифов',
             icon: 'fas fa-wrench nav-icon',
-            path: '/dashboard/indexhosting',
+            path: '/dashboard/hosting/index',
             perm: 'admin'
         },
         {
             id: 10,
             name: 'Создать тариф',
             icon: 'fas fa-wrench nav-icon',
-            path: '/dashboard/createhosting',
+            path: '/dashboard/hosting/create',
             perm: 'admin'
         }
         ]

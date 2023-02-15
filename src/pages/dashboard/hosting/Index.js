@@ -6,10 +6,10 @@ import {deleteHosting, indexHosting} from "../../../http/hostingAPI";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {useNavigate} from "react-router-dom";
-import {CREATE_HOSTING_ROUTE, DASHBOARD_ROUTE, UPDATE_HOSTING_ROUTE} from "../../../utils/consts";
+import {CREATE_HOSTING_ROUTE, DASHBOARD_ROUTE, SHOW_HOSTING_ROUTE, UPDATE_HOSTING_ROUTE} from "../../../utils/consts";
 
 
-const IndexHosting = observer(() => {
+const Index = observer(() => {
     const navigate = useNavigate();
     const {hosting} = useContext(Context);
     const [hostings,setHostings] = useState([]);
@@ -123,11 +123,12 @@ const IndexHosting = observer(() => {
                                     <td className="align-middle">{hosting.price}р.</td>
                                     <td className="align-middle text-center"><input type="checkbox" checked={hosting.is_stored} disabled/></td>
                                     <td className="project-actions text-right">
-                                        <a className="btn btn-primary btn-sm m-1" href="#">
+                                        <Button className="btn btn-primary btn-sm m-1"
+                                                onClick={() => {navigate(DASHBOARD_ROUTE + '/' + SHOW_HOSTING_ROUTE + '/' + hosting.id);}}>
                                             <i className="fas fa-folder m-1">
                                             </i>
-                                            смотр.
-                                        </a>
+                                            детали
+                                        </Button>
                                         <Button className="btn btn-info btn-sm m-1"
                                                 onClick={() => {navigate(DASHBOARD_ROUTE + '/' + UPDATE_HOSTING_ROUTE + '/' + hosting.id);}}>
                                             <i className="fas fa-pencil-alt m-1">
@@ -174,4 +175,4 @@ const IndexHosting = observer(() => {
     );
 });
 
-export default IndexHosting;
+export default Index;
