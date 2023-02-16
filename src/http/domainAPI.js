@@ -11,19 +11,18 @@ export const indexDomain = async () => {
     const {data} = await $authHost.get('api/domains', {});
     return data;
 };
-/*
-export const editHosting = async (hostingId) => {
-    const {data} = await $authHost.get('api/hostings/' + hostingId + '/edit', {});
+
+export const editDomain = async (domainId) => {
+    const {data} = await $authHost.get('api/domains/' + domainId + '/edit', {});
     return data;
 };
 
-export const updateHosting = async (title, description, price, is_stored, hostingId) => {
-    const {data} = await $authHost.patch('api/hostings/'+ hostingId, {title, description, price, is_stored});
+export const updateDomain = async (title, price, price_extension, period, is_stored, domainId) => {
+    const {data} = await $authHost.patch('api/domains/'+ domainId, {title, price, price_extension, period, is_stored});
     return data;
 };
 
-export const deleteHosting = async (hostingId) => {
-    const {data} = await $authHost.delete('api/hostings/' + hostingId, {});
+export const deleteDomain = async (domainId) => {
+    const {data} = await $authHost.delete('api/domains/' + domainId, {});
     return data;
 };
-*/

@@ -89,13 +89,6 @@ export const menuItems = [
             },
             {
                 id: 13,
-                name: 'Доменные зоны',
-                icon: 'fas fa-wrench nav-icon',
-                path: '/dashboard/domain/zone/index',
-                perm: 'admin'
-            },
-            {
-                id: 14,
                 name: 'Регистраторы',
                 icon: 'fas fa-wrench nav-icon',
                 path: '/dashboard/domain/reg/index',

@@ -2,10 +2,10 @@ import {
     CREATE_DOMAIN_ROUTE,
     CREATE_HOSTING_ROUTE,
     DOMAINS_ROUTE,
-    HOME_ROUTE, INDEX_DOMAIN_REG_ROUTE, INDEX_DOMAIN_ROUTE, INDEX_DOMAIN_ZONE_ROUTE, INDEX_HOSTING_ROUTE,
+    HOME_ROUTE, INDEX_DOMAIN_REG_ROUTE, INDEX_DOMAIN_ROUTE, INDEX_HOSTING_ROUTE,
     LOGIN_ROUTE,
-    REGISTER_ROUTE, SHOW_HOSTING_ROUTE,
-    SITES_ROUTE, UPDATE_HOSTING_ROUTE,
+    REGISTER_ROUTE, SHOW_DOMAIN_ROUTE, SHOW_HOSTING_ROUTE,
+    SITES_ROUTE, UPDATE_DOMAIN_ROUTE, UPDATE_HOSTING_ROUTE,
     USERS_ROUTE
 } from "./utils/consts";
 import Home from "./pages/Home";
@@ -19,9 +19,10 @@ import Index from "./pages/dashboard/hosting/Index";
 import Update from "./pages/dashboard/hosting/Update";
 import Show from "./pages/dashboard/hosting/Show";
 import DomainIndex from "./pages/dashboard/domain/Index";
-import DomainZoneIndex from "./pages/dashboard/domain/zone/Index";
 import DomainRegIndex from "./pages/dashboard/domain/reg/Index";
 import DomainCreate from "./pages/dashboard/domain/Create";
+import DomainUpdate from "./pages/dashboard/domain/Update";
+import DomainShow from "./pages/dashboard/domain/Show";
 
 export const authRoutes = [
     {
@@ -57,16 +58,20 @@ export const authRoutes = [
         Component: DomainIndex
     },
     {
-        path: INDEX_DOMAIN_ZONE_ROUTE,
-        Component: DomainZoneIndex
-    },
-    {
         path: INDEX_DOMAIN_REG_ROUTE,
         Component: DomainRegIndex
     },
     {
         path: CREATE_DOMAIN_ROUTE,
         Component: DomainCreate
+    },
+    {
+        path: UPDATE_DOMAIN_ROUTE  + '/:id',
+        Component: DomainUpdate
+    },
+    {
+        path: SHOW_DOMAIN_ROUTE  + '/:id',
+        Component: DomainShow
     }
 ];
 
