@@ -23,6 +23,14 @@ const DomainIndex = observer(() => {
         { name: "Список тарифов" },
     ];
 
+    const ageToStr = (age) => {
+        let txt = '';
+        let count = age % 100;
+        count >= 5 && count <= 20 ? txt = 'лет' : count = count % 10;
+        count === 1 ? txt = 'год' : (count >= 2 && count <= 4) ? txt = 'года' : txt = 'лет';
+        return txt;
+    }
+
     useEffect(()=>{
         setLoading(true);
         indexDomain().then(data => {
@@ -70,10 +78,10 @@ const DomainIndex = observer(() => {
                             <tr>
                                 <th width={'10%'}>#</th>
                                 <th width={'20%'}>Название</th>
-                                <th width={'10%'}>Стоимость</th>
-                                <th width={'10%'}>Продление</th>
-                                <th width={'10%'}>Период</th>
-                                <th width={'10%'}>Доступность</th>
+                                <th width={'10%'} className="text-center">Стоимость</th>
+                                <th width={'10%'} className="text-center">Продление</th>
+                                <th width={'10%'} className="text-center">Период</th>
+                                <th width={'10%'} className="text-center">Доступность</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -93,9 +101,9 @@ const DomainIndex = observer(() => {
                                 <tr key={domain.id}>
                                     <td className="align-middle">{domain.id}</td>
                                     <td className="align-middle">{domain.title}</td>
-                                    <td className="align-middle">{domain.price}р.</td>
-                                    <td className="align-middle">{domain.price_extension}р.</td>
-                                    <td className="align-middle">{domain.period}</td>
+                                    <td className="align-middle text-center">{domain.price}р.</td>
+                                    <td className="align-middle text-center">{domain.price_extension}р.</td>
+                                    <td className="align-middle text-center">{domain.period} {ageToStr(domain.period)}</td>
                                     <td className="align-middle text-center"><input type="checkbox" checked={domain.is_stored} disabled/></td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
