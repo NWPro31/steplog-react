@@ -9,3 +9,7 @@ export const CREATE_HOSTING_ROUTE = 'hosting/create';
 export const INDEX_HOSTING_ROUTE = 'hosting/index';
 export const UPDATE_HOSTING_ROUTE = 'hosting/update';
 export const SHOW_HOSTING_ROUTE = 'hosting/show';
+export const INDEX_DOMAIN_ROUTE = 'domain/index';
+export const INDEX_DOMAIN_ZONE_ROUTE = 'domain/zone/index';
+export const INDEX_DOMAIN_REG_ROUTE = 'domain/reg/index';
+export const CREATE_DOMAIN_ROUTE = 'domain/create';

@@ -73,5 +73,34 @@ export const menuItems = [
             perm: 'admin'
         }
         ]
+    },
+    {
+        id: 11,
+        name: 'Домены',
+        icon: 'far fa-caret-square-down nav-icon',
+        perm: 'admin',
+        children: [
+            {
+                id: 12,
+                name: 'Тарифы',
+                icon: 'fas fa-wrench nav-icon',
+                path: '/dashboard/domain/index',
+                perm: 'admin'
+            },
+            {
+                id: 13,
+                name: 'Доменные зоны',
+                icon: 'fas fa-wrench nav-icon',
+                path: '/dashboard/domain/zone/index',
+                perm: 'admin'
+            },
+            {
+                id: 14,
+                name: 'Регистраторы',
+                icon: 'fas fa-wrench nav-icon',
+                path: '/dashboard/domain/reg/index',
+                perm: 'admin'
+            }
+        ]
     }
 ];

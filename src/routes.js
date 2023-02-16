@@ -1,8 +1,8 @@
 import {
+    CREATE_DOMAIN_ROUTE,
     CREATE_HOSTING_ROUTE,
-    DASHBOARD_ROUTE,
     DOMAINS_ROUTE,
-    HOME_ROUTE, INDEX_HOSTING_ROUTE,
+    HOME_ROUTE, INDEX_DOMAIN_REG_ROUTE, INDEX_DOMAIN_ROUTE, INDEX_DOMAIN_ZONE_ROUTE, INDEX_HOSTING_ROUTE,
     LOGIN_ROUTE,
     REGISTER_ROUTE, SHOW_HOSTING_ROUTE,
     SITES_ROUTE, UPDATE_HOSTING_ROUTE,
@@ -18,6 +18,10 @@ import Create from "./pages/dashboard/hosting/Create";
 import Index from "./pages/dashboard/hosting/Index";
 import Update from "./pages/dashboard/hosting/Update";
 import Show from "./pages/dashboard/hosting/Show";
+import DomainIndex from "./pages/dashboard/domain/Index";
+import DomainZoneIndex from "./pages/dashboard/domain/zone/Index";
+import DomainRegIndex from "./pages/dashboard/domain/reg/Index";
+import DomainCreate from "./pages/dashboard/domain/Create";
 
 export const authRoutes = [
     {
@@ -47,6 +51,22 @@ export const authRoutes = [
     {
         path: SHOW_HOSTING_ROUTE  + '/:id',
         Component: Show
+    },
+    {
+        path: INDEX_DOMAIN_ROUTE,
+        Component: DomainIndex
+    },
+    {
+        path: INDEX_DOMAIN_ZONE_ROUTE,
+        Component: DomainZoneIndex
+    },
+    {
+        path: INDEX_DOMAIN_REG_ROUTE,
+        Component: DomainRegIndex
+    },
+    {
+        path: CREATE_DOMAIN_ROUTE,
+        Component: DomainCreate
     }
 ];
 
