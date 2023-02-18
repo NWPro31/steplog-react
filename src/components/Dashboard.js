@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState} from "react";
 import DashHeader from "./DashHeader";
 import DashSidebar from "./DashSidebar";
 import {Outlet} from "react-router-dom";
+import DashFooter from "./DashFooter";
 
 const Dashboard = () => {
 
@@ -36,6 +37,7 @@ const Dashboard = () => {
                 <div className="content-wrapper">
                     <Outlet/>
                 </div>
+                <DashFooter/>
             </>
         );
     }, [isAppLoaded]);

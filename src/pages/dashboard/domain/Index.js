@@ -91,11 +91,12 @@ const DomainIndex = observer(() => {
                             <thead>
                             <tr>
                                 <th width={'10%'}>#</th>
-                                <th width={'20%'}>Название</th>
-                                <th width={'10%'} className="text-center">Стоимость</th>
-                                <th width={'10%'} className="text-center">Продление</th>
-                                <th width={'10%'} className="text-center">Период</th>
-                                <th width={'10%'} className="text-center">Доступность</th>
+                                <th width={'10%'}>Название</th>
+                                <th width={'10%'} className="text-center">Регистратор</th>
+                                <th width={'8%'} className="text-center">Стоимость</th>
+                                <th width={'8%'} className="text-center">Продление</th>
+                                <th width={'8%'} className="text-center">Период</th>
+                                <th width={'8%'} className="text-center">Доступность</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -115,6 +116,7 @@ const DomainIndex = observer(() => {
                                 <tr key={domain.id}>
                                     <td className="align-middle">{domain.id}</td>
                                     <td className="align-middle">{domain.title}</td>
+                                    <td className="align-middle text-center" >{domain.registrator ? domain.registrator.title : 'не указан'}</td>
                                     <td className="align-middle text-center">{domain.price}р.</td>
                                     <td className="align-middle text-center">{domain.price_extension}р.</td>
                                     <td className="align-middle text-center">{domain.period} {<AgeToStr age={domain.period}/>}</td>

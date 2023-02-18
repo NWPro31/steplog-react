@@ -1,11 +1,12 @@
 import {
+    CREATE_DOMAIN_REG_ROUTE,
     CREATE_DOMAIN_ROUTE,
     CREATE_HOSTING_ROUTE,
     DOMAINS_ROUTE,
-    HOME_ROUTE, INDEX_DOMAIN_REG_ROUTE, INDEX_DOMAIN_ROUTE, INDEX_HOSTING_ROUTE,
+    HOME_ROUTE, INDEX_DOMAIN_REG_ROUTE, INDEX_DOMAIN_ROUTE, INDEX_HOSTING_ROUTE, INDEX_SERVICES_ROUTE,
     LOGIN_ROUTE,
-    REGISTER_ROUTE, SHOW_DOMAIN_ROUTE, SHOW_HOSTING_ROUTE,
-    SITES_ROUTE, UPDATE_DOMAIN_ROUTE, UPDATE_HOSTING_ROUTE,
+    REGISTER_ROUTE, SHOW_DOMAIN_REG_ROUTE, SHOW_DOMAIN_ROUTE, SHOW_HOSTING_ROUTE,
+    SITES_ROUTE, UPDATE_DOMAIN_REG_ROUTE, UPDATE_DOMAIN_ROUTE, UPDATE_HOSTING_ROUTE,
     USERS_ROUTE
 } from "./utils/consts";
 import Home from "./pages/Home";
@@ -23,6 +24,10 @@ import DomainRegIndex from "./pages/dashboard/domain/reg/Index";
 import DomainCreate from "./pages/dashboard/domain/Create";
 import DomainUpdate from "./pages/dashboard/domain/Update";
 import DomainShow from "./pages/dashboard/domain/Show";
+import DomainRegCreate from "./pages/dashboard/domain/reg/Create";
+import DomainRegUpdate from "./pages/dashboard/domain/reg/Update";
+import DomainRegShow from "./pages/dashboard/domain/reg/Show";
+import ServicesIndex from "./pages/dashboard/services/Index";
 
 export const authRoutes = [
     {
@@ -72,6 +77,22 @@ export const authRoutes = [
     {
         path: SHOW_DOMAIN_ROUTE  + '/:id',
         Component: DomainShow
+    },
+    {
+        path: CREATE_DOMAIN_REG_ROUTE,
+        Component: DomainRegCreate
+    },
+    {
+        path: UPDATE_DOMAIN_REG_ROUTE  + '/:id',
+        Component: DomainRegUpdate
+    },
+    {
+        path: SHOW_DOMAIN_REG_ROUTE  + '/:id',
+        Component: DomainRegShow
+    },
+    {
+        path: INDEX_SERVICES_ROUTE,
+        Component: ServicesIndex
     }
 ];
 

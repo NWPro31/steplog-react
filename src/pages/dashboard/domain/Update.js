@@ -13,7 +13,9 @@ const DomainUpdate = () => {
     const [price, setPrice] = useState(0);
     const [priceExtension, setPriceExtension] = useState(0);
     const [period, setPeriod] = useState(0);
+    const [regId, setRegId] = useState(0);
     const [stored, setStored] = useState(false);
+    const [domainRegs, setDomainRegs] = useState([]);
     const {id} = useParams();
     const [loadingData, setLoadingData] = useState(true);
     const hrefs = [
@@ -35,6 +37,8 @@ const DomainUpdate = () => {
         setPriceExtension(data.domain.price_extension);
         setPeriod(data.domain.period);
         setStored(data.domain.is_stored);
+        setRegId(data.domain.reg_id);
+        setDomainRegs(data.domainRegs);
         setLoadingData(false);
     };
 
@@ -43,7 +47,7 @@ const DomainUpdate = () => {
         try {
             setLoading(true);
             let data;
-            data = await updateDomain(title, price, priceExtension, period, stored, id);
+            data = await updateDomain(title, price, priceExtension, period, stored, regId === 0 ? null : regId, id);
             if(data.success) navigate(DASHBOARD_ROUTE + '/' + INDEX_DOMAIN_ROUTE);
         } catch (e) {
             alert(e.response.message);
@@ -89,6 +93,17 @@ const DomainUpdate = () => {
                                 <input type="number" id="inputPeriod" name="period" value={period}
                                        onChange={e => setPeriod(Number(e.target.value))}
                                        className="form-control"/>
+                            </div>
+                            <div className="form-group">
+                                <label>Регистратор</label>
+                                <select defaultValue={regId} className="form-control" name="reg_id"
+                                        onChange={e => setRegId(Number(e.target.value))}
+                                >
+                                    <option value="0">Выберите регистратора</option>
+                                    {domainRegs.map((item, index) =>
+                                        <option key={index} value={item.id}>{item.title}</option>
+                                    )}
+                                </select>
                             </div>
                             <div className="form-check">
                                 <input type="checkbox" name="is_stored" checked={stored}

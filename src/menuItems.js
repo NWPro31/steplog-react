@@ -95,5 +95,20 @@ export const menuItems = [
                 perm: 'admin'
             }
         ]
+    },
+    {
+        id: 14,
+        name: 'Услуги',
+        icon: 'far fa-caret-square-down nav-icon',
+        perm: 'admin',
+        children: [
+            {
+                id: 15,
+                name: 'Список услуг',
+                icon: 'fas fa-wrench nav-icon',
+                path: '/dashboard/services/index',
+                perm: 'admin'
+            }
+        ]
     }
 ];

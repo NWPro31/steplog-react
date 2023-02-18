@@ -14,3 +14,7 @@ export const INDEX_DOMAIN_REG_ROUTE = 'domain/reg/index';
 export const CREATE_DOMAIN_ROUTE = 'domain/create';
 export const UPDATE_DOMAIN_ROUTE = 'domain/update';
 export const SHOW_DOMAIN_ROUTE = 'domain/show';
+export const CREATE_DOMAIN_REG_ROUTE = 'domain/reg/create';
+export const UPDATE_DOMAIN_REG_ROUTE = 'domain/reg/update';
+export const SHOW_DOMAIN_REG_ROUTE = 'domain/reg/show';
+export const INDEX_SERVICES_ROUTE = 'services/index';
