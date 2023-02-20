@@ -103,7 +103,7 @@ const DomainIndex = observer(() => {
                             <tbody>
                             {loading ?
                                 <tr>
-                                    <td colSpan={7}>
+                                    <td colSpan={8}>
                                         <div className="d-flex justify-content-center">
                                             <div className="spinner-border" role="status">
                                                 <span className="visually-hidden"></span>
