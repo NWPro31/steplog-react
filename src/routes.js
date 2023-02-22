@@ -1,12 +1,26 @@
 import {
+    CREATE_CUSTOMER_SERVICES_ROUTE,
     CREATE_DOMAIN_REG_ROUTE,
     CREATE_DOMAIN_ROUTE,
-    CREATE_HOSTING_ROUTE, CREATE_SERVICES_ROUTE,
+    CREATE_HOSTING_ROUTE,
+    CREATE_SERVICES_ROUTE,
     DOMAINS_ROUTE,
-    HOME_ROUTE, INDEX_DOMAIN_REG_ROUTE, INDEX_DOMAIN_ROUTE, INDEX_HOSTING_ROUTE, INDEX_SERVICES_ROUTE,
+    HOME_ROUTE,
+    INDEX_CUSTOMER_SERVICES_ROUTE,
+    INDEX_DOMAIN_REG_ROUTE,
+    INDEX_DOMAIN_ROUTE,
+    INDEX_HOSTING_ROUTE,
+    INDEX_SERVICES_ROUTE,
     LOGIN_ROUTE,
-    REGISTER_ROUTE, SHOW_DOMAIN_REG_ROUTE, SHOW_DOMAIN_ROUTE, SHOW_HOSTING_ROUTE,
-    SITES_ROUTE, UPDATE_DOMAIN_REG_ROUTE, UPDATE_DOMAIN_ROUTE, UPDATE_HOSTING_ROUTE, UPDATE_SERVICES_ROUTE,
+    REGISTER_ROUTE,
+    SHOW_DOMAIN_REG_ROUTE,
+    SHOW_DOMAIN_ROUTE,
+    SHOW_HOSTING_ROUTE,
+    SITES_ROUTE,
+    UPDATE_DOMAIN_REG_ROUTE,
+    UPDATE_DOMAIN_ROUTE,
+    UPDATE_HOSTING_ROUTE,
+    UPDATE_SERVICES_ROUTE,
     USERS_ROUTE
 } from "./utils/consts";
 import Home from "./pages/Home";
@@ -30,6 +44,8 @@ import DomainRegShow from "./pages/dashboard/domain/reg/Show";
 import ServicesIndex from "./pages/dashboard/services/Index";
 import ServicesCreate from "./pages/dashboard/services/Create";
 import ServicesUpdate from "./pages/dashboard/services/Update";
+import CustomerServicesIndex from "./pages/dashboard/customer/services/Index";
+import CustomerServicesCreate from "./pages/dashboard/customer/services/Create";
 
 export const authRoutes = [
     {
@@ -103,6 +119,14 @@ export const authRoutes = [
     {
         path: UPDATE_SERVICES_ROUTE  + '/:id',
         Component: ServicesUpdate
+    },
+    {
+        path: INDEX_CUSTOMER_SERVICES_ROUTE,
+        Component: CustomerServicesIndex
+    },
+    {
+        path: CREATE_CUSTOMER_SERVICES_ROUTE,
+        Component: CustomerServicesCreate
     }
 ];
 

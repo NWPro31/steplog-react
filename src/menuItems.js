@@ -23,7 +23,7 @@ export const menuItems = [
                 id: 4,
                 name: 'Обслуживание сайта',
                 icon: 'fas fa-hammer nav-icon',
-                path: '/dashboard/domains',
+                path: '/dashboard/customer/services/index',
                 perm: 'user'
 
             },

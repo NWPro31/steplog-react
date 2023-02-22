@@ -20,3 +20,5 @@ export const SHOW_DOMAIN_REG_ROUTE = 'domain/reg/show';
 export const INDEX_SERVICES_ROUTE = 'services/index';
 export const CREATE_SERVICES_ROUTE = 'services/create';
 export const UPDATE_SERVICES_ROUTE = 'services/update';
+export const INDEX_CUSTOMER_SERVICES_ROUTE = 'customer/services/index';
+export const CREATE_CUSTOMER_SERVICES_ROUTE = 'customer/services/create';
