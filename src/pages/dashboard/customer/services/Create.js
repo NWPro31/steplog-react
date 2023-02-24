@@ -87,7 +87,7 @@ const CustomerServicesCreate = () => {
                             <h5>{service.title}</h5>
                             <p>{service.description.split("\n").map((item, i) => <p key={i}>{item}</p>)}</p>
                             <p>Продолжительность: {service.duration_work}</p>
-                            <p>Стоимость: <span className="font-weight-bold">{service.price_min}р.</span></p>
+                            <p>Стоимость: <span className="font-weight-bold">от {service.price_min}р.</span></p>
                         </div>
                         ))}
 

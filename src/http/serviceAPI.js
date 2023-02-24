@@ -8,6 +8,11 @@ export const indexService = async () => {
     return data;
 };
 
+export const indexOrderService = async () => {
+    const {data} = await $authHost.get('api/order_services', {});
+    return data;
+};
+
 
 export const createService = async (title, description, price, price_min, duration_work) => {
     const {data} = await $authHost.post('api/services', {title, description, price, price_min, duration_work});

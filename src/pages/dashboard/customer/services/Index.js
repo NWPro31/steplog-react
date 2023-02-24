@@ -2,22 +2,24 @@ import ContentHeader from "../../../../components/ContentHeader";
 import React, {useContext, useEffect, useState} from "react";
 import {
     CREATE_CUSTOMER_SERVICES_ROUTE,
-    CREATE_SERVICES_ROUTE,
-    DASHBOARD_ROUTE,
-    UPDATE_SERVICES_ROUTE
+    DASHBOARD_ROUTE
 } from "../../../../utils/consts";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {Context} from "../../../../index";
-import {deleteService, indexService} from "../../../../http/serviceAPI";
+import {indexOrderService} from "../../../../http/serviceAPI";
 import {useNavigate} from "react-router-dom";
+import moment from "moment";
+import 'moment/locale/ru';
+import { Tooltip as ReactTooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css'
+
 
 const CustomerServicesIndex = () => {
     const navigate = useNavigate();
     const {service} = useContext(Context);
-    const [services,setServices] = useState([]);
+    const [orderServices,setOrderServices] = useState([]);
     const [loading,setLoading] = useState(true);
-    const [deleteId,setDeleteId] = useState(null);
 
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
@@ -26,40 +28,19 @@ const CustomerServicesIndex = () => {
 
     useEffect(()=>{
         setLoading(true);
-        indexService().then(data => {
-            service.setService(data.services);
-            setServices(data.services);
+        indexOrderService().then(data => {
+            service.setOrderService(data.order_services);
+            setOrderServices(data.order_services);
         }).finally(()=>{
             setLoading(false);
-        })
-            .catch(err => console.log(err));
+        }).catch(err => console.log(err));
+
     },[]);
 
     useEffect(() => {
         //loading
-    },[services]);
+    },[orderServices]);
 
-    const click = async () => {
-        try {
-            setLoading(true);
-            document.getElementById('close-button').click();
-            let data;
-            data = await deleteService(deleteId);
-            if(data.success) {
-                setDeleteId(null);
-                indexService().then(data => {
-                    service.setService(data.services);
-                    setServices(data.services);
-                }).finally(()=>{
-                    setLoading(false);
-                })
-                    .catch(err => console.log(err));
-            }
-        } catch (e) {
-            alert(e);
-        }
-
-    };
 
     return (
         <>
@@ -84,16 +65,16 @@ const CustomerServicesIndex = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="card-body p-0">
+                    <div className="card-body table-responsive p-0">
                         <Table striped>
                             <thead>
                             <tr>
-                                <th width={'10%'}>#</th>
-                                <th width={'20%'}>Услуга</th>
-                                <th width={'10%'}>Сайт</th>
-                                <th width={'10%'}>Стоимость</th>
+                                <th width={'8%'}>#</th>
+                                <th width={'25%'}>Услуга</th>
+                                <th width={'10%'} className="text-center">Сайт</th>
+                                <th width={'10%'} className="text-center">Стоимость</th>
                                 <th width={'20%'}>Продолжительность работ</th>
-                                <th width={'10%'}>Состояние</th>
+                                <th width={'12%'} className="text-center">Состояние</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -109,14 +90,22 @@ const CustomerServicesIndex = () => {
                                     </td>
                                 </tr>
                                 : ''}
-                            {services && services.map(service => (
+                            {orderServices && orderServices.map(service => (
                                 <tr key={service.id}>
                                     <td className="align-middle">{service.id}</td>
-                                    <td className="align-middle">{service.title}</td>
-                                    <td className="align-middle">{service.price}р.</td>
-                                    <td className="align-middle">{service.price_min}р.</td>
-                                    <td className="align-middle">{service.duration_work}</td>
-                                    <td className="align-middle text-center"><input type="checkbox" checked={service.is_stored} disabled/></td>
+                                    <td className="align-middle">{service.service.title}</td>
+                                    <td className="align-middle text-center">{service.url}</td>
+                                    <td className="align-middle text-center tooltip_el"
+                                        style={{cursor:'help'}}
+                                        data-tooltip-float="true"
+                                        data-tooltip-content={service.price === 0 ? 'Стоимость работ станет известна после обработки заказа' : 'Стоимость работ ' + service.price + 'р.'}
+                                    >{service.price > 0 ? service.price + 'р.' : '?'}</td>
+                                    <td className="align-middle">{service.service.duration_work}</td>
+                                    <td className="align-middle text-center tooltip_el"
+                                        style={{cursor:'help'}}
+                                        data-tooltip-float="true"
+                                        data-tooltip-content={service.status.title + " " + moment(service.status.created_at).locale('ru').fromNow()}
+                                    >{service.status.title}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
                                                 >
@@ -132,97 +121,59 @@ const CustomerServicesIndex = () => {
                     </div>
                 </div>
             </div>
+            <ReactTooltip anchorSelect=".tooltip_el" />
             <div className="content">
                 <div className="card">
                     <div className="card-header">
-                        <h3 className="card-title">Список доступных услуг</h3>
-                        <div className="card-tools">
-                            <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i className="fas fa-minus"></i>
-                            </button>
-                            <button type="button" className="btn btn-tool" data-card-widget="remove" title="Remove">
-                                <i className="fas fa-times"></i>
-                            </button>
-                        </div>
+                        <h3 className="card-title">Ответы на вопросы</h3>
                     </div>
-                    <div className="card-body p-0">
-                        <Table striped>
-                            <thead>
-                            <tr>
-                                <th width={'10%'}>#</th>
-                                <th width={'15%'}>Название</th>
-                                <th width={'10%'}>Стоимость</th>
-                                <th width={'10%'}>Минимальная стоимость</th>
-                                <th width={'10%'}>Продолжительность работ</th>
-                                <th width={'10%'}>Доступность</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {loading ?
-                                <tr>
-                                    <td colSpan={8}>
-                                        <div className="d-flex justify-content-center">
-                                            <div className="spinner-border" role="status">
-                                                <span className="visually-hidden"></span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                : ''}
-                            {services && services.map(service => (
-                                <tr key={service.id}>
-                                    <td className="align-middle">{service.id}</td>
-                                    <td className="align-middle">{service.title}</td>
-                                    <td className="align-middle">{service.price}р.</td>
-                                    <td className="align-middle">{service.price_min}р.</td>
-                                    <td className="align-middle">{service.duration_work}</td>
-                                    <td className="align-middle text-center"><input type="checkbox" checked={service.is_stored} disabled/></td>
-                                    <td className="project-actions text-right">
-                                        <Button className="btn btn-primary btn-sm m-1"
-                                        >
-                                            <i className="fas fa-folder m-1">
-                                            </i>
-                                            детали
-                                        </Button>
-                                        <Button className="btn btn-info btn-sm m-1"
-                                                onClick={() => {navigate(DASHBOARD_ROUTE + '/' + UPDATE_SERVICES_ROUTE + '/' + service.id);}}>
-                                            <i className="fas fa-pencil-alt m-1">
-                                            </i>
-                                            ред.
-                                        </Button>
-                                        <button type="button"
-                                                onClick={() => {setDeleteId(service.id);}}
-                                                className="btn btn-danger btn-sm m-1"
-                                                data-toggle="modal"
-                                                data-target="#modal-default">
-                                            <i className="fas fa-trash m-1">
-                                            </i>
-                                            Удалить
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </Table>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id="modal-default">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h4 className="modal-title">Удаление услуги</h4>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <p>Вы действительно хотите удалить услугу <b>{deleteId && services.filter(serv => serv.id === deleteId).map(item => item.title)}</b>?</p>
-                        </div>
-                        <div className="modal-footer justify-content-between">
-                            <button type="button" id="close-button" className="btn btn-default" data-dismiss="modal">Отмена</button>
-                            <button type="button" className="btn btn-danger" onClick={click}>Удалить</button>
+                    <div className="card-body">
+                        <div id="accordion">
+                            <div className="card card-primary">
+                                <div className="card-header">
+                                    <h4 className="card-title w-100">
+                                        <a className="d-block w-100" data-toggle="collapse" href="#collapseOne">
+                                            Процесс заказа
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" className="collapse show" data-parent="#accordion">
+                                    <div className="card-body">
+                                        <p>
+                                            Нажмите на кнопку <b>Заказать обслуживание сайта</b>,
+                                            укажите адрес сайта, выберите требуемую услугу из списка.
+                                            При необходимости заполните пожелания и укажите данные для
+                                            доступа к сайту.
+                                        </p>
+                                        <p>
+                                            Спустя некоторое время мы обработаем Ваш заказ, в графе стоимость
+                                            отобразится цена выполнения заказа.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card card-primary">
+                                <div className="card-header">
+                                    <h4 className="card-title w-100">
+                                        <a className="d-block w-100" data-toggle="collapse" href="#collapseTwo">
+                                            Оплата заказа
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" className="collapse show" data-parent="#accordion">
+                                    <div className="card-body">
+                                        <p>
+                                            Оплата заказа производится после согласования выполнения работ.
+                                        </p>
+                                        <p>
+                                            В некоторых случаях может потребоваться частичная или полная предоплата.
+                                        </p>
+                                        <p>
+                                            В зависимости от сложности заказа, стоимость может меняться.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
