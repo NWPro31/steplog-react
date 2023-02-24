@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import {DASHBOARD_ROUTE, INDEX_CUSTOMER_SERVICES_ROUTE} from "../../../../utils/consts";
-import {createService, indexService} from "../../../../http/serviceAPI";
+import {createOrderService, createService, indexService} from "../../../../http/serviceAPI";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import ContentHeader from "../../../../components/ContentHeader";
@@ -12,11 +12,11 @@ const CustomerServicesCreate = () => {
     const {service} = useContext(Context);
     const [services,setServices] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [title, setTitle] = useState('');
+    const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState(0);
-    const [priceMin, setPriceMin] = useState(0);
-    const [durationWork, setDurationWork] = useState('');
+    const [work, setWork] = useState(0);
+    const price = 0;
+    const [access, setAccess] = useState('');
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_SERVICES_ROUTE, name: "Список услуг" },
@@ -42,7 +42,7 @@ const CustomerServicesCreate = () => {
         try {
             setLoading(true);
             let data;
-            data = await createService(title, description, price, priceMin, durationWork);
+            data = await createOrderService(work, url, description, access, price);
             if(data.success) navigate(DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_SERVICES_ROUTE);
         } catch (e) {
             alert(e.response.data.message);
@@ -65,9 +65,9 @@ const CustomerServicesCreate = () => {
                     </div>
                     <div className="card-body">
                         <div className="form-group">
-                            <label htmlFor="inputTitle">Адрес вашего сайта</label>
-                            <input type="text" id="inputTitle" name="title" value={title}
-                                   onChange={e => setTitle(e.target.value)}
+                            <label htmlFor="inputUrl">Адрес вашего сайта</label>
+                            <input type="text" id="inputUrl" name="url" value={url}
+                                   onChange={e => setUrl(e.target.value)}
                                    className="form-control"/>
                         </div>
                         <label>Выберите услугу</label>
@@ -80,7 +80,10 @@ const CustomerServicesCreate = () => {
                             : ''}
 
                         {services && services.map(service => (
-                        <div key={service.id} className="callout callout-info" role="button">
+                        <div key={service.id}
+                             onClick={() => {setWork(service.id);}}
+                             className={`callout ${service.id === work ? 'callout-success' : 'callout-info bg-light'}`}
+                             role="button">
                             <h5>{service.title}</h5>
                             <p>{service.description.split("\n").map((item, i) => <p key={i}>{item}</p>)}</p>
                             <p>Продолжительность: {service.duration_work}</p>
@@ -96,18 +99,18 @@ const CustomerServicesCreate = () => {
                                       className="form-control" rows="4">{description}</textarea>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="inputDescription2">Данные для доступа к сайту / серверу</label>
-                            <textarea id="inputDescription2" name="description"
-                                      onChange={e => setDescription(e.target.value)}
-                                      value={description}
-                                      className="form-control" rows="4">{description}</textarea>
+                            <label htmlFor="inputAccess">Данные для доступа к сайту / серверу</label>
+                            <textarea id="inputAccess" name="access"
+                                      onChange={e => setAccess(e.target.value)}
+                                      value={access}
+                                      className="form-control" rows="4">{access}</textarea>
                         </div>
                         <label>Стоимость выполнения заказа зависит от объема и сложности работ, она будет известна после обработки заказа.</label>
                     </div>
                 </div>
                 <div className="row pb-3">
                     <div className="col-12">
-                        <Button onClick={() => {navigate(DASHBOARD_ROUTE + '/' + INDEX_SERVICES_ROUTE);}} className="btn btn-secondary "
+                        <Button onClick={() => {navigate(DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_SERVICES_ROUTE);}} className="btn btn-secondary "
                                 variant="primary">
                             Отменить
                         </Button>
@@ -124,7 +127,7 @@ const CustomerServicesCreate = () => {
                                 :
                                 ''
                             }
-                            Создать
+                            Создать заказ
                         </Button>
                     </div>
                 </div>

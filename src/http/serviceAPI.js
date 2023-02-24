@@ -14,6 +14,11 @@ export const createService = async (title, description, price, price_min, durati
     return data;
 };
 
+export const createOrderService = async (service_id, url, description, access, price) => {
+    const {data} = await $authHost.post('api/order_services', {service_id, url, description, access, price});
+    return data;
+};
+
 export const editService = async (serviceId) => {
     const {data} = await $authHost.get('api/services/' + serviceId + '/edit', {});
     return data;
