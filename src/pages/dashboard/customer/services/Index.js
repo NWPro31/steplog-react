@@ -90,6 +90,17 @@ const CustomerServicesIndex = () => {
                                     </td>
                                 </tr>
                                 : ''}
+                            {orderServices.length ===0 && !loading && (
+                                <tr>
+                                    <td colSpan={8}>
+                                        <div className="d-flex justify-content-center">
+                                            <div>
+                                                <h3>У Вас пока нет заказов</h3>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
                             {orderServices && orderServices.map(service => (
                                 <tr key={service.id}>
                                     <td className="align-middle">{service.id}</td>
@@ -104,8 +115,8 @@ const CustomerServicesIndex = () => {
                                     <td className="align-middle text-center tooltip_el"
                                         style={{cursor:'help'}}
                                         data-tooltip-float="true"
-                                        data-tooltip-content={service.status.title + " " + moment(service.status.created_at).locale('ru').fromNow()}
-                                    >{service.status.title}</td>
+                                        data-tooltip-content={service.status ? service.status.title : 'Нет данных' + " " + moment(service.status ? service.status.created_at : Date.now()).locale('ru').fromNow()}
+                                    >{service.status ? service.status.title : 'нет данных'}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
                                                 >
@@ -126,10 +137,15 @@ const CustomerServicesIndex = () => {
                 <div className="card">
                     <div className="card-header">
                         <h3 className="card-title">Ответы на вопросы</h3>
+                        <div className="card-tools">
+                            <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i className="fas fa-minus"></i>
+                            </button>
+                        </div>
                     </div>
                     <div className="card-body">
                         <div id="accordion">
-                            <div className="card card-primary">
+                            <div className="card card-info">
                                 <div className="card-header">
                                     <h4 className="card-title w-100">
                                         <a className="d-block w-100" data-toggle="collapse" href="#collapseOne">
@@ -152,7 +168,7 @@ const CustomerServicesIndex = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="card card-primary">
+                            <div className="card card-info">
                                 <div className="card-header">
                                     <h4 className="card-title w-100">
                                         <a className="d-block w-100" data-toggle="collapse" href="#collapseTwo">

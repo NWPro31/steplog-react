@@ -19,7 +19,7 @@ const CustomerServicesCreate = () => {
     const [access, setAccess] = useState('');
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
-        { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_SERVICES_ROUTE, name: "Список услуг" },
+        { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_SERVICES_ROUTE, name: "Обслуживание сайта" },
         { name: "Заказ обслуживания сайта" },
     ];
 
@@ -85,7 +85,7 @@ const CustomerServicesCreate = () => {
                              className={`callout ${service.id === work ? 'callout-success' : 'callout-info bg-light'}`}
                              role="button">
                             <h5>{service.title}</h5>
-                            <p>{service.description.split("\n").map((item, i) => <p key={i}>{item}</p>)}</p>
+                            <div>{service.description.split("\n").map((item, i) => <p key={i}>{item}</p>)}</div>
                             <p>Продолжительность: {service.duration_work}</p>
                             <p>Стоимость: <span className="font-weight-bold">от {service.price_min}р.</span></p>
                         </div>
