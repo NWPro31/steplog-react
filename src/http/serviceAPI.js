@@ -18,6 +18,16 @@ export const showOrderService = async (serviceId) => {
     return data;
 };
 
+export const editOrderService = async (serviceId) => {
+    const {data} = await $authHost.get('api/order_services/' + serviceId + '/edit', {});
+    return data;
+};
+
+export const updateOrderService = async (serviceId, url, description, access, price) => {
+    const {data} = await $authHost.patch('api/order_services/'+ serviceId, {url, description, access, price});
+    return data;
+};
+
 
 export const createService = async (title, description, price, price_min, duration_work) => {
     const {data} = await $authHost.post('api/services', {title, description, price, price_min, duration_work});
@@ -26,6 +36,11 @@ export const createService = async (title, description, price, price_min, durati
 
 export const createOrderService = async (service_id, url, description, access, price) => {
     const {data} = await $authHost.post('api/order_services', {service_id, url, description, access, price});
+    return data;
+};
+
+export const createCommentOrderService = async (order_id, comment) => {
+    const {data} = await $authHost.post('api/comment_order_services', {order_id, comment});
     return data;
 };
 

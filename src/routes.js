@@ -1,4 +1,5 @@
 import {
+    CREATE_COMMENT_ORDER_SERVICE_ROUTE,
     CREATE_CUSTOMER_SERVICES_ROUTE,
     CREATE_DOMAIN_REG_ROUTE,
     CREATE_DOMAIN_ROUTE,
@@ -19,7 +20,7 @@ import {
     SITES_ROUTE,
     UPDATE_DOMAIN_REG_ROUTE,
     UPDATE_DOMAIN_ROUTE,
-    UPDATE_HOSTING_ROUTE,
+    UPDATE_HOSTING_ROUTE, UPDATE_ORDERS_ROUTE,
     UPDATE_SERVICES_ROUTE,
     USERS_ROUTE
 } from "./utils/consts";
@@ -48,6 +49,8 @@ import CustomerServicesIndex from "./pages/dashboard/customer/services/Index";
 import CustomerServicesCreate from "./pages/dashboard/customer/services/Create";
 import OrdersIndex from "./pages/dashboard/orders/Index";
 import OrdersShow from "./pages/dashboard/orders/Show";
+import OrdersUpdate from "./pages/dashboard/orders/Update";
+import CommentOrderServicesCreate from "./pages/dashboard/orders/service/comment/Create";
 
 export const authRoutes = [
     {
@@ -137,6 +140,14 @@ export const authRoutes = [
     {
         path: SHOW_ORDERS_ROUTE  + '/:id',
         Component: OrdersShow
+    },
+    {
+        path: UPDATE_ORDERS_ROUTE  + '/:id',
+        Component: OrdersUpdate
+    },
+    {
+        path: CREATE_COMMENT_ORDER_SERVICE_ROUTE  + '/:id',
+        Component: CommentOrderServicesCreate
     }
 ];
 

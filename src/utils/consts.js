@@ -24,3 +24,5 @@ export const INDEX_CUSTOMER_SERVICES_ROUTE = 'customer/services/index';
 export const CREATE_CUSTOMER_SERVICES_ROUTE = 'customer/services/create';
 export const INDEX_ORDERS_ROUTE = 'orders/index';
 export const SHOW_ORDERS_ROUTE = 'orders/show';
+export const UPDATE_ORDERS_ROUTE = 'orders/update';
+export const CREATE_COMMENT_ORDER_SERVICE_ROUTE = 'orders/service/comment/create';

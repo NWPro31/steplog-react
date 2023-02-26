@@ -1,15 +1,17 @@
 import {observer} from "mobx-react-lite";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../../index";
 import ContentHeader from "../../../components/ContentHeader";
-import {DASHBOARD_ROUTE, INDEX_ORDERS_ROUTE} from "../../../utils/consts";
+import {DASHBOARD_ROUTE, INDEX_ORDERS_ROUTE, UPDATE_ORDERS_ROUTE} from "../../../utils/consts";
 import {showOrderService} from "../../../http/serviceAPI";
 import moment from "moment";
 import 'moment/locale/ru';
+import Button from "react-bootstrap/Button";
 
 
 const OrdersShow = observer(() => {
+    const navigate = useNavigate();
     const {id} = useParams();
     const {service} = useContext(Context);
     const [loadingData, setLoadingData] = useState(true);
@@ -110,7 +112,7 @@ const OrdersShow = observer(() => {
                                         </div>
                                         <div className="row">
                                             <div className="col-12">
-                                                <h4>Задача</h4>
+                                                <h4>Заказ</h4>
                                                 <div className="post">
                                                     <p>
                                                         <small>Срок выполнения - {service.orderService.order_service.service.duration_work}</small>
@@ -132,8 +134,14 @@ const OrdersShow = observer(() => {
                                         <p className="text-muted">{service.orderService.order_service.user.name}</p>
                                         <p className="text-muted">{service.orderService.order_service.user.email}</p>
                                         <br/>
-                                        <div className="text-center mt-5 mb-3">
-                                            <a href="#" className="btn btn-sm btn-primary">Редактировать тариф</a>
+                                        <div className="text-right">
+                                            <Button className="btn btn-primary btn-sm m-1"
+                                                    onClick={() => {navigate(DASHBOARD_ROUTE + '/' + UPDATE_ORDERS_ROUTE + '/' + service.orderService.order_service.id);}}
+                                            >
+                                                <i className="fas fa-folder m-1">
+                                                </i>
+                                                редактировать заказ
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>
@@ -156,14 +164,33 @@ const OrdersShow = observer(() => {
                                                     null
                                                 }
                                                 <div>
-                                                    <i className="fas fa-user bg-green"></i>
+                                                    {status.title === 'Оставлен комментарий'
+                                                        ?
+                                                    <i className={status.user_role === "admin" ? 'fas fa-comments bg-primary' : 'fas fa-comments bg-green'}></i>
+                                                        :
+                                                    <i className={status.user_role === "admin" ? 'fas fa-user bg-primary' : 'fas fa-user bg-green'}></i>
+                                                    }
                                                     <div className="timeline-item">
                                                 <span className="time"><i
                                                     className="fas fa-clock"></i> {timeRule(status.created_at)}</span>
-                                                        <h3 className="timeline-header no-border">{status.title}</h3>
+                                                        <h3 className="timeline-header no-border"><span className="text-primary">{status.user_name} {status.user_role === "admin" ? '(сотрудник StepLog) ' : ''}</span> {status.title}</h3>
                                                         {status.description ?
                                                             <div className="timeline-body">
                                                                 {status.description}
+                                                            </div>
+                                                            :
+                                                            null
+                                                        }
+                                                        {status.title === 'Оставлен комментарий'
+                                                            ?
+                                                            <div className="timeline-body">
+                                                                    <Button className="btn btn-info btn-xs m-1" type="button"
+
+                                                                    >
+                                                                        <i className="fas fa-comments m-1">
+                                                                        </i>
+                                                                        читать комментарии
+                                                                    </Button>
                                                             </div>
                                                             :
                                                             null
