@@ -22,3 +22,5 @@ export const CREATE_SERVICES_ROUTE = 'services/create';
 export const UPDATE_SERVICES_ROUTE = 'services/update';
 export const INDEX_CUSTOMER_SERVICES_ROUTE = 'customer/services/index';
 export const CREATE_CUSTOMER_SERVICES_ROUTE = 'customer/services/create';
+export const INDEX_ORDERS_ROUTE = 'orders/index';
+export const SHOW_ORDERS_ROUTE = 'orders/show';

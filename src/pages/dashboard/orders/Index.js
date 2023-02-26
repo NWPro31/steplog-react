@@ -1,29 +1,28 @@
-import ContentHeader from "../../../../components/ContentHeader";
+import {observer} from "mobx-react-lite";
 import React, {useContext, useEffect, useState} from "react";
-import {
-    CREATE_CUSTOMER_SERVICES_ROUTE,
-    DASHBOARD_ROUTE
-} from "../../../../utils/consts";
+import {Context} from "../../../index";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import {Context} from "../../../../index";
-import {indexOrderService} from "../../../../http/serviceAPI";
-import {useNavigate} from "react-router-dom";
+import {
+    DASHBOARD_ROUTE, SHOW_ORDERS_ROUTE
+} from "../../../utils/consts";
+import ContentHeader from "../../../components/ContentHeader";
+import {indexOrderService} from "../../../http/serviceAPI";
 import moment from "moment";
 import 'moment/locale/ru';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
+import {useNavigate} from "react-router-dom";
 
 
-const CustomerServicesIndex = () => {
+const OrdersIndex = observer(() => {
     const navigate = useNavigate();
     const {service} = useContext(Context);
     const [orderServices,setOrderServices] = useState([]);
     const [loading,setLoading] = useState(true);
-
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
-        { name: "Обслуживание сайта" },
+        { name: "Список заказов" },
     ];
 
     useEffect(()=>{
@@ -33,7 +32,8 @@ const CustomerServicesIndex = () => {
             setOrderServices(data.order_services);
         }).finally(()=>{
             setLoading(false);
-        }).catch(err => console.log(err));
+        })
+            .catch(err => console.log(err));
     },[]);
 
     useEffect(() => {
@@ -44,26 +44,19 @@ const CustomerServicesIndex = () => {
         return moment(time).locale('ru').fromNow()
     }
 
-    return (
+    return(
         <>
-            <ContentHeader hrefs={hrefs} name="Обслуживание сайта"/>
-            <div className="content">
-                <div className="container-fluid">
-                    <div className="row mb-2">
-                        <Button onClick={() => {navigate(DASHBOARD_ROUTE + '/' + CREATE_CUSTOMER_SERVICES_ROUTE);}} className="btn btn-primary"
-                                variant="primary">
-                            Заказать обслуживание сайта
-                        </Button>
-                    </div>
-                </div>
-            </div>
+            <ContentHeader hrefs={hrefs} name="Список заказов"/>
             <div className="content">
                 <div className="card">
                     <div className="card-header">
-                        <h3 className="card-title">Список ваших заказов</h3>
+                        <h3 className="card-title">Заказы услуг</h3>
                         <div className="card-tools">
                             <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i className="fas fa-minus"></i>
+                            </button>
+                            <button type="button" className="btn btn-tool" data-card-widget="remove" title="Remove">
+                                <i className="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
@@ -106,7 +99,8 @@ const CustomerServicesIndex = () => {
                             {orderServices && orderServices.map(service => (
                                 <tr key={service.id}>
                                     <td className="align-middle">{service.id}</td>
-                                    <td className="align-middle">{service.service.title}</td>
+                                    <td className="align-middle">{service.service.title}<br/>
+                                    <span className="text-info">{service.user.email}</span></td>
                                     <td className="align-middle text-center">{service.url}</td>
                                     <td className="align-middle text-center tooltip_el"
                                         style={{cursor:'help'}}
@@ -121,7 +115,8 @@ const CustomerServicesIndex = () => {
                                     >{service.status ? service.status.title : 'нет данных'}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
-                                                >
+                                                onClick={() => {navigate(DASHBOARD_ROUTE + '/' + SHOW_ORDERS_ROUTE + '/' + service.id);}}
+                                        >
                                             <i className="fas fa-folder m-1">
                                             </i>
                                             детали
@@ -132,72 +127,12 @@ const CustomerServicesIndex = () => {
                             </tbody>
                         </Table>
                     </div>
+                    <ReactTooltip anchorSelect=".tooltip_el" />
                 </div>
             </div>
-            <ReactTooltip anchorSelect=".tooltip_el" />
-            <div className="content">
-                <div className="card">
-                    <div className="card-header">
-                        <h3 className="card-title">Ответы на вопросы</h3>
-                        <div className="card-tools">
-                            <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i className="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="card-body">
-                        <div id="accordion">
-                            <div className="card card-info">
-                                <div className="card-header">
-                                    <h4 className="card-title w-100">
-                                        <a className="d-block w-100" data-toggle="collapse" href="#collapseOne">
-                                            Процесс заказа
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne" className="collapse show" data-parent="#accordion">
-                                    <div className="card-body">
-                                        <p>
-                                            Нажмите на кнопку <b>Заказать обслуживание сайта</b>,
-                                            укажите адрес сайта, выберите требуемую услугу из списка.
-                                            При необходимости заполните пожелания и укажите данные для
-                                            доступа к сайту.
-                                        </p>
-                                        <p>
-                                            Спустя некоторое время мы обработаем Ваш заказ, в графе стоимость
-                                            отобразится цена выполнения заказа.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="card card-info">
-                                <div className="card-header">
-                                    <h4 className="card-title w-100">
-                                        <a className="d-block w-100" data-toggle="collapse" href="#collapseTwo">
-                                            Оплата заказа
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" className="collapse show" data-parent="#accordion">
-                                    <div className="card-body">
-                                        <p>
-                                            Оплата заказа производится после согласования выполнения работ.
-                                        </p>
-                                        <p>
-                                            В некоторых случаях может потребоваться частичная или полная предоплата.
-                                        </p>
-                                        <p>
-                                            В зависимости от сложности заказа, стоимость может меняться.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </>
     );
-}
+});
 
-export default CustomerServicesIndex;
+export default OrdersIndex;

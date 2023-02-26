@@ -8,19 +8,26 @@ export const menuItems = [
     },
     {
         id: 2,
+        name: 'Заказы',
+        icon: 'fas fa-wrench nav-icon',
+        path: '/dashboard/orders/index',
+        perm: 'admin'
+    },
+    {
+        id: 3,
         name: 'Сайты',
         icon: 'fas fa-wrench nav-icon',
         path: '/dashboard/sites',
         perm: 'user'
     },
     {
-        id: 3,
+        id: 4,
         name: 'Услуги',
         icon: 'far fa-caret-square-down nav-icon',
         perm: 'user',
         children: [
             {
-                id: 4,
+                id: 5,
                 name: 'Обслуживание сайта',
                 icon: 'fas fa-hammer nav-icon',
                 path: '/dashboard/customer/services/index',
@@ -29,7 +36,7 @@ export const menuItems = [
             },
 
             {
-                id: 5,
+                id: 6,
                 name: 'Домены',
                 icon: 'fas fa-cogs nav-icon',
                 path: '/sub-menu-2',
@@ -37,7 +44,7 @@ export const menuItems = [
             },
 
             {
-                id: 6,
+                id: 7,
                 name: 'Хостинг',
                 icon: 'fas fa-cogs nav-icon',
                 path: '/sub-menu-3',
@@ -46,27 +53,27 @@ export const menuItems = [
         ]
     },
     {
-        id: 7,
+        id: 8,
         name: 'Клиенты',
         icon: 'fas fa-wrench nav-icon',
         path: '/dashboard/users',
         perm: 'admin'
     },
     {
-        id: 8,
+        id: 9,
         name: 'Хостинг',
         icon: 'far fa-caret-square-down nav-icon',
         perm: 'admin',
         children: [
         {
-            id: 9,
+            id: 10,
             name: 'Список тарифов',
             icon: 'fas fa-wrench nav-icon',
             path: '/dashboard/hosting/index',
             perm: 'admin'
         },
         {
-            id: 10,
+            id: 11,
             name: 'Создать тариф',
             icon: 'fas fa-wrench nav-icon',
             path: '/dashboard/hosting/create',
@@ -75,20 +82,20 @@ export const menuItems = [
         ]
     },
     {
-        id: 11,
+        id: 12,
         name: 'Домены',
         icon: 'far fa-caret-square-down nav-icon',
         perm: 'admin',
         children: [
             {
-                id: 12,
+                id: 13,
                 name: 'Тарифы',
                 icon: 'fas fa-wrench nav-icon',
                 path: '/dashboard/domain/index',
                 perm: 'admin'
             },
             {
-                id: 13,
+                id: 14,
                 name: 'Регистраторы',
                 icon: 'fas fa-wrench nav-icon',
                 path: '/dashboard/domain/reg/index',
@@ -97,13 +104,13 @@ export const menuItems = [
         ]
     },
     {
-        id: 14,
+        id: 15,
         name: 'Услуги',
         icon: 'far fa-caret-square-down nav-icon',
         perm: 'admin',
         children: [
             {
-                id: 15,
+                id: 16,
                 name: 'Список услуг',
                 icon: 'fas fa-wrench nav-icon',
                 path: '/dashboard/services/index',
