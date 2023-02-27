@@ -70,7 +70,7 @@ const CommentOrderServicesShow = observer(() => {
                         </div>
                     </div>
                     <div className="card-body">
-                        <div className="direct-chat-messages" style={{height:"500px"}} id="comments-div">
+                        <div className="direct-chat-messages" style={{height:"350px"}} id="comments-div">
                             {loading && (
                                 <div className="d-flex justify-content-center m-5">
                                     <div className="spinner-border" role="status">

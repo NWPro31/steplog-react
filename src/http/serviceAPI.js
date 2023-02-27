@@ -49,8 +49,8 @@ export const createCommentOrderService = async (order_id, comment) => {
     return data;
 };
 
-export const createInvoiceOrderService = async (order_id, title, price, partial) => {
-    const {data} = await $authHost.post('api/invoice_order_services', {order_id, title, price, partial});
+export const createInvoiceOrderService = async (service_order_id, title, amount, partial) => {
+    const {data} = await $authHost.post('api/invoice_order_services', {service_order_id, title, amount, partial});
     return data;
 };
 
