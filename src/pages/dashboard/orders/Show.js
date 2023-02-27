@@ -3,7 +3,12 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../../index";
 import ContentHeader from "../../../components/ContentHeader";
-import {DASHBOARD_ROUTE, INDEX_ORDERS_ROUTE, UPDATE_ORDERS_ROUTE} from "../../../utils/consts";
+import {
+    DASHBOARD_ROUTE,
+    SHOW_COMMENT_ORDER_SERVICE_ROUTE,
+    INDEX_ORDERS_ROUTE,
+    UPDATE_ORDERS_ROUTE, CREATE_INVOICE_ORDER_SERVICE_ROUTE
+} from "../../../utils/consts";
 import {showOrderService} from "../../../http/serviceAPI";
 import moment from "moment";
 import 'moment/locale/ru';
@@ -54,8 +59,6 @@ const OrdersShow = observer(() => {
         if(b === 0) return true;
         const dateA = new Date(a);
         const dateB = new Date(b);
-        console.log(dateA.getDate() + ' - ' + dateB.getDate());
-        console.log(dateA + ' - ' + dateB);
         //setPrevTime(a);
         return dateA.getDate() !== dateB.getDate();
     }
@@ -135,6 +138,20 @@ const OrdersShow = observer(() => {
                                         <p className="text-muted">{service.orderService.order_service.user.email}</p>
                                         <br/>
                                         <div className="text-right">
+                                            <button className="btn btn-outline-warning btn-sm m-1"
+                                                    onClick={() => {navigate(DASHBOARD_ROUTE + '/' + CREATE_INVOICE_ORDER_SERVICE_ROUTE + '/' + service.orderService.order_service.id);}}
+                                            >
+                                                <i className="fas fa-file-invoice m-1">
+                                                </i>
+                                                выставить счет
+                                            </button>
+                                            <Button className="btn btn-info btn-sm m-1"
+                                                    onClick={() => {navigate(DASHBOARD_ROUTE + '/' + SHOW_COMMENT_ORDER_SERVICE_ROUTE + '/' + service.orderService.order_service.id);}}
+                                            >
+                                                <i className="fas fa-comments m-1">
+                                                </i>
+                                                комментарии
+                                            </Button>
                                             <Button className="btn btn-primary btn-sm m-1"
                                                     onClick={() => {navigate(DASHBOARD_ROUTE + '/' + UPDATE_ORDERS_ROUTE + '/' + service.orderService.order_service.id);}}
                                             >
@@ -185,7 +202,7 @@ const OrdersShow = observer(() => {
                                                             ?
                                                             <div className="timeline-body">
                                                                     <Button className="btn btn-info btn-xs m-1" type="button"
-
+                                                                            onClick={() => {navigate(DASHBOARD_ROUTE + '/' + SHOW_COMMENT_ORDER_SERVICE_ROUTE + '/' + service.orderService.order_service.id);}}
                                                                     >
                                                                         <i className="fas fa-comments m-1">
                                                                         </i>

@@ -13,6 +13,11 @@ export const indexOrderService = async () => {
     return data;
 };
 
+export const indexCommentOrderService = async (orderId) => {
+    const {data} = await $authHost.get('api/comment_order_services/' + orderId, {});
+    return data;
+};
+
 export const showOrderService = async (serviceId) => {
     const {data} = await $authHost.get('api/order_services/' + serviceId, {});
     return data;
@@ -41,6 +46,11 @@ export const createOrderService = async (service_id, url, description, access, p
 
 export const createCommentOrderService = async (order_id, comment) => {
     const {data} = await $authHost.post('api/comment_order_services', {order_id, comment});
+    return data;
+};
+
+export const createInvoiceOrderService = async (order_id, title, price, partial) => {
+    const {data} = await $authHost.post('api/invoice_order_services', {order_id, title, price, partial});
     return data;
 };
 

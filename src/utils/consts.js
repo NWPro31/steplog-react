@@ -26,3 +26,5 @@ export const INDEX_ORDERS_ROUTE = 'orders/index';
 export const SHOW_ORDERS_ROUTE = 'orders/show';
 export const UPDATE_ORDERS_ROUTE = 'orders/update';
 export const CREATE_COMMENT_ORDER_SERVICE_ROUTE = 'orders/service/comment/create';
+export const SHOW_COMMENT_ORDER_SERVICE_ROUTE = 'orders/service/comment/show';
+export const CREATE_INVOICE_ORDER_SERVICE_ROUTE = 'orders/service/invoice/create';
