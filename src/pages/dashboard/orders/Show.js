@@ -19,6 +19,8 @@ const OrdersShow = observer(() => {
     const navigate = useNavigate();
     const {id} = useParams();
     const {service} = useContext(Context);
+    const [paid, setPaid] = useState(0);
+    const [isPaid, setIsPaid] = useState(0);
     const [loadingData, setLoadingData] = useState(true);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
@@ -31,6 +33,7 @@ const OrdersShow = observer(() => {
             service.setOrderService(data);
         }).finally(()=>{
             setLoadingData(false);
+            prePaid();
         }).catch(err => console.log(err));
     },[id]);
 
@@ -63,6 +66,11 @@ const OrdersShow = observer(() => {
         return dateA.getDate() !== dateB.getDate();
     }
 
+    const prePaid = () => {
+        service.orderService.order_service.invoice.forEach((item, index) => {
+            item.is_paid ? setIsPaid(item.amount) : setPaid(item.amount);
+        });
+    }
 
     return (
         <>
@@ -99,7 +107,7 @@ const OrdersShow = observer(() => {
                                                     <div className="info-box-content">
                                                         <span className="info-box-text text-center text-muted">Оплачено</span>
                                                         <span
-                                                            className="info-box-number text-center text-muted mb-0">{service.orderService.order_service.price}р.</span>
+                                                            className="info-box-number text-center text-muted mb-0">{isPaid.toFixed(2)}р.</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -108,7 +116,7 @@ const OrdersShow = observer(() => {
                                                     <div className="info-box-content">
                                                         <span className="info-box-text text-center text-muted">Ожидается оплата</span>
                                                         <span
-                                                            className="info-box-number text-center text-muted mb-0">{service.orderService.order_service.price}р.</span>
+                                                            className="info-box-number text-center text-muted mb-0">{paid.toFixed(2)}р.</span>
                                                     </div>
                                                 </div>
                                             </div>

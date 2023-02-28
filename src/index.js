@@ -5,6 +5,7 @@ import UserStore from './store/UserStore';
 import HostingStore from "./store/HostingStore";
 import DomainStore from "./store/DomainStore";
 import ServiceStore from "./store/ServiceStore";
+import InvoiceStore from "./store/InvoiceStore";
 //import  'bootstrap/dist/css/bootstrap.min.css';
 
 export const Context = createContext(null);
@@ -15,7 +16,8 @@ root.render(
         user: new UserStore(),
         hosting: new HostingStore(),
         domain: new DomainStore(),
-        service: new ServiceStore()
+        service: new ServiceStore(),
+        invoice: new InvoiceStore()
     }}>
         <App />
     </Context.Provider>

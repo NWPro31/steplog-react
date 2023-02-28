@@ -117,5 +117,12 @@ export const menuItems = [
                 perm: 'admin'
             }
         ]
+    },
+    {
+        id: 17,
+        name: 'Платежи',
+        icon: 'fas fa-wrench nav-icon',
+        path: '/dashboard/invoices/index',
+        perm: 'admin'
     }
 ];
