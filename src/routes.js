@@ -20,7 +20,7 @@ import {
     SITES_ROUTE,
     UPDATE_DOMAIN_REG_ROUTE,
     UPDATE_DOMAIN_ROUTE,
-    UPDATE_HOSTING_ROUTE, UPDATE_ORDERS_ROUTE,
+    UPDATE_HOSTING_ROUTE, UPDATE_INVOICES_ROUTE, UPDATE_ORDERS_ROUTE,
     UPDATE_SERVICES_ROUTE,
     USERS_ROUTE
 } from "./utils/consts";
@@ -54,6 +54,7 @@ import CommentOrderServicesCreate from "./pages/dashboard/orders/service/comment
 import CommentOrderServicesShow from "./pages/dashboard/orders/service/comment/Show";
 import InvoiceOrderServicesCreate from "./pages/dashboard/orders/service/invoice/Create";
 import InvoicesIndex from "./pages/dashboard/invoices/Index";
+import InvoiceUpdate from "./pages/dashboard/invoices/Update";
 
 export const authRoutes = [
     {
@@ -163,6 +164,10 @@ export const authRoutes = [
     {
         path: INDEX_INVOICES_ROUTE,
         Component: InvoicesIndex
+    },
+    {
+        path: UPDATE_INVOICES_ROUTE  + '/:id',
+        Component: InvoiceUpdate
     }
 ];
 
