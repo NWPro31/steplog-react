@@ -4,7 +4,7 @@ import {Context} from "../../../index";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {
-    DASHBOARD_ROUTE, SHOW_ORDERS_ROUTE, UPDATE_HOSTING_ROUTE, UPDATE_INVOICES_ROUTE
+    DASHBOARD_ROUTE, SELECT_INVOICES_ROUTE, SHOW_ORDERS_ROUTE, UPDATE_HOSTING_ROUTE, UPDATE_INVOICES_ROUTE
 } from "../../../utils/consts";
 import ContentHeader from "../../../components/ContentHeader";
 import {useNavigate} from "react-router-dom";
@@ -112,7 +112,7 @@ const InvoicesIndex = observer(() => {
                                         {item.status && item.status.id === 1 ?
                                             <Button className="btn btn-primary btn-sm m-1"
                                                     onClick={() => {
-                                                        navigate(DASHBOARD_ROUTE + '/' + SHOW_ORDERS_ROUTE + '/' + service.id);
+                                                        navigate(DASHBOARD_ROUTE + '/' + SELECT_INVOICES_ROUTE + '/' + item.id);
                                                     }}
                                             >
                                                 <i className="fas fa-folder m-1">

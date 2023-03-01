@@ -13,7 +13,7 @@ import {
     INDEX_HOSTING_ROUTE, INDEX_INVOICES_ROUTE, INDEX_ORDERS_ROUTE,
     INDEX_SERVICES_ROUTE,
     LOGIN_ROUTE,
-    REGISTER_ROUTE, SHOW_COMMENT_ORDER_SERVICE_ROUTE,
+    REGISTER_ROUTE, SELECT_INVOICES_ROUTE, SHOW_COMMENT_ORDER_SERVICE_ROUTE, SHOW_CUSTOMER_SERVICES_ROUTE,
     SHOW_DOMAIN_REG_ROUTE,
     SHOW_DOMAIN_ROUTE,
     SHOW_HOSTING_ROUTE, SHOW_ORDERS_ROUTE,
@@ -55,6 +55,8 @@ import CommentOrderServicesShow from "./pages/dashboard/orders/service/comment/S
 import InvoiceOrderServicesCreate from "./pages/dashboard/orders/service/invoice/Create";
 import InvoicesIndex from "./pages/dashboard/invoices/Index";
 import InvoiceUpdate from "./pages/dashboard/invoices/Update";
+import InvoicesSelect from "./pages/dashboard/invoices/Select";
+import CustomerServicesShow from "./pages/dashboard/customer/services/Show";
 
 export const authRoutes = [
     {
@@ -138,6 +140,10 @@ export const authRoutes = [
         Component: CustomerServicesCreate
     },
     {
+        path: SHOW_CUSTOMER_SERVICES_ROUTE  + '/:id',
+        Component: CustomerServicesShow
+    },
+    {
         path: INDEX_ORDERS_ROUTE,
         Component: OrdersIndex
     },
@@ -168,6 +174,10 @@ export const authRoutes = [
     {
         path: UPDATE_INVOICES_ROUTE  + '/:id',
         Component: InvoiceUpdate
+    },
+    {
+        path: SELECT_INVOICES_ROUTE  + '/:id',
+        Component: InvoicesSelect
     }
 ];
 

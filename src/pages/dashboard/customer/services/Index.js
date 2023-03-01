@@ -2,7 +2,7 @@ import ContentHeader from "../../../../components/ContentHeader";
 import React, {useContext, useEffect, useState} from "react";
 import {
     CREATE_CUSTOMER_SERVICES_ROUTE,
-    DASHBOARD_ROUTE
+    DASHBOARD_ROUTE, SHOW_CUSTOMER_SERVICES_ROUTE
 } from "../../../../utils/consts";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -121,6 +121,9 @@ const CustomerServicesIndex = () => {
                                     >{service.status ? service.status.title : 'нет данных'}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
+                                                onClick={() => {
+                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_CUSTOMER_SERVICES_ROUTE + '/' + service.id);
+                                                }}
                                                 >
                                             <i className="fas fa-folder m-1">
                                             </i>

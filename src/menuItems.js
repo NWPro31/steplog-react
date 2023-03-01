@@ -9,7 +9,7 @@ export const menuItems = [
     {
         id: 2,
         name: 'Заказы',
-        icon: 'fas fa-wrench nav-icon',
+        icon: 'fas fa-tty nav-icon',
         path: '/dashboard/orders/index',
         perm: 'admin'
     },
@@ -55,14 +55,14 @@ export const menuItems = [
     {
         id: 8,
         name: 'Клиенты',
-        icon: 'fas fa-wrench nav-icon',
+        icon: 'fas fa-users nav-icon',
         path: '/dashboard/users',
         perm: 'admin'
     },
     {
         id: 9,
         name: 'Хостинг',
-        icon: 'far fa-caret-square-down nav-icon',
+        icon: 'far fa-window-restore nav-icon',
         perm: 'admin',
         children: [
         {
@@ -84,7 +84,7 @@ export const menuItems = [
     {
         id: 12,
         name: 'Домены',
-        icon: 'far fa-caret-square-down nav-icon',
+        icon: 'fa fa-globe',
         perm: 'admin',
         children: [
             {
@@ -106,7 +106,7 @@ export const menuItems = [
     {
         id: 15,
         name: 'Услуги',
-        icon: 'far fa-caret-square-down nav-icon',
+        icon: 'fa fa-cogs',
         perm: 'admin',
         children: [
             {
@@ -121,7 +121,7 @@ export const menuItems = [
     {
         id: 17,
         name: 'Платежи',
-        icon: 'fas fa-wrench nav-icon',
+        icon: 'fas fa-receipt nav-icon',
         path: '/dashboard/invoices/index',
         perm: 'admin'
     }
