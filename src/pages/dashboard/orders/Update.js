@@ -1,13 +1,15 @@
 import {useNavigate, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {DASHBOARD_ROUTE, SHOW_ORDERS_ROUTE} from "../../../utils/consts";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import ContentHeader from "../../../components/ContentHeader";
 import {editOrderService, updateOrderService} from "../../../http/serviceAPI";
+import {Context} from "../../../index";
 
 const OrdersUpdate = () => {
     const navigate = useNavigate();
+    const {user} = useContext(Context);
     const [loading, setLoading] = useState(false);
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
@@ -24,6 +26,9 @@ const OrdersUpdate = () => {
 
     useEffect(()=>{
         void edit();
+        if(user.role!== 'admin') {
+            navigate(DASHBOARD_ROUTE);
+        }
     },[]);
 
     const edit = async () => {

@@ -90,7 +90,7 @@ const CommentOrderServicesShow = observer(() => {
                                     <img className="direct-chat-img" src="/img/user1-128x128.jpg"
                                          alt="message user image"/>
 
-                                    <div className="direct-chat-text bg-light" style={{whiteSpace:'pre'}}>
+                                    <div className="direct-chat-text bg-light" style={{whiteSpace:'pre-wrap'}}>
                                         {comment.comment}
                                     </div>
 

@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {DASHBOARD_ROUTE, INDEX_DOMAIN_ROUTE, INDEX_INVOICES_ROUTE} from "../../../utils/consts";
+import {DASHBOARD_ROUTE, INDEX_INVOICES_ROUTE} from "../../../utils/consts";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import ContentHeader from "../../../components/ContentHeader";

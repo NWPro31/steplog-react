@@ -6,7 +6,7 @@ import {
     CREATE_HOSTING_ROUTE, CREATE_INVOICE_ORDER_SERVICE_ROUTE,
     CREATE_SERVICES_ROUTE,
     DOMAINS_ROUTE,
-    HOME_ROUTE,
+    HOME_ROUTE, INDEX_CUSTOMER_DOMAIN_ROUTE,
     INDEX_CUSTOMER_SERVICES_ROUTE,
     INDEX_DOMAIN_REG_ROUTE,
     INDEX_DOMAIN_ROUTE,
@@ -22,7 +22,7 @@ import {
     UPDATE_DOMAIN_ROUTE,
     UPDATE_HOSTING_ROUTE, UPDATE_INVOICES_ROUTE, UPDATE_ORDERS_ROUTE,
     UPDATE_SERVICES_ROUTE,
-    USERS_ROUTE
+    USERS_ROUTE, WHOIS_CUSTOMER_DOMAIN_ROUTE
 } from "./utils/consts";
 import Home from "./pages/Home";
 import Sites from "./pages/Sites";
@@ -57,6 +57,8 @@ import InvoicesIndex from "./pages/dashboard/invoices/Index";
 import InvoiceUpdate from "./pages/dashboard/invoices/Update";
 import InvoicesSelect from "./pages/dashboard/invoices/Select";
 import CustomerServicesShow from "./pages/dashboard/customer/services/Show";
+import CustomerDomainIndex from "./pages/dashboard/customer/domain/Index";
+import CustomerDomainWhois from "./pages/dashboard/customer/domain/Whois";
 
 export const authRoutes = [
     {
@@ -178,6 +180,14 @@ export const authRoutes = [
     {
         path: SELECT_INVOICES_ROUTE  + '/:id',
         Component: InvoicesSelect
+    },
+    {
+        path: INDEX_CUSTOMER_DOMAIN_ROUTE,
+        Component: CustomerDomainIndex
+    },
+    {
+        path: WHOIS_CUSTOMER_DOMAIN_ROUTE,
+        Component: CustomerDomainWhois
     }
 ];
 

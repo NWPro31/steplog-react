@@ -1,14 +1,16 @@
 import {useNavigate, useParams} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {DASHBOARD_ROUTE, SHOW_ORDERS_ROUTE} from "../../../../../utils/consts";
 import {createInvoiceOrderService} from "../../../../../http/serviceAPI";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import ContentHeader from "../../../../../components/ContentHeader";
+import {Context} from "../../../../../index";
 
 const InvoiceOrderServicesCreate = () => {
     const navigate = useNavigate();
     const {id} = useParams();
+    const {user} = useContext(Context);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [partial, setPartial] = useState(false);
@@ -19,6 +21,13 @@ const InvoiceOrderServicesCreate = () => {
         { href: DASHBOARD_ROUTE + '/' + SHOW_ORDERS_ROUTE + '/' + id, name: "Детали заказа" },
         { name: "Выставить счет" },
     ];
+
+
+    useEffect(() => {
+        if(user.role!== 'admin') {
+            navigate(DASHBOARD_ROUTE);
+        }
+    },[])
 
     const click = async () => {
         try {

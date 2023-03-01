@@ -146,26 +146,12 @@ const CustomerServicesShow = observer(() => {
                                         <p className="text-muted">{service.orderService.order_service.user.email}</p>
                                         <br/>
                                         <div className="text-right">
-                                            <button className="btn btn-outline-warning btn-sm m-1"
-                                                    onClick={() => {navigate(DASHBOARD_ROUTE + '/' + CREATE_INVOICE_ORDER_SERVICE_ROUTE + '/' + service.orderService.order_service.id);}}
-                                            >
-                                                <i className="fas fa-file-invoice m-1">
-                                                </i>
-                                                выставить счет
-                                            </button>
                                             <Button className="btn btn-info btn-sm m-1"
                                                     onClick={() => {navigate(DASHBOARD_ROUTE + '/' + SHOW_COMMENT_ORDER_SERVICE_ROUTE + '/' + service.orderService.order_service.id);}}
                                             >
                                                 <i className="fas fa-comments m-1">
                                                 </i>
                                                 комментарии
-                                            </Button>
-                                            <Button className="btn btn-primary btn-sm m-1"
-                                                    onClick={() => {navigate(DASHBOARD_ROUTE + '/' + UPDATE_ORDERS_ROUTE + '/' + service.orderService.order_service.id);}}
-                                            >
-                                                <i className="fas fa-folder m-1">
-                                                </i>
-                                                редактировать заказ
                                             </Button>
                                         </div>
                                     </div>

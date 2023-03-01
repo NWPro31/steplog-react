@@ -5,6 +5,11 @@ const $host = axios.create({
     withCredentials: false
 });
 
+const $whois = axios.create({
+    baseURL: 'https://api.whois.vu/',
+    withCredentials: false
+});
+
 const $authHost = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     withCredentials: false
@@ -19,5 +24,6 @@ $authHost.interceptors.request.use(authInterceptor);
 
 export {
     $host,
-    $authHost
+    $authHost,
+    $whois
 };

@@ -32,3 +32,5 @@ export const CREATE_INVOICE_ORDER_SERVICE_ROUTE = 'orders/service/invoice/create
 export const INDEX_INVOICES_ROUTE = 'invoices/index';
 export const UPDATE_INVOICES_ROUTE = 'invoices/update';
 export const SELECT_INVOICES_ROUTE = 'invoices/select';
+export const INDEX_CUSTOMER_DOMAIN_ROUTE = 'customer/domain/index';
+export const WHOIS_CUSTOMER_DOMAIN_ROUTE = 'customer/domain/whois';

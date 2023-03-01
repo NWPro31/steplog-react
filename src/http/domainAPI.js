@@ -1,4 +1,4 @@
-import {$authHost, $host} from ".";
+import {$authHost, $host, $whois} from ".";
 // eslint-disable-next-line
 import jwt_decode from "jwt-decode";
 
@@ -9,6 +9,11 @@ export const createDomain = async (title, price, price_extension, period) => {
 
 export const indexDomain = async () => {
     const {data} = await $authHost.get('api/domains', {});
+    return data;
+};
+
+export const whoisDomain = async (url) => {
+    const {data} = await $whois.get('?q=' + url, {});
     return data;
 };
 
