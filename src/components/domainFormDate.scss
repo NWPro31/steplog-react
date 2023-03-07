@@ -1,0 +1,9 @@
+.custom-input {
+  text-align: right;
+  color: #009a17;
+  height: 46px !important;
+  line-height: 46px !important;
+  &::placeholder {
+    color: #009a17;
+  }
+}

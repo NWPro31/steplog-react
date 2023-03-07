@@ -19,7 +19,7 @@ const CustomerDomainWhois = () => {
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE, name: "Домены" },
-        { name: "Проверить адрес домена" },
+        { name: "Заказ домена" },
     ];
 
     useEffect(()=>{
@@ -55,11 +55,11 @@ const CustomerDomainWhois = () => {
 
     return(
         <>
-            <ContentHeader hrefs={hrefs} name="Проверить адрес домена"/>
+            <ContentHeader hrefs={hrefs} name="Заказ домена"/>
             <section className="content">
                 <div className="card card-primary">
                     <div className="card-header">
-                        <h3 className="card-title">Информация о домене</h3>
+                        <h3 className="card-title">Проверка домена</h3>
                         <div className="card-tools">
                             <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i className="fas fa-minus"></i>
@@ -94,7 +94,14 @@ const CustomerDomainWhois = () => {
                             {status === "Доступен" ? <div className="alert alert-success mt-3"><b>{url + '.' + domains.filter(item => item.id === zone)[0].title ?? 'ru'}</b>: {status}</div> : null}
                             {status === "Не доступен" ?
                                 <div className="alert alert-danger mt-3"><b>{url + '.' + domains.filter(item => item.id === zone)[0].title ?? 'ru'}: {status}</b></div> : null}
-                            <label>Проверьте доступность домена перед заказом.</label>
+
+                            {status === "Доступен" ?
+                                <p>
+                                    Стоимость регистрации домена на 1 год: {domains.filter(item => item.id === zone)[0].price}р., продления {domains.filter(item => item.id === zone)[0].price_extension}р.
+                                </p>
+                            :
+                                <label>Проверьте доступность домена перед заказом.</label>
+                            }
                         </div>
                     :
                         <div className="d-flex justify-content-center m-5">
@@ -104,29 +111,7 @@ const CustomerDomainWhois = () => {
                         </div>
                     }
                 </div>
-                <div className="row pb-3">
-                    <div className="col-12">
-                        <Button onClick={() => {navigate(DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE);}} className="btn btn-secondary "
-                                variant="primary">
-                            Назад
-                        </Button>
-                        <Button onClick={click} className="btn btn-primary float-right"
-                                variant="primary">
-                            {loading ?
-                                <Spinner
-                                    as="span"
-                                    animation="border"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                />
-                                :
-                                ''
-                            }
-                            Проверить
-                        </Button>
-                    </div>
-                </div>
+
                 {status === "Доступен" ?
                     <div className="card card-primary">
                         <div className="card-header">
@@ -147,6 +132,46 @@ const CustomerDomainWhois = () => {
                     :
                     ''
                 }
+                <div className="row pb-3">
+                    <div className="col-12">
+                        {status === "Доступен"
+                            ?
+                            <Button onClick={() => {
+                                setStatus('');
+                            }} className="btn btn-secondary "
+                                    variant="primary">
+                                Отмена
+                            </Button>
+                            :
+                            <Button onClick={() => {
+                                navigate(DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE);
+                            }} className="btn btn-secondary "
+                                    variant="primary">
+                                Назад
+                            </Button>
+                        }
+                        <Button onClick={click} className="btn btn-primary float-right"
+                                variant="primary">
+                            {loading ?
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                :
+                                ''
+                            }
+                            {status === "Доступен"
+                                ?
+                                'Заказать'
+                                :
+                                'Проверить'
+                            }
+                        </Button>
+                    </div>
+                </div>
             </section>
         </>
     );

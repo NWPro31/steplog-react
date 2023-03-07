@@ -50,14 +50,9 @@ const CustomerDomainIndex = () => {
             <div className="content">
                 <div className="container-fluid">
                     <div className="row mb-2">
-                        <Button onClick={() => {navigate(DASHBOARD_ROUTE + '/' + CREATE_CUSTOMER_SERVICES_ROUTE);}} className="btn btn-primary"
-                                variant="primary">
-                            Заказать домен
-                        </Button>
-
                         <Button onClick={() => {navigate(DASHBOARD_ROUTE + '/' + WHOIS_CUSTOMER_DOMAIN_ROUTE);}} className="btn btn-primary"
                                 variant="primary">
-                            Проверить домен
+                            Заказать домен
                         </Button>
                     </div>
                 </div>
