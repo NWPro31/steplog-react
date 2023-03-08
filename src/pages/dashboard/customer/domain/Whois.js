@@ -33,7 +33,11 @@ const CustomerDomainWhois = () => {
         })
             .catch(err => console.log(err));
     },[]);
-
+/*
+    useEffect(()=>{
+        console.log(domain.domainForm.current);
+    }, [domain.domainForm]);
+*/
 
     const click = async () => {
         try {

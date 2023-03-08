@@ -1,11 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../index";
 import ToTranslit from "./ToTranslit";
-import  DtPicker  from 'react-calendar-datetime-picker';
-import 'react-calendar-datetime-picker/dist/index.css';
-import './domainFormDate.scss';
+import DatePicker from "./DatePicker";
+import {observer} from "mobx-react-lite";
 
-const DomainFormRu = () => {
+const DomainFormRu = observer(() => {
     const {domain} = useContext(Context);
     const [nameRu, setNameRu] = useState('');
     const [familiaRu, setFamiliaRu] = useState('');
@@ -17,7 +16,7 @@ const DomainFormRu = () => {
     const [phone, setPhone] = useState('');
     const [numPassport, setNumPassport] = useState('');
     const [orgPassport, setOrgPassport] = useState('');
-    const [datePassport, setDatePassport] = useState(null);
+    const [datePassport, setDatePassport] = useState(0);
 
     useEffect(()=>{
         domain.setDomainForm({
@@ -26,12 +25,18 @@ const DomainFormRu = () => {
             'otchestvoRu': otchestvoRu,
             'familiaEn': familiaEn,
             'nameEn': nameEn,
-            'otchestvoEn': otchestvoEn
+            'otchestvoEn': otchestvoEn,
+            'datePassport': datePassport
         });
         setFamiliaEn(ToTranslit(familiaRu));
         setNameEn(ToTranslit(nameRu));
         setOtchestvoEn(ToTranslit(otchestvoRu));
-    },[nameRu, familiaRu, otchestvoRu])
+    },[nameRu, familiaRu, otchestvoRu,datePassport])
+
+    useEffect(()=>{
+        console.log("A");
+        setDatePassport(domain.domainForm.datePassport);
+    },[domain])
 
 
     return(
@@ -98,18 +103,17 @@ const DomainFormRu = () => {
           </div>
           <div className="form-group">
               <label htmlFor="inputDatePassport">Дата выдачи паспорта</label>
-              <input type="text" id="inputDatePassport" name="date_passport" value={datePassport ? (datePassport.day + '.' + datePassport.month + '.' + datePassport.year) : ''}
-                     onChange={e => setDatePassport(e.target.value)}
-                     className="form-control"/>
-              <DtPicker
-                  onChange={setDatePassport}
-                  placeholder='Выбрать дату2'
-                  inputClass='custom-input'
-              />
+              <div className="input-group date">
+                  <input type="text" id="inputDatePassport" name="date_passport" defaultValue={datePassport}
+                         className="form-control"/>
+                  <div className="input-group-append">
+                      <DatePicker/>
+                  </div>
+              </div>
           </div>
       </>
     );
 
-}
+});
 
 export default DomainFormRu;
