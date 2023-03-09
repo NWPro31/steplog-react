@@ -1,8 +1,11 @@
+import {makeAutoObservable} from "mobx";
+
 export default class DomainStore {
     constructor() {
         this._domain = {};
         this._domainReg = {};
         this._domainForm = {};
+        makeAutoObservable(this);
     }
 
     setDomain(domain){

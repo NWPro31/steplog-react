@@ -3,6 +3,7 @@ import {Context} from "../index";
 import ToTranslit from "./ToTranslit";
 import DatePicker from "./DatePicker";
 import {observer} from "mobx-react-lite";
+import InputMask from "react-input-mask";
 
 const DomainFormRu = observer(() => {
     const {domain} = useContext(Context);
@@ -16,7 +17,15 @@ const DomainFormRu = observer(() => {
     const [phone, setPhone] = useState('');
     const [numPassport, setNumPassport] = useState('');
     const [orgPassport, setOrgPassport] = useState('');
-    const [datePassport, setDatePassport] = useState(0);
+    const [datePassport, setDatePassport] = useState('');
+    const [dateBirthday, setDateBirthday] = useState('');
+    const [addressCountry, setAddressCountry] = useState('');
+    const [addressObl, setAddressObl] = useState('');
+    const [addressInd, setAddressInd] = useState('');
+    const [addressCity, setAddressCity] = useState('');
+    const [addressStr, setAddressStr] = useState('');
+
+
 
     useEffect(()=>{
         domain.setDomainForm({
@@ -26,18 +35,26 @@ const DomainFormRu = observer(() => {
             'familiaEn': familiaEn,
             'nameEn': nameEn,
             'otchestvoEn': otchestvoEn,
-            'datePassport': datePassport
+            'datePassport': datePassport,
+            'dateBirthday': dateBirthday
         });
         setFamiliaEn(ToTranslit(familiaRu));
         setNameEn(ToTranslit(nameRu));
         setOtchestvoEn(ToTranslit(otchestvoRu));
-    },[nameRu, familiaRu, otchestvoRu,datePassport])
+    },[nameRu, familiaRu, otchestvoRu, datePassport, dateBirthday])
 
-    useEffect(()=>{
-        console.log("A");
-        setDatePassport(domain.domainForm.datePassport);
-    },[domain])
 
+    const changeDatePassport = (event) => {
+        setDatePassport(new Date(event).toLocaleDateString('fr-CA'));
+    }
+
+    const changeDateBirthday = (event) => {
+        setDateBirthday(new Date(event).toLocaleDateString('fr-CA'));
+    }
+
+    const numberValueReduced = phone => {
+        return phone.replace(/^(\d{3})(\d{3})(\d{2})(\d{2})$/, '+7 ($1) $2-$3-$4');
+    };
 
     return(
       <>
@@ -84,10 +101,16 @@ const DomainFormRu = observer(() => {
                      className="form-control"/>
           </div>
           <div className="form-group">
-              <label htmlFor="inputPhone">Телефон</label>
-              <input type="text" id="inputPhone" name="phone" value={phone}
-                     onChange={e => setPhone(e.target.value)}
+          <label htmlFor="inputPhone">Телефон</label>
+          <InputMask mask="+7 (999) 999-99-99" value={phone} onChange={e => setPhone(e.target.value)}>
+              {() => <input type="text" id="inputPhone" name="phone"
+                     placeholder="+7 (123) 123-45-67"
                      className="form-control"/>
+              }
+          </InputMask>
+          </div>
+          <div className="border-top text-center">
+              <p className="m-0 mt-3 mb-1">Паспортные данные</p>
           </div>
           <div className="form-group">
               <label htmlFor="inputNumPassport">Серия и номер паспорта</label>
@@ -104,12 +127,59 @@ const DomainFormRu = observer(() => {
           <div className="form-group">
               <label htmlFor="inputDatePassport">Дата выдачи паспорта</label>
               <div className="input-group date">
-                  <input type="text" id="inputDatePassport" name="date_passport" defaultValue={datePassport}
+                  <input type="text" id="inputDatePassport" name="date_passport" value={datePassport}
+                         onChange={e => setDatePassport(e.target.value)}
+                         placeholder="ГГГГ-ММ-ДД"
                          className="form-control"/>
                   <div className="input-group-append">
-                      <DatePicker/>
+                      <DatePicker onChange={changeDatePassport}/>
                   </div>
               </div>
+          </div>
+          <div className="form-group border-bottom">
+              <label htmlFor="inputDateBirthday">Дата рождения</label>
+              <div className="input-group date">
+                  <input type="text" id="inputDateBirthday" name="date_birthday" value={dateBirthday}
+                         onChange={e => setDateBirthday(e.target.value)}
+                         placeholder="ГГГГ-ММ-ДД"
+                         className="form-control"/>
+                  <div className="input-group-append">
+                      <DatePicker onChange={changeDateBirthday}/>
+                  </div>
+              </div>
+          </div>
+          <div className="border-top text-center">
+              <p className="m-0 mt-3 mb-1">Адрес регистрации</p>
+          </div>
+          <div className="form-group">
+              <label htmlFor="inputAddressCountry">Страна</label>
+              <input type="text" id="inputAddressCountry" name="address_country" value={addressCountry}
+                     onChange={e => setAddressCountry(e.target.value)}
+                     className="form-control"/>
+          </div>
+          <div className="form-group">
+              <label htmlFor="inputAddressObl">Регион</label>
+              <input type="text" id="inputAddressObl" name="address_obl" value={addressObl}
+                     onChange={e => setAddressObl(e.target.value)}
+                     className="form-control"/>
+          </div>
+          <div className="form-group">
+              <label htmlFor="inputAddressInd">Индекс</label>
+              <input type="text" id="inputAddressInd" name="address_ind" value={addressInd}
+                     onChange={e => setAddressInd(e.target.value)}
+                     className="form-control"/>
+          </div>
+          <div className="form-group">
+              <label htmlFor="inputAddressCity">Город</label>
+              <input type="text" id="inputAddressCity" name="address_city" value={addressCity}
+                     onChange={e => setAddressCity(e.target.value)}
+                     className="form-control"/>
+          </div>
+          <div className="form-group">
+              <label htmlFor="inputAddressStr">Город</label>
+              <input type="text" id="inputAddressStr" name="address_str" value={addressStr}
+                     onChange={e => setAddressStr(e.target.value)}
+                     className="form-control"/>
           </div>
       </>
     );

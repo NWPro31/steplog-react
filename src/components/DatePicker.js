@@ -8,9 +8,9 @@ const oneDay = 60 * 60 * 24 * 1000;
 const todayTimestamp = Date.now() - (Date.now() % oneDay) + (new Date().getTimezoneOffset() * 1000 * 60);
 
 
-const DatePicker = observer(() => {
+const DatePicker = observer(({onChange}) => {
     const {domain} = useContext(Context);
-    const [show,setShow] = useState(true);
+    const [show,setShow] = useState(false);
     const [node, setNode] = useState(null);
     const [selectedDay, setSelectedDay] = useState(todayTimestamp);
     const [monthDetails, setMonthDetails] = useState([]);
@@ -18,36 +18,31 @@ const DatePicker = observer(() => {
     const [year, setYear] = useState(date.getFullYear());
     const [month, setMonth] = useState(date.getMonth());
 
-    const daysMap = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+    const daysMap = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
     const monthMap = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 
     useEffect(()=>{
-        setNode(document.querySelector(".mdp-container"));
+        setNode(document.querySelectorAll(".mdp-container"));
     },[show]);
     useEffect(()=>{
         window.addEventListener('click', addBackDrop);
-        console.log(monthDetails);
     },[node]);
 
     useEffect(()=>{
         setMonthDetails(getMonthDetails(year, month));
     },[month, year]);
 
-    useEffect(()=>{
-        console.log(selectedDay);
-        domain.setDomainForm({
-            'datePassport': selectedDay
-        });
-    },[selectedDay]);
-
-
     const addBackDrop = e => {
-        if(node){
-            if(show && !node.contains(e.target)){
-                setShow(false);
-                setNode(null);
-                window.removeEventListener('click', addBackDrop);
+        if(node) {
+            if (node.length > 0) {
+                for (let i = 0, element; element = node[i]; i++) {
+                    if (show && !element.contains(e.target)) {
+                        setShow(false);
+                        setNode(null);
+                        window.removeEventListener('click', addBackDrop);
+                    }
+                }
 
             }
         }
@@ -57,7 +52,7 @@ const DatePicker = observer(() => {
     }
 
     const getDayDetails =args=> {
-        let date = args.index - args.firstDay;
+        let date = args.index - args.firstDay + 1;
         let day = args.index%7;
         let prevMonth = args.month-1;
         let prevYear = args.year;
@@ -80,6 +75,7 @@ const DatePicker = observer(() => {
 
     const getMonthDetails =(year, month)=> {
         let firstDay = (new Date(year, month)).getDay();
+        firstDay = firstDay === 0 ? 7 : firstDay;
         let numberOfDays = getNumberOfDays(year, month);
         let monthArray = [];
         let rows = 6;
@@ -112,7 +108,11 @@ const DatePicker = observer(() => {
     }
 
     const onDateClick =day=> {
+        setShow(false);
+        window.removeEventListener('click', addBackDrop);
         setSelectedDay(day.timestamp);
+        onChange(day.timestamp);
+
     }
     const getMonthStr =month=> monthMap[Math.max(Math.min(11, month), 0)] || 'Month';
     const days = monthDetails.map((day, index)=> {
@@ -120,7 +120,10 @@ const DatePicker = observer(() => {
             <div className={'c-day-container ' + (day.month !== 0 ? ' disabled' : '') +
                 (isCurrentDay(day) ? ' highlight' : '') + (isSelectedDay(day) ? ' highlight-green' : '')} key={index}>
                 <div className='cdc-day'>
-                        <span onClick={()=>onDateClick(day)}>
+                        <span onClick={()=>{
+                            onDateClick(day);
+                            setShow(false);
+                        }}>
                             {day.date}
                         </span>
                 </div>
@@ -129,8 +132,10 @@ const DatePicker = observer(() => {
     })
 
     return(
+        <>
         <div className="input-group-text" onClick={() => setShow(true)}>
             <i className="fa fa-calendar"></i>
+        </div>
             {show ?
                 <div className='mdp-container'>
                     <div className='mdpc-head'>
@@ -169,7 +174,7 @@ const DatePicker = observer(() => {
                     <div className='mdpc-body'>
                         <div className='c-container'>
                             <div className='cc-head'>
-                                {['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'].map((d,i)=><div key={i} className='cch-name'>{d}</div>)}
+                                {['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'].map((d,i)=><div key={i} className='cch-name'>{d}</div>)}
                             </div>
                             <div className='cc-body'>
                                 {days}
@@ -180,7 +185,7 @@ const DatePicker = observer(() => {
                 :
                 ''
             }
-        </div>
+        </>
     );
 });
 

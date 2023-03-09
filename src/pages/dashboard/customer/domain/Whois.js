@@ -7,8 +7,9 @@ import ContentHeader from "../../../../components/ContentHeader";
 import {indexDomain, whoisDomain} from "../../../../http/domainAPI";
 import {Context} from "../../../../index";
 import DomainFormRu from "../../../../components/DomainFormRu";
+import {observer} from "mobx-react-lite";
 
-const CustomerDomainWhois = () => {
+const CustomerDomainWhois = observer(() => {
     const navigate = useNavigate();
     const {domain} = useContext(Context);
     const [domains,setDomains] = useState([]);
@@ -33,11 +34,11 @@ const CustomerDomainWhois = () => {
         })
             .catch(err => console.log(err));
     },[]);
-/*
+
     useEffect(()=>{
-        console.log(domain.domainForm.current);
+        console.log(domain.domainForm.nameRu + ' ' + domain.domainForm.datePassport);
     }, [domain.domainForm]);
-*/
+
 
     const click = async () => {
         try {
@@ -179,6 +180,6 @@ const CustomerDomainWhois = () => {
             </section>
         </>
     );
-};
+});
 
 export default CustomerDomainWhois;
