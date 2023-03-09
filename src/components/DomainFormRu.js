@@ -18,6 +18,7 @@ const DomainFormRu = observer(() => {
     const [numPassport, setNumPassport] = useState('');
     const [orgPassport, setOrgPassport] = useState('');
     const [datePassport, setDatePassport] = useState('');
+    const [codePassport, setCodePassport] = useState('');
     const [dateBirthday, setDateBirthday] = useState('');
     const [addressCountry, setAddressCountry] = useState('');
     const [addressObl, setAddressObl] = useState('');
@@ -114,9 +115,12 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputNumPassport">Серия и номер паспорта</label>
-              <input type="text" id="inputNumPassport" name="num_passport" value={numPassport}
-                     onChange={e => setNumPassport(e.target.value)}
-                     className="form-control"/>
+              <InputMask mask="9999 999999" value={numPassport} onChange={e => setNumPassport(e.target.value)}>
+                  {() => <input type="text" id="inputNumPassport" name="num_passport"
+                                placeholder="1234 123456"
+                                className="form-control"/>
+                  }
+              </InputMask>
           </div>
           <div className="form-group">
               <label htmlFor="inputOrgPassport">Организация, выдавшая паспорт</label>
@@ -127,10 +131,13 @@ const DomainFormRu = observer(() => {
           <div className="form-group">
               <label htmlFor="inputDatePassport">Дата выдачи паспорта</label>
               <div className="input-group date">
-                  <input type="text" id="inputDatePassport" name="date_passport" value={datePassport}
-                         onChange={e => setDatePassport(e.target.value)}
-                         placeholder="ГГГГ-ММ-ДД"
-                         className="form-control"/>
+                  <InputMask mask="2099-99-99" value={datePassport} onChange={e => setDatePassport(e.target.value)}>
+                      {() =>
+                          <input type="text" id="inputDatePassport" name="date_passport"
+                                 placeholder="ГГГГ-ММ-ДД"
+                                 className="form-control"/>
+                      }
+                  </InputMask>
                   <div className="input-group-append">
                       <DatePicker onChange={changeDatePassport}/>
                   </div>
@@ -139,14 +146,26 @@ const DomainFormRu = observer(() => {
           <div className="form-group border-bottom">
               <label htmlFor="inputDateBirthday">Дата рождения</label>
               <div className="input-group date">
-                  <input type="text" id="inputDateBirthday" name="date_birthday" value={dateBirthday}
-                         onChange={e => setDateBirthday(e.target.value)}
-                         placeholder="ГГГГ-ММ-ДД"
-                         className="form-control"/>
+                  <InputMask mask="9999-99-99" value={dateBirthday} onChange={e => setDateBirthday(e.target.value)}>
+                      {() =>
+                          <input type="text" id="inputDateBirthday" name="date_birthday"
+                                 placeholder="ГГГГ-ММ-ДД"
+                                 className="form-control"/>
+                      }
+                  </InputMask>
                   <div className="input-group-append">
                       <DatePicker onChange={changeDateBirthday}/>
                   </div>
               </div>
+          </div>
+          <div className="form-group">
+              <label htmlFor="inputCodePassport">Код подразделения, выдавшего паспорт</label>
+              <InputMask mask="999-999" value={codePassport} onChange={e => setCodePassport(e.target.value)}>
+                  {() => <input type="text" id="inputCodePassport" name="code_passport"
+                                placeholder="000-000"
+                                className="form-control"/>
+                  }
+              </InputMask>
           </div>
           <div className="border-top text-center">
               <p className="m-0 mt-3 mb-1">Адрес регистрации</p>
@@ -176,7 +195,7 @@ const DomainFormRu = observer(() => {
                      className="form-control"/>
           </div>
           <div className="form-group">
-              <label htmlFor="inputAddressStr">Город</label>
+              <label htmlFor="inputAddressStr">Адрес</label>
               <input type="text" id="inputAddressStr" name="address_str" value={addressStr}
                      onChange={e => setAddressStr(e.target.value)}
                      className="form-control"/>
