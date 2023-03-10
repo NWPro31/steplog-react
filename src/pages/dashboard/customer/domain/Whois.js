@@ -16,8 +16,13 @@ const CustomerDomainWhois = observer(() => {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState('');
     const [url, setUrl] = useState('');
+    const [ns1, setNs1] = useState('');
+    const [ns2, setNs2] = useState('');
+    const [ns3, setNs3] = useState('');
+    const [ns4, setNs4] = useState('');
     const [zone, setZone] = useState({});
     const [error, setError] = useState([]);
+    const [showNS, setShowNS] = useState(false);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE, name: "Домены" },
@@ -62,7 +67,7 @@ const CustomerDomainWhois = observer(() => {
         }
     };
 
-    const validate = () => {
+    const validateRu = () => {
         let err = {};
         let formIsValid = true;
         if(domain.domainForm.familiaRu === "" || domain.domainForm.familiaRu === !/^[А-Я][а-я]*/) {
@@ -117,23 +122,23 @@ const CustomerDomainWhois = observer(() => {
             err['codePassport'] = 'Необходимо заполнить поле код подразделения';
             formIsValid = false;
         }
-        if(domain.domainForm.addressCountry === "" || domain.domainForm.addressCountry === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+        if(domain.domainForm.addressCountry === "" || domain.domainForm.addressCountry === !/^[а-яА-Я0-9\s?!,.'Ёё]+$/) {
             err['addressCountry'] = 'Необходимо заполнить поле страна регистрации';
             formIsValid = false;
         }
-        if(domain.domainForm.addressObl === "" || domain.domainForm.addressObl === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+        if(domain.domainForm.addressObl === "" || domain.domainForm.addressObl === !/^[а-яА-Я0-9\s?!,.'Ёё]+$/) {
             err['addressObl'] = 'Необходимо заполнить поле регион регистрации';
             formIsValid = false;
         }
-        if(domain.domainForm.addressInd === "" || domain.domainForm.addressInd === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+        if(domain.domainForm.addressInd === "" || domain.domainForm.addressInd === !/^[а-яА-Я0-9\s?!,.'Ёё]+$/) {
             err['addressInd'] = 'Необходимо заполнить поле индекс регистрации';
             formIsValid = false;
         }
-        if(domain.domainForm.addressCity === "" || domain.domainForm.addressCity === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+        if(domain.domainForm.addressCity === "" || domain.domainForm.addressCity === !/^[а-яА-Я0-9\s?!,.'Ёё]+$/) {
             err['addressCity'] = 'Необходимо заполнить поле город регистрации';
             formIsValid = false;
         }
-        if(domain.domainForm.addressStr === "" || domain.domainForm.addressStr === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+        if(domain.domainForm.addressStr === "" || domain.domainForm.addressStr === !/^[а-яА-Я0-9\s?!,.'Ёё]+$/) {
             err['addressStr'] = 'Необходимо заполнить поле адрес регистрации';
             formIsValid = false;
         }
@@ -144,7 +149,17 @@ const CustomerDomainWhois = observer(() => {
     };
 
     const sendForm = () => {
+        setShowNS(true);
         console.log(domain.domainForm);
+    }
+
+    const domainReg = async () => {
+        try{
+
+        }
+        catch (e){
+            console.log(e.response);
+        }
     }
 
     return(
@@ -206,7 +221,7 @@ const CustomerDomainWhois = observer(() => {
                     }
                 </div>
 
-                {status === "Доступен" ?
+                {status === "Доступен" && !showNS ?
                     <div className="card card-primary">
                         <div className="card-header">
                             <h3 className="card-title">Зарегистрировать домен
@@ -224,6 +239,46 @@ const CustomerDomainWhois = observer(() => {
                         </div>
                     </div>
                     :
+                    showNS
+                    ?
+                        <div className="card card-primary">
+                            <div className="card-header">
+                                <h3 className="card-title">Укажите NS для домена
+                                    - {url + '.' + domains.filter(item => item.id === zone)[0].title ?? 'ru'}</h3>
+                                <div className="card-tools">
+                                    <button type="button" className="btn btn-tool" data-card-widget="collapse"
+                                            title="Collapse">
+                                        <i className="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="card-body">
+                                <p>Укажите как минимум 1 NS для домена, либо не указывайте, в этом случае домен будет привязан на NS steplog.ru и вы сможете указать свои позднее.</p>
+                                <div className="form-group">
+                                    <input type="text" name="ns1" value={ns1}
+                                           onChange={e => setNs1(e.target.value)}
+                                           placeholder="ns1.steplog.ru"
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" name="ns2" value={ns2}
+                                           onChange={e => setNs2(e.target.value)}
+                                           placeholder="ns2.steplog.ru"
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" name="ns3" value={ns3}
+                                           onChange={e => setNs3(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" name="ns4" value={ns4}
+                                           onChange={e => setNs4(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        :
                     ''
                 }
                 <div className="row pb-3">
@@ -245,7 +300,7 @@ const CustomerDomainWhois = observer(() => {
                             </Button>
                         }
                         <Button
-                            onClick={status === "Доступен" ? validate : click}
+                            onClick={status === "Доступен" && !showNS ? validateRu : showNS ? domainReg : click}
                             className="btn btn-primary float-right"
                                 variant="primary">
                             {loading ?
@@ -259,10 +314,14 @@ const CustomerDomainWhois = observer(() => {
                                 :
                                 ''
                             }
-                            {status === "Доступен"
+                            {status === "Доступен" && !showNS
                                 ?
-                                'Заказать'
+                                'Продолжить'
                                 :
+                                showNS
+                                ?
+                                    'Оплатить'
+                                    :
                                 'Проверить'
                             }
                         </Button>

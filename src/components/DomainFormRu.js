@@ -267,7 +267,7 @@ const DomainFormRu = observer(() => {
               <input type="text" id="inputAddressCountry" name="address_country" value={addressCountry}
                      onChange={e => {
                          setAddressCountry(e.target.value);
-                         errors.addressCountry && removeError('addressCountry', /^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, e);
+                         errors.addressCountry && removeError('addressCountry', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressCountry && "border-danger"}`}/>
               {errors.addressCountry && <span className="text-danger">{errors.addressCountry}</span>}
@@ -277,7 +277,7 @@ const DomainFormRu = observer(() => {
               <input type="text" id="inputAddressObl" name="address_obl" value={addressObl}
                      onChange={e => {
                          setAddressObl(e.target.value);
-                         errors.addressObl && removeError('addressObl', /^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, e);
+                         errors.addressObl && removeError('addressObl', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressObl && "border-danger"}`}/>
               {errors.addressObl && <span className="text-danger">{errors.addressObl}</span>}
@@ -287,7 +287,7 @@ const DomainFormRu = observer(() => {
               <input type="text" id="inputAddressInd" name="address_ind" value={addressInd}
                      onChange={e => {
                          setAddressInd(e.target.value);
-                         errors.addressInd && removeError('addressInd', /^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, e);
+                         errors.addressInd && removeError('addressInd', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressInd && "border-danger"}`}/>
               {errors.addressInd && <span className="text-danger">{errors.addressInd}</span>}
@@ -297,7 +297,7 @@ const DomainFormRu = observer(() => {
               <input type="text" id="inputAddressCity" name="address_city" value={addressCity}
                      onChange={e => {
                          setAddressCity(e.target.value);
-                         errors.addressCity && removeError('addressCity', /^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, e);
+                         errors.addressCity && removeError('addressCity', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressCity && "border-danger"}`}/>
               {errors.addressCity && <span className="text-danger">{errors.addressCity}</span>}
@@ -307,7 +307,7 @@ const DomainFormRu = observer(() => {
               <input type="text" id="inputAddressStr" name="address_str" value={addressStr}
                      onChange={e => {
                          setAddressStr(e.target.value);
-                         errors.addressStr && removeError('addressStr', /^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, e);
+                         errors.addressStr && removeError('addressStr', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressStr && "border-danger"}`}/>
               {errors.addressStr && <span className="text-danger">{errors.addressStr}</span>}
