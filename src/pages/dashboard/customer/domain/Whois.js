@@ -16,7 +16,8 @@ const CustomerDomainWhois = observer(() => {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState('');
     const [url, setUrl] = useState('');
-    const [zone, setZone] = useState(0);
+    const [zone, setZone] = useState({});
+    const [error, setError] = useState([]);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE, name: "Домены" },
@@ -34,11 +35,14 @@ const CustomerDomainWhois = observer(() => {
         })
             .catch(err => console.log(err));
     },[]);
-
+/*
     useEffect(()=>{
-        console.log(domain.domainForm.nameRu + ' ' + domain.domainForm.datePassport);
+        //
     }, [domain.domainForm]);
-
+*/
+    useEffect(()=>{
+        domain.setDomainForm({...domain.domainForm, 'error': error});
+    }, [error]);
 
     const click = async () => {
         try {
@@ -57,6 +61,91 @@ const CustomerDomainWhois = observer(() => {
             alert(e.response.data.message);
         }
     };
+
+    const validate = () => {
+        let err = {};
+        let formIsValid = true;
+        if(domain.domainForm.familiaRu === "" || domain.domainForm.familiaRu === !/^[А-Я][а-я]*/) {
+            err['familiaRu'] = 'Необходимо заполнить поле фамилия';
+            formIsValid = false;
+        }
+        if(domain.domainForm.nameRu === "" || domain.domainForm.nameRu === !/^[А-Я][а-я]*/) {
+            err['nameRu'] = 'Необходимо заполнить поле имя';
+            formIsValid = false;
+        }
+        if(domain.domainForm.otchestvoRu === "" || domain.domainForm.otchestvoRu === !/^[А-Я][а-я]*/) {
+            err['otchestvoRu'] = 'Необходимо заполнить поле отчество';
+            formIsValid = false;
+        }
+        if(domain.domainForm.familiaEn === "" || domain.domainForm.familiaEn === !/^[A-Z][a-z]*/) {
+            err['familiaEn'] = 'Необходимо заполнить поле фамилия латиницей';
+            formIsValid = false;
+        }
+        if(domain.domainForm.nameEn === "" || domain.domainForm.nameEn === !/^[A-Z][a-z]*/) {
+            err['nameEn'] = 'Необходимо заполнить поле имя латиницей';
+            formIsValid = false;
+        }
+        if(domain.domainForm.otchestvoEn === "" || domain.domainForm.otchestvoEn === !/^[A-Z][a-z]*/) {
+            err['otchestvoEn'] = 'Необходимо заполнить поле отчество латиницей';
+            formIsValid = false;
+        }
+        if(domain.domainForm.email === "" || domain.domainForm.email === !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) {
+            err['email'] = 'Необходимо заполнить поле электронная почта';
+            formIsValid = false;
+        }
+        if(domain.domainForm.phone === "" || domain.domainForm.phone === !/\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}/) {
+            err['phone'] = 'Необходимо заполнить поле номер телефона';
+            formIsValid = false;
+        }
+        if(domain.domainForm.numPassport === "" || domain.domainForm.numPassport === !/\d{4}\s\d{6}/) {
+            err['numPassport'] = 'Необходимо заполнить поле номер паспорта';
+            formIsValid = false;
+        }
+        if(domain.domainForm.orgPassport === "" || domain.domainForm.orgPassport === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+            err['orgPassport'] = 'Необходимо заполнить поле организация, выдавшая паспорт';
+            formIsValid = false;
+        }
+        if(domain.domainForm.datePassport === "" || domain.domainForm.datePassport === !/\d{4}-\d{2}-\d{2}/) {
+            err['datePassport'] = 'Необходимо заполнить поле дата выдачи паспорта';
+            formIsValid = false;
+        }
+        if(domain.domainForm.dateBirthday === "" || domain.domainForm.dateBirthday === !/\d{4}-\d{2}-\d{2}/) {
+            err['dateBirthday'] = 'Необходимо заполнить поле дата рождения';
+            formIsValid = false;
+        }
+        if(domain.domainForm.codePassport === "" || domain.domainForm.codePassport === !/\d{3}-\d{3}/) {
+            err['codePassport'] = 'Необходимо заполнить поле код подразделения';
+            formIsValid = false;
+        }
+        if(domain.domainForm.addressCountry === "" || domain.domainForm.addressCountry === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+            err['addressCountry'] = 'Необходимо заполнить поле страна регистрации';
+            formIsValid = false;
+        }
+        if(domain.domainForm.addressObl === "" || domain.domainForm.addressObl === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+            err['addressObl'] = 'Необходимо заполнить поле регион регистрации';
+            formIsValid = false;
+        }
+        if(domain.domainForm.addressInd === "" || domain.domainForm.addressInd === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+            err['addressInd'] = 'Необходимо заполнить поле индекс регистрации';
+            formIsValid = false;
+        }
+        if(domain.domainForm.addressCity === "" || domain.domainForm.addressCity === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+            err['addressCity'] = 'Необходимо заполнить поле город регистрации';
+            formIsValid = false;
+        }
+        if(domain.domainForm.addressStr === "" || domain.domainForm.addressStr === !/^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/) {
+            err['addressStr'] = 'Необходимо заполнить поле адрес регистрации';
+            formIsValid = false;
+        }
+
+        setError(err);
+        if(formIsValid) sendForm();
+
+    };
+
+    const sendForm = () => {
+        console.log(domain.domainForm);
+    }
 
     return(
         <>
@@ -155,7 +244,9 @@ const CustomerDomainWhois = observer(() => {
                                 Назад
                             </Button>
                         }
-                        <Button onClick={click} className="btn btn-primary float-right"
+                        <Button
+                            onClick={status === "Доступен" ? validate : click}
+                            className="btn btn-primary float-right"
                                 variant="primary">
                             {loading ?
                                 <Spinner
