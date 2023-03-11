@@ -1,10 +1,10 @@
 import {useNavigate} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
-import {DASHBOARD_ROUTE, INDEX_CUSTOMER_DOMAIN_ROUTE, INDEX_CUSTOMER_SERVICES_ROUTE} from "../../../../utils/consts";
+import {DASHBOARD_ROUTE, INDEX_CUSTOMER_DOMAIN_ROUTE} from "../../../../utils/consts";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import ContentHeader from "../../../../components/ContentHeader";
-import {indexDomain, whoisDomain} from "../../../../http/domainAPI";
+import {createOrderDomain, indexDomain, whoisDomain} from "../../../../http/domainAPI";
 import {Context} from "../../../../index";
 import DomainFormRu from "../../../../components/DomainFormRu";
 import {observer} from "mobx-react-lite";
@@ -23,6 +23,7 @@ const CustomerDomainWhois = observer(() => {
     const [zone, setZone] = useState({});
     const [error, setError] = useState([]);
     const [showNS, setShowNS] = useState(false);
+    const [sendData, setSendData] = useState({});
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE, name: "Домены" },
@@ -70,6 +71,7 @@ const CustomerDomainWhois = observer(() => {
     const validateRu = () => {
         let err = {};
         let formIsValid = true;
+        setSendData([]);
         if(domain.domainForm.familiaRu === "" || domain.domainForm.familiaRu === !/^[А-Я][а-я]*/) {
             err['familiaRu'] = 'Необходимо заполнить поле фамилия';
             formIsValid = false;
@@ -142,7 +144,8 @@ const CustomerDomainWhois = observer(() => {
             err['addressStr'] = 'Необходимо заполнить поле адрес регистрации';
             formIsValid = false;
         }
-
+        formIsValid && setSendData(domain.domainForm);
+        console.log(sendData);
         setError(err);
         if(formIsValid) sendForm();
 
@@ -155,6 +158,11 @@ const CustomerDomainWhois = observer(() => {
 
     const domainReg = async () => {
         try{
+            if(sendData){
+                let data;
+                data = await createOrderDomain(url + '.' + domain.domain.filter(item => item.id === zone)[0].title, zone, sendData.familiaRu, sendData.familiaEn, sendData.nameRu, sendData.nameEn, sendData.otchestvoRu, sendData.otchestvoEn, sendData.phone, sendData.email, sendData.dateBirthday, sendData.addressCity, sendData.addressObl, sendData.addressCountry, sendData.addressInd, sendData.addressStr, sendData.datePassport, sendData.codePassport, sendData.numPassport, sendData.orgPassport);
+                console.log(data);
+            }
 
         }
         catch (e){

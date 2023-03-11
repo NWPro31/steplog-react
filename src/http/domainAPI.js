@@ -7,6 +7,11 @@ export const createDomain = async (title, price, price_extension, period) => {
     return data;
 };
 
+export const createOrderDomain = async (url, domain_id, family_ru, family_en, name_ru, name_en, otchestvo_ru, otchestvo_en, phone, email, birthday, address_city, address_oblast, address_country, address_index, address_street, passport_date, passport_code, passport_number, passport_org, ns1, ns2, ns3, ns4) => {
+    const {data} = await $authHost.post('api/order_domains', {url, domain_id, family_ru, family_en, name_ru, name_en, otchestvo_ru, otchestvo_en, phone, email, birthday, address_city, address_oblast, address_country, address_index, address_street, passport_date, passport_code, passport_number, passport_org, ns1, ns2, ns3, ns4});
+    return data;
+};
+
 export const indexDomain = async () => {
     const {data} = await $authHost.get('api/domains', {});
     return data;
