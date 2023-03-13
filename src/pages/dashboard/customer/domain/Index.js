@@ -1,13 +1,12 @@
 import ContentHeader from "../../../../components/ContentHeader";
 import React, {useContext, useEffect, useState} from "react";
 import {
-    CREATE_CUSTOMER_SERVICES_ROUTE,
     DASHBOARD_ROUTE, SHOW_CUSTOMER_SERVICES_ROUTE, WHOIS_CUSTOMER_DOMAIN_ROUTE
 } from "../../../../utils/consts";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {Context} from "../../../../index";
-import {indexOrderService} from "../../../../http/serviceAPI";
+import {indexOrderDomain} from "../../../../http/domainAPI";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
 import 'moment/locale/ru';
@@ -17,8 +16,8 @@ import 'react-tooltip/dist/react-tooltip.css'
 
 const CustomerDomainIndex = () => {
     const navigate = useNavigate();
-    const {service} = useContext(Context);
-    const [orderServices,setOrderServices] = useState([]);
+    const {domain} = useContext(Context);
+    const [orderDomains,setOrderDomains] = useState([]);
     const [loading,setLoading] = useState(true);
 
     const hrefs = [
@@ -28,9 +27,9 @@ const CustomerDomainIndex = () => {
 
     useEffect(()=>{
         setLoading(true);
-        indexOrderService().then(data => {
-            service.setOrderService(data.order_services);
-            setOrderServices(data.order_services);
+        indexOrderDomain().then(data => {
+            domain.setOrderDomain(data.order_domains);
+            setOrderDomains(data.order_domains);
         }).finally(()=>{
             setLoading(false);
         }).catch(err => console.log(err));
@@ -38,7 +37,7 @@ const CustomerDomainIndex = () => {
 
     useEffect(() => {
         //loading
-    },[orderServices]);
+    },[orderDomains]);
 
     const timeRule = (time) => {
         return moment(time).locale('ru').fromNow()
@@ -72,10 +71,9 @@ const CustomerDomainIndex = () => {
                             <thead>
                             <tr>
                                 <th width={'8%'}>#</th>
-                                <th width={'25%'}>Услуга</th>
-                                <th width={'10%'} className="text-center">Сайт</th>
-                                <th width={'10%'} className="text-center">Стоимость</th>
-                                <th width={'20%'}>Продолжительность работ</th>
+                                <th width={'25%'}>Домен</th>
+                                <th width={'10%'} className="text-center">НС</th>
+                                <th width={'10%'} className="text-center">Регистрация до</th>
                                 <th width={'12%'} className="text-center">Состояние</th>
                                 <th></th>
                             </tr>
@@ -92,33 +90,24 @@ const CustomerDomainIndex = () => {
                                     </td>
                                 </tr>
                                 : ''}
-                            {orderServices.length ===0 && !loading && (
+                            {orderDomains.length ===0 && !loading && (
                                 <tr>
                                     <td colSpan={8}>
                                         <div className="d-flex justify-content-center">
                                             <div>
-                                                <h3>У Вас пока нет заказов</h3>
+                                                <h3>У Вас пока нет доменов</h3>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                             )}
-                            {orderServices && orderServices.map(service => (
-                                <tr key={service.id}>
-                                    <td className="align-middle">{service.id}</td>
-                                    <td className="align-middle">{service.service.title}</td>
-                                    <td className="align-middle text-center">{service.url}</td>
-                                    <td className="align-middle text-center tooltip_el"
-                                        style={{cursor:'help'}}
-                                        data-tooltip-float="true"
-                                        data-tooltip-content={service.price === 0 ? 'Стоимость работ станет известна после обработки заказа' : 'Стоимость работ ' + service.price + 'р.'}
-                                    >{service.price > 0 ? service.price + 'р.' : '?'}</td>
-                                    <td className="align-middle">{service.service.duration_work}</td>
-                                    <td className="align-middle text-center tooltip_el"
-                                        style={{cursor:'help'}}
-                                        data-tooltip-float="true"
-                                        data-tooltip-content={service.status ? service.status.title + " " + timeRule(service.status.created_at) : 'Нет данных' + " " + timeRule(Date.now())}
-                                    >{service.status ? service.status.title : 'нет данных'}</td>
+                            {orderDomains && orderDomains.map(domain => (
+                                <tr key={domain.id}>
+                                    <td className="align-middle">{domain.id}</td>
+                                    <td className="align-middle">{domain.url}</td>
+                                    <td className="align-middle"></td>
+                                    <td className="align-middle"></td>
+                                    <td className="align-middle"></td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
                                                 onClick={() => {
