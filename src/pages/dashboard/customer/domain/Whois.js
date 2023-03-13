@@ -16,10 +16,7 @@ const CustomerDomainWhois = observer(() => {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState('');
     const [url, setUrl] = useState('');
-    const [ns1, setNs1] = useState('');
-    const [ns2, setNs2] = useState('');
-    const [ns3, setNs3] = useState('');
-    const [ns4, setNs4] = useState('');
+    const [ns, setNs] = useState([]);
     const [zone, setZone] = useState({});
     const [error, setError] = useState([]);
     const [showNS, setShowNS] = useState(false);
@@ -29,6 +26,18 @@ const CustomerDomainWhois = observer(() => {
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE, name: "Домены" },
         { name: "Заказ домена" },
     ];
+
+    const addNs = () => {
+        setNs([...ns, {ns: '', ip: '', number: Date.now()}]);
+    };
+
+    const changeNs = (key, value, number) => {
+        setNs(ns.map(i => i.number === number ? {...i, [key]: value} : i));
+    };
+
+    const removeNs = (number) => {
+        setNs(ns.filter(i => i.number !== number));
+    };
 
     useEffect(()=>{
         setLoading(true);
@@ -153,6 +162,7 @@ const CustomerDomainWhois = observer(() => {
 
     const sendForm = () => {
         setShowNS(true);
+        addNs();
         console.log(domain.domainForm);
     }
 
@@ -160,7 +170,7 @@ const CustomerDomainWhois = observer(() => {
         try{
             if(sendData){
                 let data;
-                data = await createOrderDomain(url + '.' + domain.domain.filter(item => item.id === zone)[0].title, zone, sendData.familiaRu, sendData.familiaEn, sendData.nameRu, sendData.nameEn, sendData.otchestvoRu, sendData.otchestvoEn, sendData.phone, sendData.email, sendData.dateBirthday, sendData.addressCity, sendData.addressObl, sendData.addressCountry, sendData.addressInd, sendData.addressStr, sendData.datePassport, sendData.codePassport, sendData.numPassport, sendData.orgPassport);
+                data = await createOrderDomain(url + '.' + domain.domain.filter(item => item.id === zone)[0].title, zone, sendData.familiaRu, sendData.familiaEn, sendData.nameRu, sendData.nameEn, sendData.otchestvoRu, sendData.otchestvoEn, sendData.phone, sendData.email, sendData.dateBirthday, sendData.addressCity, sendData.addressObl, sendData.addressCountry, sendData.addressInd, sendData.addressStr, sendData.datePassport, sendData.codePassport, sendData.numPassport, sendData.orgPassport, ns);
                 console.log(data);
             }
 
@@ -262,28 +272,31 @@ const CustomerDomainWhois = observer(() => {
                             </div>
                             <div className="card-body">
                                 <p>Укажите как минимум 1 NS для домена, либо не указывайте, в этом случае домен будет привязан на NS steplog.ru и вы сможете указать свои позднее.</p>
-                                <div className="form-group">
-                                    <input type="text" name="ns1" value={ns1}
-                                           onChange={e => setNs1(e.target.value)}
-                                           placeholder="ns1.steplog.ru"
-                                           className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <input type="text" name="ns2" value={ns2}
-                                           onChange={e => setNs2(e.target.value)}
-                                           placeholder="ns2.steplog.ru"
-                                           className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <input type="text" name="ns3" value={ns3}
-                                           onChange={e => setNs3(e.target.value)}
-                                           className="form-control"/>
-                                </div>
-                                <div className="form-group">
-                                    <input type="text" name="ns4" value={ns4}
-                                           onChange={e => setNs4(e.target.value)}
-                                           className="form-control"/>
-                                </div>
+
+                                {
+                                    ns.map(i =>
+                                        <div
+                                            className="row mb-3"
+                                            key={i.number}>
+                                            <div className="col-5"><input
+                                                value={i.ns}
+                                                className="form-control"
+                                                onChange={(e) => changeNs('ns', e.target.value, i.number)}
+                                                placeholder="ns1.steplog.ru"/></div>
+                                            <div className="col-4"><input
+                                                value={i.ip}
+                                                className="form-control"
+                                                onChange={(e) => changeNs('ip', e.target.value, i.number)}
+                                                placeholder="1.1.1.1"/></div>
+                                            <div className="col-3"><button className="btn btn-outline-danger btn-block" onClick={() => removeNs(i.number)}>Удалить</button></div>
+                                        </div>
+                                    )
+                                }
+                                <button className="btn btn-outline-primary"
+                                        onClick={addNs}
+                                >
+                                    Добавить НС
+                                </button>
                             </div>
                         </div>
                         :

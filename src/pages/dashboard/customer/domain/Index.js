@@ -105,7 +105,13 @@ const CustomerDomainIndex = () => {
                                 <tr key={domain.id}>
                                     <td className="align-middle">{domain.id}</td>
                                     <td className="align-middle">{domain.url}</td>
-                                    <td className="align-middle"></td>
+                                    <td className="align-middle">
+                                        {domain.ns && domain.ns.map(item => (
+                                            <div key={item.id}>
+                                                {item.ns}
+                                            </div>
+                                        ))}
+                                    </td>
                                     <td className="align-middle"></td>
                                     <td className="align-middle"></td>
                                     <td className="project-actions text-right">
