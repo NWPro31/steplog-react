@@ -10,8 +10,8 @@ import {indexOrderDomain} from "../../../../http/domainAPI";
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
 import 'moment/locale/ru';
-import { Tooltip as ReactTooltip } from 'react-tooltip'
-import 'react-tooltip/dist/react-tooltip.css'
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
 
 
 const CustomerDomainIndex = () => {
@@ -71,10 +71,10 @@ const CustomerDomainIndex = () => {
                             <thead>
                             <tr>
                                 <th width={'8%'}>#</th>
-                                <th width={'25%'}>Домен</th>
-                                <th width={'10%'} className="text-center">НС</th>
-                                <th width={'10%'} className="text-center">Регистрация до</th>
-                                <th width={'12%'} className="text-center">Состояние</th>
+                                <th width={'20%'}>Домен</th>
+                                <th width={'15%'} className="text-center">НС</th>
+                                <th width={'15%'} className="text-center">Действует до</th>
+                                <th width={'15%'} className="text-center">Состояние</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -105,15 +105,20 @@ const CustomerDomainIndex = () => {
                                 <tr key={domain.id}>
                                     <td className="align-middle">{domain.id}</td>
                                     <td className="align-middle">{domain.url}</td>
-                                    <td className="align-middle">
+                                    <td className="align-middle text-center">
                                         {domain.ns && domain.ns.map(item => (
-                                            <div key={item.id}>
+                                            <div key={item.number}>
                                                 {item.ns}
                                             </div>
                                         ))}
                                     </td>
-                                    <td className="align-middle"></td>
-                                    <td className="align-middle"></td>
+                                    <td className="align-middle tooltip_el text-center"
+                                        style={{cursor:'help'}}
+                                        data-tooltip-float="true"
+                                        data-tooltip-content="Срок действия отобразится после активации домена">
+                                        ?
+                                    </td>
+                                    <td className="align-middle text-center">{domain.status && domain.status.title}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
                                                 onClick={() => {
