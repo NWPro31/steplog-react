@@ -7,63 +7,51 @@ import InputMask from "react-input-mask";
 
 const DomainFormRu = observer(() => {
     const {domain} = useContext(Context);
-    const [nameRu, setNameRu] = useState('');
-    const [familiaRu, setFamiliaRu] = useState('');
-    const [otchestvoRu, setOtchestvoRu] = useState('');
-    const [familiaEn, setFamiliaEn] = useState('');
-    const [nameEn, setNameEn] = useState('');
-    const [otchestvoEn, setOtchestvoEn] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [numPassport, setNumPassport] = useState('');
-    const [orgPassport, setOrgPassport] = useState('');
-    const [datePassport, setDatePassport] = useState('');
-    const [codePassport, setCodePassport] = useState('');
-    const [dateBirthday, setDateBirthday] = useState('');
-    const [addressCountry, setAddressCountry] = useState('');
-    const [addressObl, setAddressObl] = useState('');
-    const [addressInd, setAddressInd] = useState('');
-    const [addressCity, setAddressCity] = useState('');
-    const [addressStr, setAddressStr] = useState('');
+    const [formValue, setFormValue] = useState({
+        'nameRu': '',
+        'familiaRu': '',
+        'otchestvoRu': '',
+        'familiaEn': '',
+        'nameEn': '',
+        'otchestvoEn': '',
+        'email': '',
+        'phone': '',
+        'numPassport': '',
+        'datePassport': '',
+        'orgPassport': '',
+        'dateBirthday': '',
+        'codePassport': '',
+        'addressCountry': '',
+        'addressObl': '',
+        'addressInd': '',
+        'addressCity': '',
+        'addressStr': '',
+        'error': {}
+    });
     const [errors, setErrors] = useState({});
 
 
-    useEffect(()=>{
-        domain.setDomainForm({
-            'nameRu': nameRu,
-            'familiaRu': familiaRu,
-            'otchestvoRu': otchestvoRu,
-            'familiaEn': familiaEn,
-            'nameEn': nameEn,
-            'otchestvoEn': otchestvoEn,
-            'email': email,
-            'phone': phone,
-            'numPassport': numPassport,
-            'datePassport': datePassport,
-            'orgPassport': orgPassport,
-            'dateBirthday': dateBirthday,
-            'codePassport': codePassport,
-            'addressCountry': addressCountry,
-            'addressObl': addressObl,
-            'addressInd': addressInd,
-            'addressCity': addressCity,
-            'addressStr': addressStr,
-            'error': domain.domainForm.error
+    useEffect(() => {
+        Object.keys(domain.domainForm).map((objectKey) => {
+            domain.domainForm[objectKey] !== formValue[objectKey] && setFormValue(formValue => ({...formValue, [objectKey]: domain.domainForm[objectKey]}));
         });
+    }, [domain.domainForm])
 
-    },[nameRu, familiaRu, otchestvoRu, familiaEn, nameEn, otchestvoEn, email, phone, orgPassport, numPassport, datePassport, dateBirthday, codePassport, addressCountry, addressCountry, addressObl, addressInd, addressCity, addressStr, errors])
+    useEffect(()=>{
+        domain.setDomainForm({...domain.domainForm, 'error': domain.domainForm.error});
+    },[errors])
 
     useEffect(() => {
         setErrors(domain.domainForm.error);
     }, [domain.domainForm.error])
 
     const changeDatePassport = (event) => {
-        setDatePassport(new Date(event).toLocaleDateString('fr-CA'));
+        setFormValue({...formValue, 'datePassport': new Date(event).toLocaleDateString('fr-CA')});
         errors.datePassport && new Date(event).toLocaleDateString('fr-CA') !== "" && new Date(event).toLocaleDateString('fr-CA').match(/\d{4}-\d{2}-\d{2}/) && delete errors.datePassport;
     }
 
     const changeDateBirthday = (event) => {
-        setDateBirthday(new Date(event).toLocaleDateString('fr-CA'));
+        setFormValue({...formValue, 'dateBirthday': new Date(event).toLocaleDateString('fr-CA')});
         errors.dateBirthday && new Date(event).toLocaleDateString('fr-CA') !== "" && new Date(event).toLocaleDateString('fr-CA').match(/\d{4}-\d{2}-\d{2}/) && delete errors.dateBirthday;
     }
 
@@ -74,27 +62,21 @@ const DomainFormRu = observer(() => {
     };
 
     const toEn = (name, set) => {
-        if(set === 'familiaRu') {
-            setFamiliaEn(ToTranslit(name));
-            errors.familiaEn && ToTranslit(name) !== "" && ToTranslit(name).match(/^[A-Z][a-z]{1,}/) && delete errors.familiaEn;
-        }
-        if(set === 'nameRu') {
-            setNameEn(ToTranslit(name));
-            errors.nameRu && ToTranslit(name) !== "" && ToTranslit(name).match(/^[A-Z][a-z]{1,}/) && delete errors.nameRu;
-        }
-        if(set === 'otchestvoRu') {
-            setOtchestvoEn(ToTranslit(name));
-            errors.otchestvoRu && ToTranslit(name) !== "" && ToTranslit(name).match(/^[A-Z][a-z]{1,}/) && delete errors.otchestvoRu;
-        }
+        setFormValue(formValue => ({...formValue, [set]: ToTranslit(name)}));
+        errors[set] && ToTranslit(name) !== "" && ToTranslit(name).match(/^[A-Z][a-z]{1,}/) && delete errors[set];
+        set === 'familiaRu' && domain.setDomainForm({...domain.domainForm, 'familiaEn': ToTranslit(name)});
+        set === 'nameRu' && domain.setDomainForm({...domain.domainForm, 'nameEn': ToTranslit(name)});
+        set === 'otchestvoRu' && domain.setDomainForm({...domain.domainForm, 'otchestvoEn': ToTranslit(name)});
     };
 
     return(
       <>
           <div className="form-group">
               <label htmlFor="inputFamiliaRu">Фамилия</label>
-              <input type="text" id="inputFamiliaRu" name="familiaRu" value={familiaRu}
+              <input type="text" id="inputFamiliaRu" name="familiaRu" value={formValue.familiaRu}
                      onChange={e => {
-                         setFamiliaRu(e.target.value);
+                         setFormValue({...formValue, 'familiaRu': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'familiaRu': e.target.value});
                          errors.familiaRu && removeError('familiaRu', /^[А-Я][а-я]{1,}/, e);
                          toEn(e.target.value, 'familiaRu');
                      }}
@@ -103,9 +85,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputNameRu">Имя</label>
-              <input type="text" id="inputNameRu" name="nameRu" value={nameRu}
+              <input type="text" id="inputNameRu" name="nameRu" value={formValue.nameRu}
                      onChange={e => {
-                         setNameRu(e.target.value);
+                         setFormValue({...formValue, 'nameRu': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'nameRu': e.target.value});
                          errors.nameRu && removeError('nameRu', /^[А-Я][а-я]{1,}/, e);
                          toEn(e.target.value, 'nameRu');
                      }}
@@ -114,9 +97,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputOtchestvoRu">Отчество</label>
-              <input type="text" id="inputOtchestvoRu" name="otchestvoRu" value={otchestvoRu}
+              <input type="text" id="inputOtchestvoRu" name="otchestvoRu" value={formValue.otchestvoRu}
                      onChange={e => {
-                         setOtchestvoRu(e.target.value);
+                         setFormValue({...formValue, 'otchestvoRu': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'otchestvoRu': e.target.value});
                          errors.otchestvoRu && removeError('otchestvoRu', /^[А-Я][а-я]{2,}/, e);
                          toEn(e.target.value, 'otchestvoRu');
                      }}
@@ -125,9 +109,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputFamiliaEn">Фамилия (латиницей)</label>
-              <input type="text" id="inputFamiliaEn" name="familiaEn" value={familiaEn}
+              <input type="text" id="inputFamiliaEn" name="familiaEn" value={formValue.familiaEn}
                      onChange={e => {
-                         setFamiliaEn(e.target.value);
+                         setFormValue({...formValue, 'familiaEn': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'familiaEn': e.target.value});
                          errors.familiaEn && removeError('familiaEn', /^[A-Z][a-z]{1,}/, e);
                      }}
                      className={`form-control ${errors.familiaEn && "border-danger"}`}/>
@@ -135,9 +120,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputNameEn">Имя  (латиницей)</label>
-              <input type="text" id="inputNameEn" name="nameEn" value={nameEn}
+              <input type="text" id="inputNameEn" name="nameEn" value={formValue.nameEn}
                      onChange={e => {
-                         setNameEn(e.target.value);
+                         setFormValue({...formValue, 'nameEn': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'nameEn': e.target.value});
                          errors.nameEn && removeError('nameEn', /^[A-Z][a-z]{1,}/, e);
                      }}
                      className={`form-control ${errors.nameEn && "border-danger"}`}/>
@@ -145,9 +131,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputOtchestvoEn">Отчество  (латиницей)</label>
-              <input type="text" id="inputOtchestvoEn" name="otchestvoEn" value={otchestvoEn}
+              <input type="text" id="inputOtchestvoEn" name="otchestvoEn" value={formValue.otchestvoEn}
                      onChange={e => {
-                         setOtchestvoEn(e.target.value);
+                         setFormValue({...formValue, 'otchestvoEn': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'otchestvoEn': e.target.value});
                          errors.otchestvoEn && removeError('otchestvoEn', /^[A-Z][a-z]{1,}/, e);
                      }}
                      className={`form-control ${errors.otchestvoEn && "border-danger"}`}/>
@@ -155,9 +142,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputEmail">Email</label>
-              <input type="text" id="inputEmail" name="email" value={email}
+              <input type="text" id="inputEmail" name="email" value={formValue.email}
                      onChange={e => {
-                         setEmail(e.target.value);
+                         setFormValue({...formValue, 'email': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'email': e.target.value});
                          errors.email && removeError('email', /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, e);
                      }}
                      className={`form-control ${errors.email && "border-danger"}`}/>
@@ -165,9 +153,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
           <label htmlFor="inputPhone">Телефон</label>
-          <InputMask mask="+7 (999) 999-99-99" value={phone}
+          <InputMask mask="+7 (999) 999-99-99" value={formValue.phone}
                      onChange={e => {
-                         setPhone(e.target.value);
+                         setFormValue({...formValue, 'phone': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'phone': e.target.value});
                          errors.phone && removeError('phone', /\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}/, e);
                      }}>
               {() => <input type="text" id="inputPhone" name="phone"
@@ -183,9 +172,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputNumPassport">Серия и номер паспорта</label>
-              <InputMask mask="9999 999999" value={numPassport}
+              <InputMask mask="9999 999999" value={formValue.numPassport}
                          onChange={e => {
-                             setNumPassport(e.target.value);
+                             setFormValue({...formValue, 'numPassport': e.target.value});
+                             domain.setDomainForm({...domain.domainForm, 'numPassport': e.target.value});
                              errors.numPassport && removeError('numPassport', /\d{4}\s\d{6}/, e);
                          }}>
                   {() => <input type="text" id="inputNumPassport" name="num_passport"
@@ -197,9 +187,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputOrgPassport">Организация, выдавшая паспорт</label>
-              <input type="text" id="inputOrgPassport" name="org_passport" value={orgPassport}
+              <input type="text" id="inputOrgPassport" name="org_passport" value={formValue.orgPassport}
                      onChange={e => {
-                         setOrgPassport(e.target.value);
+                         setFormValue({...formValue, 'orgPassport': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'orgPassport': e.target.value});
                          errors.orgPassport && removeError('orgPassport', /^[а-яА-Яa-zA-Z0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.orgPassport && "border-danger"}`}/>
@@ -208,9 +199,10 @@ const DomainFormRu = observer(() => {
           <div className="form-group">
               <label htmlFor="inputDatePassport">Дата выдачи паспорта</label>
               <div className="input-group date">
-                  <InputMask mask="2099-99-99" value={datePassport}
+                  <InputMask mask="2099-99-99" value={formValue.datePassport}
                              onChange={e => {
-                                 setDatePassport(e.target.value);
+                                 setFormValue({...formValue, 'datePassport': e.target.value});
+                                 domain.setDomainForm({...domain.domainForm, 'datePassport': e.target.value});
                                  errors.datePassport && removeError('datePassport', /\d{4}-\d{2}-\d{2}/, e);
                              }}>
                       {() =>
@@ -228,9 +220,10 @@ const DomainFormRu = observer(() => {
           <div className="form-group border-bottom">
               <label htmlFor="inputDateBirthday">Дата рождения</label>
               <div className="input-group date">
-                  <InputMask mask="9999-99-99" value={dateBirthday}
+                  <InputMask mask="9999-99-99" value={formValue.dateBirthday}
                              onChange={e => {
-                                 setDateBirthday(e.target.value);
+                                 setFormValue({...formValue, 'dateBirthday': e.target.value});
+                                 domain.setDomainForm({...domain.domainForm, 'dateBirthday': e.target.value});
                                  errors.dateBirthday && removeError('dateBirthday', /\d{4}-\d{2}-\d{2}/, e);
                              }}>
                       {() =>
@@ -247,9 +240,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputCodePassport">Код подразделения, выдавшего паспорт</label>
-              <InputMask mask="999-999" value={codePassport}
+              <InputMask mask="999-999" value={formValue.codePassport}
                          onChange={e => {
-                             setCodePassport(e.target.value);
+                             setFormValue({...formValue, 'codePassport': e.target.value});
+                             domain.setDomainForm({...domain.domainForm, 'codePassport': e.target.value});
                              errors.codePassport && removeError('codePassport', /\d{3}-\d{3}/, e);
                          }}>
                   {() => <input type="text" id="inputCodePassport" name="code_passport"
@@ -264,9 +258,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputAddressCountry">Страна</label>
-              <input type="text" id="inputAddressCountry" name="address_country" value={addressCountry}
+              <input type="text" id="inputAddressCountry" name="address_country" value={formValue.addressCountry}
                      onChange={e => {
-                         setAddressCountry(e.target.value);
+                         setFormValue({...formValue, 'addressCountry': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'addressCountry': e.target.value});
                          errors.addressCountry && removeError('addressCountry', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressCountry && "border-danger"}`}/>
@@ -274,9 +269,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputAddressObl">Регион</label>
-              <input type="text" id="inputAddressObl" name="address_obl" value={addressObl}
+              <input type="text" id="inputAddressObl" name="address_obl" value={formValue.addressObl}
                      onChange={e => {
-                         setAddressObl(e.target.value);
+                         setFormValue({...formValue, 'addressObl': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'addressObl': e.target.value});
                          errors.addressObl && removeError('addressObl', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressObl && "border-danger"}`}/>
@@ -284,9 +280,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputAddressInd">Индекс</label>
-              <input type="text" id="inputAddressInd" name="address_ind" value={addressInd}
+              <input type="text" id="inputAddressInd" name="address_ind" value={formValue.addressInd}
                      onChange={e => {
-                         setAddressInd(e.target.value);
+                         setFormValue({...formValue, 'addressInd': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'addressInd': e.target.value});
                          errors.addressInd && removeError('addressInd', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressInd && "border-danger"}`}/>
@@ -294,9 +291,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputAddressCity">Город</label>
-              <input type="text" id="inputAddressCity" name="address_city" value={addressCity}
+              <input type="text" id="inputAddressCity" name="address_city" value={formValue.addressCity}
                      onChange={e => {
-                         setAddressCity(e.target.value);
+                         setFormValue({...formValue, 'addressCity': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'addressCity': e.target.value});
                          errors.addressCity && removeError('addressCity', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressCity && "border-danger"}`}/>
@@ -304,9 +302,10 @@ const DomainFormRu = observer(() => {
           </div>
           <div className="form-group">
               <label htmlFor="inputAddressStr">Адрес</label>
-              <input type="text" id="inputAddressStr" name="address_str" value={addressStr}
+              <input type="text" id="inputAddressStr" name="address_str" value={formValue.addressStr}
                      onChange={e => {
-                         setAddressStr(e.target.value);
+                         setFormValue({...formValue, 'addressStr': e.target.value});
+                         domain.setDomainForm({...domain.domainForm, 'addressStr': e.target.value});
                          errors.addressStr && removeError('addressStr', /^[а-яА-Я0-9\s?!,.'Ёё]+$/, e);
                      }}
                      className={`form-control ${errors.addressStr && "border-danger"}`}/>

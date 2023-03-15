@@ -4,7 +4,27 @@ export default class DomainStore {
     constructor() {
         this._domain = {};
         this._domainReg = {};
-        this._domainForm = {};
+        this._domainForm = {
+            'nameRu': '',
+            'familiaRu': '',
+            'otchestvoRu': '',
+            'familiaEn': '',
+            'nameEn': '',
+            'otchestvoEn': '',
+            'email': '',
+            'phone': '',
+            'numPassport': '',
+            'datePassport': '',
+            'orgPassport': '',
+            'dateBirthday': '',
+            'codePassport': '',
+            'addressCountry': '',
+            'addressObl': '',
+            'addressInd': '',
+            'addressCity': '',
+            'addressStr': '',
+            'error': {}
+        };
         this._orderDomain = {};
         makeAutoObservable(this);
     }

@@ -4,7 +4,7 @@ import {DASHBOARD_ROUTE, INDEX_CUSTOMER_DOMAIN_ROUTE} from "../../../../utils/co
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import ContentHeader from "../../../../components/ContentHeader";
-import {createOrderDomain, indexDomain, whoisDomain} from "../../../../http/domainAPI";
+import {createOrderDomain, indexDomain, whoisDomain, indexContactRuDomain} from "../../../../http/domainAPI";
 import {Context} from "../../../../index";
 import DomainFormRu from "../../../../components/DomainFormRu";
 import {observer} from "mobx-react-lite";
@@ -21,6 +21,8 @@ const CustomerDomainWhois = observer(() => {
     const [error, setError] = useState([]);
     const [showNS, setShowNS] = useState(false);
     const [sendData, setSendData] = useState({});
+    const [contactRu, setContactRu] = useState([]);
+    const [edit, setEdit] = useState(0);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_DOMAIN_ROUTE, name: "Домены" },
@@ -47,8 +49,7 @@ const CustomerDomainWhois = observer(() => {
         }).finally(()=>{
             setZone(domain.domain.filter(item => item.is_stored)[0].id ?? 0);
             setLoading(false);
-        })
-            .catch(err => console.log(err));
+        }).catch(err => console.log(err));
     },[]);
 /*
     useEffect(()=>{
@@ -56,8 +57,36 @@ const CustomerDomainWhois = observer(() => {
     }, [domain.domainForm]);
 */
     useEffect(()=>{
+        if(edit > 0){
+            domain.setDomainForm({
+                'nameRu': contactRu[edit-1].name_ru,
+                'familiaRu': contactRu[edit-1].family_ru,
+                'otchestvoRu': contactRu[edit-1].otchestvo_ru,
+                'familiaEn': contactRu[edit-1].family_en,
+                'nameEn': contactRu[edit-1].name_en,
+                'otchestvoEn': contactRu[edit-1].otchestvo_en,
+                'email': contactRu[edit-1].email,
+                'phone': contactRu[edit-1].phone,
+                'numPassport': contactRu[edit-1].passport_number,
+                'datePassport': contactRu[edit-1].passport_date,
+                'orgPassport': contactRu[edit-1].passport_org,
+                'dateBirthday': contactRu[edit-1].birthday,
+                'codePassport': contactRu[edit-1].passport_code,
+                'addressCountry': contactRu[edit-1].address_country,
+                'addressObl': contactRu[edit-1].address_oblast,
+                'addressInd': contactRu[edit-1].address_index,
+                'addressCity': contactRu[edit-1].address_city,
+                'addressStr': contactRu[edit-1].address_street,
+                'error': error
+            });
+            console.log(domain.domainForm);
+        }
+    }, [edit]);
+
+    useEffect(()=>{
         domain.setDomainForm({...domain.domainForm, 'error': error});
     }, [error]);
+
 
     const click = async () => {
         try {
@@ -71,6 +100,12 @@ const CustomerDomainWhois = observer(() => {
             if(data) {
                 setLoading(false);
                 data.available === "yes" ? setStatus("Доступен") : setStatus("Не доступен");
+                indexContactRuDomain().then(data => {
+                    setContactRu(data.contact_ru_domains);
+                }).finally(()=>{
+
+                })
+                    .catch(err => console.log(err));
             }
         } catch (e) {
             alert(e.response.data.message);
@@ -253,6 +288,21 @@ const CustomerDomainWhois = observer(() => {
                         </div>
                         <div className="card-body">
                             <p>Заполните все поля для регистрации.</p>
+                            {contactRu && (
+                                <div className="form-group">
+                                        <select className="form-control"
+                                                onChange={e => {
+                                                    setEdit(Number(e.target.value));
+                                                }}
+                                                name="contact_ru"
+                                        >
+                                            <option key="0" value="0">Выберите для автозаполнения</option>
+                                            {contactRu.map(item => (
+                                                <option key={item.id} value={item.id}>{item.family_ru} {item.name_ru} {item.otchestvo_ru}</option>
+                                            ))}
+                                        </select>
+                                </div>
+                            )}
                             <DomainFormRu/>
                         </div>
                     </div>
