@@ -7,7 +7,7 @@ import {
     DASHBOARD_ROUTE,
     SHOW_COMMENT_ORDER_SERVICE_ROUTE,
     INDEX_ORDERS_ROUTE,
-    UPDATE_ORDERS_ROUTE, CREATE_INVOICE_ORDER_SERVICE_ROUTE
+    UPDATE_ORDERS_ROUTE, CREATE_INVOICE_ORDER_SERVICE_ROUTE, UPDATE_ORDER_DOMAIN_ROUTE
 } from "../../../../utils/consts";
 import moment from "moment";
 import 'moment/locale/ru';
@@ -19,8 +19,6 @@ const OrdersDomainShow = observer(() => {
     const navigate = useNavigate();
     const {id} = useParams();
     const {domain} = useContext(Context);
-    const [paid, setPaid] = useState(0);
-    const [isPaid, setIsPaid] = useState(0);
     const [loadingData, setLoadingData] = useState(true);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
@@ -85,46 +83,46 @@ const OrdersDomainShow = observer(() => {
                                 <div className="row">
                                     <div className="col-12 col-md-12 col-lg-9 order-2 order-md-1">
                                         <div className="row">
-                                            <div className="col-12 col-lg-4">
+                                            <div className="col-12 col-lg-4 pt-3 pb-3 bg-light">
                                                 Статус
                                             </div>
-                                            <div className="col-12 col-lg-8">
+                                            <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
                                                 <span>
                                                     {domain.orderDomain.order_domain.status.title}
                                                 </span>
                                             </div>
-                                            <div className="col-12 col-lg-4">
+                                            <div className="col-12 col-lg-4 pt-3 pb-3">
                                                 Нейм Сервера
                                             </div>
-                                            <div className="col-12 col-lg-8">
+                                            <div className="col-12 col-lg-8 pt-3 pb-3">
                                                 <span>
                                                     {domain.orderDomain.order_domain.ns.map(item =>
-                                                    <div key={item.id}>
+                                                    <div key={item.number}>
                                                         {item.ns}
                                                     </div>
                                                     )}
                                                 </span>
                                             </div>
-                                            <div className="col-12 col-lg-4">
+                                            <div className="col-12 col-lg-4 pt-3 pb-3 bg-light">
                                                 Стоимость
                                             </div>
-                                            <div className="col-12 col-lg-8">
+                                            <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
                                                 <span>
                                                     {domain.orderDomain.order_domain.price}р.
                                                 </span>
                                             </div>
-                                            <div className="col-12 col-lg-4">
+                                            <div className="col-12 col-lg-4 pt-3 pb-3">
                                                 Стоимость продления
                                             </div>
-                                            <div className="col-12 col-lg-8">
+                                            <div className="col-12 col-lg-8 pt-3 pb-3">
                                                 <span>
                                                     {domain.orderDomain.order_domain.price}р.
                                                 </span>
                                             </div>
-                                            <div className="col-12 col-lg-4">
+                                            <div className="col-12 col-lg-4 pt-3 pb-3 bg-light">
                                                 Срок регистрации
                                             </div>
-                                            <div className="col-12 col-lg-8">
+                                            <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
                                                 <span>
                                                     до
                                                 </span>
@@ -145,6 +143,13 @@ const OrdersDomainShow = observer(() => {
                                             <i className="fas fa-file-invoice m-1">
                                             </i>
                                             Продлить
+                                        </button>
+                                        <button className="btn btn-info btn-sm m-1"
+                                                onClick={() => {navigate(DASHBOARD_ROUTE + '/' +  UPDATE_ORDER_DOMAIN_ROUTE + '/' + domain.orderDomain.order_domain.id);}}
+                                        >
+                                            <i className="fas fa-file-invoice m-1">
+                                            </i>
+                                            Редактировать
                                         </button>
                                     </div>
                                 </div>

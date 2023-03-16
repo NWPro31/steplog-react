@@ -47,6 +47,11 @@ export const updateDomain = async (title, price, price_extension, period, is_sto
     return data;
 };
 
+export const updateOrderDomain = async (url, status_id, reg_before, ns, orderDomainId) => {
+    const {data} = await $authHost.patch('api/order_domains/'+ orderDomainId, {url, status_id, reg_before, ns});
+    return data;
+};
+
 export const deleteDomain = async (domainId) => {
     const {data} = await $authHost.delete('api/domains/' + domainId, {});
     return data;

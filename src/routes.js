@@ -20,7 +20,7 @@ import {
     SITES_ROUTE,
     UPDATE_DOMAIN_REG_ROUTE,
     UPDATE_DOMAIN_ROUTE,
-    UPDATE_HOSTING_ROUTE, UPDATE_INVOICES_ROUTE, UPDATE_ORDERS_ROUTE,
+    UPDATE_HOSTING_ROUTE, UPDATE_INVOICES_ROUTE, UPDATE_ORDER_DOMAIN_ROUTE, UPDATE_ORDERS_ROUTE,
     UPDATE_SERVICES_ROUTE,
     USERS_ROUTE, WHOIS_CUSTOMER_DOMAIN_ROUTE
 } from "./utils/consts";
@@ -60,6 +60,7 @@ import CustomerServicesShow from "./pages/dashboard/customer/services/Show";
 import CustomerDomainIndex from "./pages/dashboard/customer/domain/Index";
 import CustomerDomainWhois from "./pages/dashboard/customer/domain/Whois";
 import OrdersDomainShow from "./pages/dashboard/orders/domain/Show";
+import OrdersDomainUpdate from "./pages/dashboard/orders/domain/Update";
 
 export const authRoutes = [
     {
@@ -193,6 +194,10 @@ export const authRoutes = [
     {
         path: SHOW_ORDER_DOMAIN_ROUTE  + '/:id',
         Component: OrdersDomainShow
+    },
+    {
+        path: UPDATE_ORDER_DOMAIN_ROUTE  + '/:id',
+        Component: OrdersDomainUpdate
     }
 ];
 
