@@ -27,6 +27,11 @@ export const indexOrderDomain = async () => {
     return data;
 };
 
+export const showOrderDomain = async (domainId) => {
+    const {data} = await $authHost.get('api/order_domains/' + domainId, {});
+    return data;
+};
+
 export const whoisDomain = async (url) => {
     const {data} = await $whois.get('?q=' + url, {});
     return data;

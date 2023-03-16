@@ -14,6 +14,7 @@ import {indexInvoice} from "../../../http/invoiceAPI";
 const InvoicesIndex = observer(() => {
     const navigate = useNavigate();
     const {invoice} = useContext(Context);
+    const {user} = useContext(Context);
     const [loading,setLoading] = useState(true);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
@@ -65,8 +66,12 @@ const InvoicesIndex = observer(() => {
                                 <th width={'10%'} className="text-center">Сумма</th>
                                 <th width={'10%'} className="text-center">Категория</th>
                                 <th width={'12%'} className="text-center">Статус</th>
-                                <th width={'12%'} className="text-center">Метод оплаты</th>
-                                <th></th>
+                                <th width={'12%'} className="text-right">Метод оплаты</th>
+                                {user.user.user.role === 'admin' ?
+                                    <th></th>
+                                    :
+                                    ''
+                                }
                             </tr>
                             </thead>
                             <tbody>
@@ -92,7 +97,7 @@ const InvoicesIndex = observer(() => {
                                     </td>
                                 </tr>
                             )}
-                            {invoice.invoice.length > 0 && invoice.invoice.map(item => (
+                            {invoice.invoice.length > 0 && invoice.invoice.slice(0).reverse().map(item => (
                                 <tr key={item.id}>
                                     <td className="align-middle">{item.id}</td>
                                     <td className="align-middle">{item.title}</td>
@@ -100,7 +105,7 @@ const InvoicesIndex = observer(() => {
                                     <td className="align-middle text-center">{item.amount}р.</td>
                                     <td className="align-middle text-center tooltip_el">
                                         {item.service_order_id ? 'Обслуживаение сайта' : ''}
-                                        {item.domain_order_id ? 'Домен' : ''}
+                                        {item.domain_order_id ? 'Домены' : ''}
                                         {item.hosting_order_id ? 'Хостинг' : ''}
                                     </td>
                                     <td className={`align-middle text-center 
@@ -108,7 +113,7 @@ const InvoicesIndex = observer(() => {
                                     ${item.status && item.status.id === 3 ? 'text-success' : ''}
                                     ${item.status && item.status.id === 2 ? 'text-info' : ''}
                                     ${item.status && item.status.id === 4 ? 'text-danger' : ''}`}>{item.status && item.status.title ? item.status.title : 'не известен'}</td>
-                                    <td className="align-middle text-center project-actions">
+                                    <td className="align-middle project-actions text-right">
                                         {item.status && item.status.id === 1 ?
                                             <Button className="btn btn-primary btn-sm m-1"
                                                     onClick={() => {
@@ -124,14 +129,20 @@ const InvoicesIndex = observer(() => {
                                         }
                                         {item.status && item.status.id === 3 ? 'Банковский перевод' : ''}
                                     </td>
+                                    {user.user.user.role === 'admin' ?
                                     <td className="align-middle project-actions text-right">
-                                        <Button className="btn btn-info btn-sm m-1"
-                                                onClick={() => {navigate(DASHBOARD_ROUTE + '/' + UPDATE_INVOICES_ROUTE + '/' + item.id);}}>
-                                            <i className="fas fa-pencil-alt m-1">
-                                            </i>
-                                            ред.
-                                        </Button>
+                                            <Button className="btn btn-info btn-sm m-1"
+                                                    onClick={() => {
+                                                        navigate(DASHBOARD_ROUTE + '/' + UPDATE_INVOICES_ROUTE + '/' + item.id);
+                                                    }}>
+                                                <i className="fas fa-pencil-alt m-1">
+                                                </i>
+                                                ред.
+                                            </Button>
                                     </td>
+                                    :
+                                        ''
+                                    }
                                 </tr>
                             ))}
                             </tbody>

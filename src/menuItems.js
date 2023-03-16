@@ -18,7 +18,7 @@ export const menuItems = [
         name: 'Сайты',
         icon: 'fas fa-wrench nav-icon',
         path: '/dashboard/sites',
-        perm: 'user'
+        perm: ''
     },
     {
         id: 4,
@@ -123,6 +123,6 @@ export const menuItems = [
         name: 'Платежи',
         icon: 'fas fa-receipt nav-icon',
         path: '/dashboard/invoices/index',
-        perm: 'admin'
+        perm: 'user,admin'
     }
 ];
