@@ -26,7 +26,7 @@ const OrdersUpdate = () => {
 
     useEffect(()=>{
         void edit();
-        if(user.role!== 'admin') {
+        if(user.user.user.role!== 'admin') {
             navigate(DASHBOARD_ROUTE);
         }
     },[]);

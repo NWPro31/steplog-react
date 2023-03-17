@@ -24,7 +24,7 @@ const InvoiceOrderServicesCreate = () => {
 
 
     useEffect(() => {
-        if(user.role!== 'admin') {
+        if(user.user.user.role!== 'admin') {
             navigate(DASHBOARD_ROUTE);
         }
     },[])

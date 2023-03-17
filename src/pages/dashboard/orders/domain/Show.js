@@ -5,13 +5,11 @@ import {Context} from "../../../../index";
 import ContentHeader from "../../../../components/ContentHeader";
 import {
     DASHBOARD_ROUTE,
-    SHOW_COMMENT_ORDER_SERVICE_ROUTE,
     INDEX_ORDERS_ROUTE,
-    UPDATE_ORDERS_ROUTE, CREATE_INVOICE_ORDER_SERVICE_ROUTE, UPDATE_ORDER_DOMAIN_ROUTE
+    UPDATE_ORDER_DOMAIN_ROUTE
 } from "../../../../utils/consts";
 import moment from "moment";
 import 'moment/locale/ru';
-import Button from "react-bootstrap/Button";
 import {showOrderDomain} from "../../../../http/domainAPI";
 
 
@@ -20,6 +18,7 @@ const OrdersDomainShow = observer(() => {
     const {id} = useParams();
     const {domain} = useContext(Context);
     const [loadingData, setLoadingData] = useState(true);
+    const [ns, setNs] = useState([]);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_ORDERS_ROUTE, name: "Список заказов" },
@@ -28,7 +27,8 @@ const OrdersDomainShow = observer(() => {
 
     useEffect(()=>{
         showOrderDomain(id).then(data => {
-            domain.setOrderDomain(data);
+            domain.setOrderDomain(data.order_domain);
+            setNs(data.order_domain.ns);
         }).finally(()=>{
             setLoadingData(false);
         }).catch(err => console.log(err));
@@ -38,7 +38,7 @@ const OrdersDomainShow = observer(() => {
 
     },[domain.orderDomain]);
 
-    if(!domain.orderDomain.order_domain && !loadingData) {
+    if(!domain.orderDomain && !loadingData) {
         return (
             <>
                 <ContentHeader hrefs={hrefs} name="Информация о домене"/>
@@ -63,6 +63,18 @@ const OrdersDomainShow = observer(() => {
         return dateA.getDate() !== dateB.getDate();
     }
 
+    const addNs = () => {
+        setNs([...ns, {ns: '', ip: '', number: Date.now()}]);
+    };
+
+    const changeNs = (key, value, number) => {
+        setNs(ns.map(i => i.number === number ? {...i, [key]: value} : i));
+    };
+
+    const removeNs = (number) => {
+        setNs(ns.filter(i => i.number !== number));
+    };
+
     return (
         <>
             <ContentHeader hrefs={hrefs} name="Информация о домене"/>
@@ -71,7 +83,7 @@ const OrdersDomainShow = observer(() => {
                     <>
                         <div className="card">
                             <div className="card-header">
-                                <h3 className="card-title">Информация о домене - {domain.orderDomain.order_domain.url}</h3>
+                                <h3 className="card-title">Информация о домене - {domain.orderDomain.url}</h3>
                                 <div className="card-tools">
                                     <button type="button" className="btn btn-tool" data-card-widget="collapse"
                                             title="Collapse">
@@ -88,7 +100,7 @@ const OrdersDomainShow = observer(() => {
                                             </div>
                                             <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
                                                 <span>
-                                                    {domain.orderDomain.order_domain.status.title}
+                                                    {domain.orderDomain.status.title}
                                                 </span>
                                             </div>
                                             <div className="col-12 col-lg-4 pt-3 pb-3">
@@ -96,7 +108,7 @@ const OrdersDomainShow = observer(() => {
                                             </div>
                                             <div className="col-12 col-lg-8 pt-3 pb-3">
                                                 <span>
-                                                    {domain.orderDomain.order_domain.ns.map(item =>
+                                                    {domain.orderDomain.ns.map(item =>
                                                     <div key={item.number}>
                                                         {item.ns}
                                                     </div>
@@ -108,7 +120,7 @@ const OrdersDomainShow = observer(() => {
                                             </div>
                                             <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
                                                 <span>
-                                                    {domain.orderDomain.order_domain.price}р.
+                                                    {domain.orderDomain.price}р.
                                                 </span>
                                             </div>
                                             <div className="col-12 col-lg-4 pt-3 pb-3">
@@ -116,7 +128,7 @@ const OrdersDomainShow = observer(() => {
                                             </div>
                                             <div className="col-12 col-lg-8 pt-3 pb-3">
                                                 <span>
-                                                    {domain.orderDomain.order_domain.price}р.
+                                                    {domain.orderDomain.price}р.
                                                 </span>
                                             </div>
                                             <div className="col-12 col-lg-4 pt-3 pb-3 bg-light">
@@ -124,15 +136,15 @@ const OrdersDomainShow = observer(() => {
                                             </div>
                                             <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
                                                 <span>
-                                                    до
+                                                    до {domain.orderDomain.reg_before}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-12 col-md-12 col-lg-3 order-1 order-md-2">
                                         <button className="btn btn-info btn-sm m-1"
-                                                onClick={() => {navigate(DASHBOARD_ROUTE);}}
-                                        >
+                                                data-toggle="modal"
+                                                data-target="#modal-default">
                                             <i className="fas fa-file-invoice m-1">
                                             </i>
                                             Поменять НС
@@ -145,7 +157,7 @@ const OrdersDomainShow = observer(() => {
                                             Продлить
                                         </button>
                                         <button className="btn btn-info btn-sm m-1"
-                                                onClick={() => {navigate(DASHBOARD_ROUTE + '/' +  UPDATE_ORDER_DOMAIN_ROUTE + '/' + domain.orderDomain.order_domain.id);}}
+                                                onClick={() => {navigate(DASHBOARD_ROUTE + '/' +  UPDATE_ORDER_DOMAIN_ROUTE + '/' + domain.orderDomain.id);}}
                                         >
                                             <i className="fas fa-file-invoice m-1">
                                             </i>
@@ -164,6 +176,57 @@ const OrdersDomainShow = observer(() => {
                     </div>
                 }
             </section>
+            {ns &&
+                <div className="modal fade" id="modal-default">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Изменить НС серверы</h4>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Обновление НС может занять до 24 часов.</p>
+                                {
+                                    ns.map(i =>
+                                        <div
+                                            className="row mb-3"
+                                            key={i.number}>
+                                            <div className="col-5"><input
+                                                value={i.ns ?? ''}
+                                                className="form-control"
+                                                onChange={(e) => changeNs('ns', e.target.value, i.number)}
+                                                placeholder="ns1.steplog.ru"/></div>
+                                            <div className="col-4"><input
+                                                value={i.ip ?? ''}
+                                                className="form-control"
+                                                onChange={(e) => changeNs('ip', e.target.value, i.number)}
+                                                placeholder="1.1.1.1"/></div>
+                                            <div className="col-3">
+                                                <button className="btn btn-outline-danger btn-block"
+                                                        onClick={() => removeNs(i.number)}>Удалить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                <button className="btn btn-outline-primary"
+                                        onClick={addNs}
+                                >
+                                    Добавить НС
+                                </button>
+                            </div>
+                            <div className="modal-footer justify-content-between">
+                                <button type="button" id="close-button" className="btn btn-default"
+                                        data-dismiss="modal">Отмена
+                                </button>
+                                <button type="button" className="btn btn-primary">Обновить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </>
     );
 });

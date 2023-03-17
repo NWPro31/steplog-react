@@ -58,28 +58,28 @@ const CustomerDomainWhois = observer(() => {
 */
     useEffect(()=>{
         if(edit > 0){
+            let contact = contactRu.filter(item => item.id === edit).map(data => data)[0];
             domain.setDomainForm({
-                'nameRu': contactRu[edit-1].name_ru,
-                'familiaRu': contactRu[edit-1].family_ru,
-                'otchestvoRu': contactRu[edit-1].otchestvo_ru,
-                'familiaEn': contactRu[edit-1].family_en,
-                'nameEn': contactRu[edit-1].name_en,
-                'otchestvoEn': contactRu[edit-1].otchestvo_en,
-                'email': contactRu[edit-1].email,
-                'phone': contactRu[edit-1].phone,
-                'numPassport': contactRu[edit-1].passport_number,
-                'datePassport': contactRu[edit-1].passport_date,
-                'orgPassport': contactRu[edit-1].passport_org,
-                'dateBirthday': contactRu[edit-1].birthday,
-                'codePassport': contactRu[edit-1].passport_code,
-                'addressCountry': contactRu[edit-1].address_country,
-                'addressObl': contactRu[edit-1].address_oblast,
-                'addressInd': contactRu[edit-1].address_index,
-                'addressCity': contactRu[edit-1].address_city,
-                'addressStr': contactRu[edit-1].address_street,
+                'nameRu': contact.name_ru,
+                'familiaRu': contact.family_ru,
+                'otchestvoRu': contact.otchestvo_ru,
+                'familiaEn': contact.family_en,
+                'nameEn': contact.name_en,
+                'otchestvoEn': contact.otchestvo_en,
+                'email': contact.email,
+                'phone': contact.phone,
+                'numPassport': contact.passport_number,
+                'datePassport': contact.passport_date,
+                'orgPassport': contact.passport_org,
+                'dateBirthday': contact.birthday,
+                'codePassport': contact.passport_code,
+                'addressCountry': contact.address_country,
+                'addressObl': contact.address_oblast,
+                'addressInd': contact.address_index,
+                'addressCity': contact.address_city,
+                'addressStr': contact.address_street,
                 'error': error
             });
-            console.log(domain.domainForm);
         }
     }, [edit]);
 

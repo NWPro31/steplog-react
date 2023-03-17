@@ -195,8 +195,8 @@ const OrdersIndex = observer(() => {
                                     <td className="align-middle tooltip_el text-center"
                                         style={{cursor:'help'}}
                                         data-tooltip-float="true"
-                                        data-tooltip-content="Срок действия отобразится после активации домена">
-                                        ?
+                                        data-tooltip-content={`Срок действия ${domain.reg_before ? 'до ' + domain.reg_before.replace(/\s.*/, '').trim() : 'отобразится после активации домена'}`}>
+                                        {domain.reg_before ? domain.reg_before.replace(/\s.*/, '').trim() : '?'}
                                     </td>
                                     <td className="align-middle text-center">{domain.status && domain.status.title}</td>
                                     <td className="project-actions text-right">
