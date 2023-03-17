@@ -12,6 +12,11 @@ export const createOrderDomain = async (url, domain_id, family_ru, family_en, na
     return data;
 };
 
+export const createChangeNsDomain = async (ns, order_domain_id) => {
+    const {data} = await $authHost.post('api/change_ns_domain', {ns, order_domain_id});
+    return data;
+};
+
 export const indexDomain = async () => {
     const {data} = await $authHost.get('api/domains', {});
     return data;

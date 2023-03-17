@@ -10,12 +10,14 @@ import {
 } from "../../../../utils/consts";
 import moment from "moment";
 import 'moment/locale/ru';
-import {showOrderDomain} from "../../../../http/domainAPI";
+import {createChangeNsDomain, showOrderDomain} from "../../../../http/domainAPI";
+import Spinner from "react-bootstrap/Spinner";
 
 
 const OrdersDomainShow = observer(() => {
     const navigate = useNavigate();
     const {id} = useParams();
+    const [loading, setLoading] = useState(false);
     const {domain} = useContext(Context);
     const [loadingData, setLoadingData] = useState(true);
     const [ns, setNs] = useState([]);
@@ -73,6 +75,28 @@ const OrdersDomainShow = observer(() => {
 
     const removeNs = (number) => {
         setNs(ns.filter(i => i.number !== number));
+    };
+
+    const click = async () => {
+        try {
+            setLoading(true);
+            document.getElementById('close-button').click();
+            let data;
+            data = await createChangeNsDomain(ns, id);
+            if(data.success) {
+                showOrderDomain(id).then(data => {
+                    domain.setOrderDomain(data.order_domain);
+                    setNs(data.order_domain.ns);
+                }).finally(()=>{
+                    setLoadingData(false);
+                }).catch(err => console.log(err));
+            }
+            console.log(data);
+            //if(data.success) navigate(DASHBOARD_ROUTE + '/' + INDEX_ORDERS_ROUTE);
+        } catch (e) {
+            console.log(e.response.message);
+        }
+
     };
 
     return (
@@ -187,7 +211,7 @@ const OrdersDomainShow = observer(() => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <p>Обновление НС может занять до 24 часов.</p>
+                                <p>Обновление этих настроек может занять примерно 24 часа.</p>
                                 {
                                     ns.map(i =>
                                         <div
@@ -221,7 +245,20 @@ const OrdersDomainShow = observer(() => {
                                 <button type="button" id="close-button" className="btn btn-default"
                                         data-dismiss="modal">Отмена
                                 </button>
-                                <button type="button" className="btn btn-primary">Обновить</button>
+                                <button type="button" className="btn btn-primary" onClick={click}>
+                                    {loading ?
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        :
+                                        ''
+                                    }
+                                    Обновить
+                                </button>
                             </div>
                         </div>
                     </div>
