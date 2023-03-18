@@ -22,6 +22,11 @@ export const indexDomain = async () => {
     return data;
 };
 
+export const indexChangeNsDomain = async () => {
+    const {data} = await $authHost.get('api/change_ns_domain', {});
+    return data;
+};
+
 export const indexContactRuDomain = async () => {
     const {data} = await $authHost.get('api/contact_ru_domains', {});
     return data;

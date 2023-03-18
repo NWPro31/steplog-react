@@ -13,7 +13,8 @@ import 'moment/locale/ru';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 import {useNavigate} from "react-router-dom";
-import {indexOrderDomain} from "../../../http/domainAPI";
+import {indexChangeNsDomain, indexOrderDomain} from "../../../http/domainAPI";
+import use from "use";
 
 
 const OrdersIndex = observer(() => {
@@ -22,8 +23,10 @@ const OrdersIndex = observer(() => {
     const {domain} = useContext(Context);
     const [orderServices,setOrderServices] = useState([]);
     const [orderDomains,setOrderDomains] = useState([]);
+    const [changeNs, setChangeNs] = useState([]);
     const [loadingServices,setLoadingServices] = useState(true);
     const [loadingDomains,setLoadingDomains] = useState(true);
+    const [loadingChangeNs, setLoadingChangeNs] = useState(true);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { name: "Список заказов" },
@@ -32,6 +35,7 @@ const OrdersIndex = observer(() => {
     useEffect(()=>{
         setLoadingServices(true);
         setLoadingDomains(true);
+        setLoadingChangeNs(true);
         indexOrderService().then(data => {
             service.setOrderService(data.order_services);
             setOrderServices(data.order_services);
@@ -44,11 +48,16 @@ const OrdersIndex = observer(() => {
         }).finally(()=>{
             setLoadingDomains(false);
         }).catch(err => console.log(err));
+        indexChangeNsDomain().then(data => {
+            setChangeNs(data.change_domain_ns);
+        }).finally(()=>{
+            setLoadingChangeNs(false);
+        }).catch(err => console.log(err));
     },[]);
 
     useEffect(() => {
         //loading
-    },[orderServices, orderDomains]);
+    },[orderServices, orderDomains, changeNs]);
 
     const timeRule = (time) => {
         return moment(time).locale('ru').fromNow()
@@ -175,7 +184,7 @@ const OrdersIndex = observer(() => {
                                     <td colSpan={8}>
                                         <div className="d-flex justify-content-center">
                                             <div>
-                                                <h3>У Вас пока нет заказов</h3>
+                                                <h3>У Вас пока нет доменов</h3>
                                             </div>
                                         </div>
                                     </td>
@@ -208,6 +217,74 @@ const OrdersIndex = observer(() => {
                                             <i className="fas fa-folder m-1">
                                             </i>
                                             детали
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                </div>
+                <div className="card">
+                    <div className="card-header">
+                        <h3 className="card-title">Смена НС</h3>
+                        <div className="card-tools">
+                            <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i className="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="card-body table-responsive p-0">
+                        <Table striped>
+                            <thead>
+                            <tr>
+                                <th width={'8%'}>#</th>
+                                <th width={'25%'} className="text-center">НС</th>
+                                <th width={'15%'} className="text-center">Статус</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {loadingChangeNs ?
+                                <tr>
+                                    <td colSpan={8}>
+                                        <div className="d-flex justify-content-center">
+                                            <div className="spinner-border" role="status">
+                                                <span className="visually-hidden"></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                : ''}
+                            {changeNs.length ===0 && !loadingChangeNs && (
+                                <tr>
+                                    <td colSpan={8}>
+                                        <div className="d-flex justify-content-center">
+                                            <div>
+                                                <h3>У Вас пока нет заказов на смену НС</h3>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                            {changeNs && changeNs.slice(0).reverse().map(change => (
+                                <tr key={change.id}>
+                                    <td className="align-middle">{change.id}</td>
+                                    <td className="align-middle text-center">{change.ns && change.ns.map(item => (
+                                        <div key={item.number}>
+                                            {item.ns}
+                                        </div>
+                                    ))}</td>
+                                    <td className="align-middle text-center">{change.status.title}</td>
+                                    <td className="project-actions text-right">
+                                        <Button className="btn btn-primary btn-sm m-1"
+                                                onClick={() => {
+                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_ORDER_DOMAIN_ROUTE + '/' + change.id);
+                                                }}
+                                        >
+                                            <i className="fas fa-folder m-1">
+                                            </i>
+                                            поменять статус
                                         </Button>
                                     </td>
                                 </tr>
