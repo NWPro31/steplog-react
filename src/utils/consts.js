@@ -36,3 +36,5 @@ export const INDEX_CUSTOMER_DOMAIN_ROUTE = 'customer/domain/index';
 export const WHOIS_CUSTOMER_DOMAIN_ROUTE = 'customer/domain/whois';
 export const SHOW_ORDER_DOMAIN_ROUTE = 'orders/domain/show';
 export const UPDATE_ORDER_DOMAIN_ROUTE = 'orders/domain/update';
+export const INDEX_CUSTOMER_HOSTING_ROUTE = 'customer/hosting/index';
+export const CREATE_CUSTOMER_HOSTING_ROUTE = 'customer/hosting/create';

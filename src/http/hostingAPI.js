@@ -7,8 +7,18 @@ export const createHosting = async (title, description, price) => {
     return data;
 };
 
+export const createOrderHosting = async (name, url, hosting_id) => {
+    const {data} = await $authHost.post('api/order_hosting', {name, url, hosting_id});
+    return data;
+};
+
 export const indexHosting = async () => {
     const {data} = await $authHost.get('api/hostings', {});
+    return data;
+};
+
+export const indexOrderHosting = async () => {
+    const {data} = await $authHost.get('api/order_hosting', {});
     return data;
 };
 

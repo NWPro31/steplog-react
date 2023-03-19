@@ -20,18 +20,22 @@ import {
     updateChangeNsStatus
 } from "../../../http/domainAPI";
 import Spinner from "react-bootstrap/Spinner";
+import {indexOrderHosting} from "../../../http/hostingAPI";
 
 
 const OrdersIndex = observer(() => {
     const navigate = useNavigate();
     const {service} = useContext(Context);
     const {domain} = useContext(Context);
+    const {hosting} = useContext(Context);
     const [orderServices,setOrderServices] = useState([]);
     const [orderDomains,setOrderDomains] = useState([]);
+    const [orderHostings,setOrderHostings] = useState([]);
     const [changeNs, setChangeNs] = useState([]);
     const [changeNsModal, setChangeNsModal] = useState({});
     const [loadingServices,setLoadingServices] = useState(true);
     const [loadingDomains,setLoadingDomains] = useState(true);
+    const [loadingHostings,setLoadingHostings] = useState(true);
     const [loadingChangeNs, setLoadingChangeNs] = useState(true);
     const [loadingStatusNs, setLoadingStatusNs] = useState(true);
     const [loadingStatusNsButton, setLoadingStatusNsButton] = useState(false);
@@ -60,6 +64,12 @@ const OrdersIndex = observer(() => {
             setChangeNs(data.change_domain_ns);
         }).finally(()=>{
             setLoadingChangeNs(false);
+        }).catch(err => console.log(err));
+        indexOrderHosting().then(data => {
+            hosting.setOrderHosting(data.order_hostings);
+            setOrderHostings(data.order_hostings);
+        }).finally(()=>{
+            setLoadingHostings(false);
         }).catch(err => console.log(err));
     },[]);
 
@@ -329,6 +339,74 @@ const OrdersIndex = observer(() => {
                                             <i className="fas fa-folder m-1">
                                             </i>
                                             поменять статус
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                </div>
+                <div className="card">
+                    <div className="card-header">
+                        <h3 className="card-title">Заказы хостинга</h3>
+                        <div className="card-tools">
+                            <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i className="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="card-body table-responsive p-0">
+                        <Table striped>
+                            <thead>
+                            <tr>
+                                <th width={'8%'}>#</th>
+                                <th width={'20%'}>аккаунт</th>
+                                <th width={'15%'} className="text-center">тариф</th>
+                                <th width={'15%'} className="text-center">стоимость</th>
+                                <th width={'15%'} className="text-center">Состояние</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {loadingHostings ?
+                                <tr>
+                                    <td colSpan={8}>
+                                        <div className="d-flex justify-content-center">
+                                            <div className="spinner-border" role="status">
+                                                <span className="visually-hidden"></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                : ''}
+                            {orderHostings.length ===0 && !loadingHostings && (
+                                <tr>
+                                    <td colSpan={8}>
+                                        <div className="d-flex justify-content-center">
+                                            <div>
+                                                <h3>У Вас пока нет хостинг аккаунтов</h3>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                            {orderHostings && orderHostings.slice(0).reverse().map(hosting => (
+                                <tr key={hosting.id}>
+                                    <td className="align-middle">{hosting.id}</td>
+                                    <td className="align-middle">{hosting.name}</td>
+                                    <td className="align-middle text-center">{hosting.hosting.title}</td>
+                                    <td className="align-middle text-center">{hosting.price}</td>
+                                    <td className="align-middle text-center">{hosting.status.title}</td>
+                                    <td className="project-actions text-right">
+                                        <Button className="btn btn-primary btn-sm m-1"
+                                                onClick={() => {
+                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_ORDER_DOMAIN_ROUTE + '/' + hosting.id);
+                                                }}
+                                        >
+                                            <i className="fas fa-folder m-1">
+                                            </i>
+                                            детали
                                         </Button>
                                     </td>
                                 </tr>

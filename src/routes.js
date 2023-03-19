@@ -1,12 +1,12 @@
 import {
-    CREATE_COMMENT_ORDER_SERVICE_ROUTE,
+    CREATE_COMMENT_ORDER_SERVICE_ROUTE, CREATE_CUSTOMER_HOSTING_ROUTE,
     CREATE_CUSTOMER_SERVICES_ROUTE,
     CREATE_DOMAIN_REG_ROUTE,
     CREATE_DOMAIN_ROUTE,
     CREATE_HOSTING_ROUTE, CREATE_INVOICE_ORDER_SERVICE_ROUTE,
     CREATE_SERVICES_ROUTE,
     DOMAINS_ROUTE,
-    HOME_ROUTE, INDEX_CUSTOMER_DOMAIN_ROUTE,
+    HOME_ROUTE, INDEX_CUSTOMER_DOMAIN_ROUTE, INDEX_CUSTOMER_HOSTING_ROUTE,
     INDEX_CUSTOMER_SERVICES_ROUTE,
     INDEX_DOMAIN_REG_ROUTE,
     INDEX_DOMAIN_ROUTE,
@@ -61,6 +61,8 @@ import CustomerDomainIndex from "./pages/dashboard/customer/domain/Index";
 import CustomerDomainWhois from "./pages/dashboard/customer/domain/Whois";
 import OrdersDomainShow from "./pages/dashboard/orders/domain/Show";
 import OrdersDomainUpdate from "./pages/dashboard/orders/domain/Update";
+import CustomerHostingIndex from "./pages/dashboard/customer/hosting/Index";
+import CustomerHostingCreate from "./pages/dashboard/customer/hosting/Create";
 
 export const authRoutes = [
     {
@@ -198,6 +200,14 @@ export const authRoutes = [
     {
         path: UPDATE_ORDER_DOMAIN_ROUTE  + '/:id',
         Component: OrdersDomainUpdate
+    },
+    {
+        path: INDEX_CUSTOMER_HOSTING_ROUTE,
+        Component: CustomerHostingIndex
+    },
+    {
+        path: CREATE_CUSTOMER_HOSTING_ROUTE,
+        Component: CustomerHostingCreate
     }
 ];
 

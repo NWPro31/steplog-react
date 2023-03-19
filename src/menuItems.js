@@ -47,7 +47,7 @@ export const menuItems = [
                 id: 7,
                 name: 'Хостинг',
                 icon: 'fas fa-cogs nav-icon',
-                path: '/sub-menu-3',
+                path: '/dashboard/customer/hosting/index',
                 perm: 'user'
             }
         ]
