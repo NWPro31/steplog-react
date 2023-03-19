@@ -27,6 +27,16 @@ export const indexChangeNsDomain = async () => {
     return data;
 };
 
+export const indexChangeNsStatus = async () => {
+    const {data} = await $authHost.get('api/change_ns_status', {});
+    return data;
+};
+
+export const updateChangeNsStatus = async (status_id, changeNs) => {
+    const {data} = await $authHost.patch('api/change_ns_domain/'+ changeNs, {status_id});
+    return data;
+};
+
 export const indexContactRuDomain = async () => {
     const {data} = await $authHost.get('api/contact_ru_domains', {});
     return data;

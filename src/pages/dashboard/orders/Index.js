@@ -4,7 +4,7 @@ import {Context} from "../../../index";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {
-    DASHBOARD_ROUTE, SHOW_CUSTOMER_SERVICES_ROUTE, SHOW_ORDER_DOMAIN_ROUTE, SHOW_ORDERS_ROUTE
+    DASHBOARD_ROUTE, SHOW_ORDER_DOMAIN_ROUTE, SHOW_ORDERS_ROUTE
 } from "../../../utils/consts";
 import ContentHeader from "../../../components/ContentHeader";
 import {indexOrderService} from "../../../http/serviceAPI";
@@ -13,8 +13,13 @@ import 'moment/locale/ru';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 import {useNavigate} from "react-router-dom";
-import {indexChangeNsDomain, indexOrderDomain} from "../../../http/domainAPI";
-import use from "use";
+import {
+    indexChangeNsDomain,
+    indexChangeNsStatus,
+    indexOrderDomain,
+    updateChangeNsStatus
+} from "../../../http/domainAPI";
+import Spinner from "react-bootstrap/Spinner";
 
 
 const OrdersIndex = observer(() => {
@@ -24,9 +29,12 @@ const OrdersIndex = observer(() => {
     const [orderServices,setOrderServices] = useState([]);
     const [orderDomains,setOrderDomains] = useState([]);
     const [changeNs, setChangeNs] = useState([]);
+    const [changeNsModal, setChangeNsModal] = useState({});
     const [loadingServices,setLoadingServices] = useState(true);
     const [loadingDomains,setLoadingDomains] = useState(true);
     const [loadingChangeNs, setLoadingChangeNs] = useState(true);
+    const [loadingStatusNs, setLoadingStatusNs] = useState(true);
+    const [loadingStatusNsButton, setLoadingStatusNsButton] = useState(false);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { name: "Список заказов" },
@@ -57,13 +65,45 @@ const OrdersIndex = observer(() => {
 
     useEffect(() => {
         //loading
-    },[orderServices, orderDomains, changeNs]);
+        console.log(changeNsModal);
+    },[orderServices, orderDomains, changeNs, changeNsModal]);
 
     const timeRule = (time) => {
         return moment(time).locale('ru').fromNow()
     }
 
+    const updateChangeNsModal = (id) => {
+        let url = changeNs.filter(items => items.id === id).map(ns => ns.order_domain.url)[0];
+        let statusId = changeNs.filter(items => items.id === id).map(ns => ns.status_id)[0];
+        setChangeNsModal(changeNsModal => ({...changeNsModal, 'url': url, 'statusId': statusId, 'change_domain_ns': id}));
+        setLoadingStatusNs(true);
+        indexChangeNsStatus().then(data => {
+            setChangeNsModal(changeNsModal => ({...changeNsModal, 'status': data.change_ns_status}));
+        }).finally(()=>{
+            setLoadingStatusNs(false);
+        }).catch(err => console.log(err));
 
+    }
+
+    const sendNewStatus = async () => {
+        try {
+            setLoadingStatusNsButton(true);
+            let data;
+            data = await updateChangeNsStatus(changeNsModal.statusId, changeNsModal.change_domain_ns);
+            setLoadingStatusNsButton(false);
+            if(data.success) {
+                setLoadingChangeNs(true);
+                indexChangeNsDomain().then(data => {
+                    setChangeNs(data.change_domain_ns);
+                }).finally(()=>{
+                    setLoadingChangeNs(false);
+                }).catch(err => console.log(err));
+                document.getElementById('close-button').click();
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return(
         <>
@@ -239,6 +279,7 @@ const OrdersIndex = observer(() => {
                             <thead>
                             <tr>
                                 <th width={'8%'}>#</th>
+                                <th width={'25%'} className="text-center">Домен</th>
                                 <th width={'25%'} className="text-center">НС</th>
                                 <th width={'15%'} className="text-center">Статус</th>
                                 <th></th>
@@ -270,6 +311,7 @@ const OrdersIndex = observer(() => {
                             {changeNs && changeNs.slice(0).reverse().map(change => (
                                 <tr key={change.id}>
                                     <td className="align-middle">{change.id}</td>
+                                    <td className="align-middle text-center">{change.order_domain.url}</td>
                                     <td className="align-middle text-center">{change.ns && change.ns.map(item => (
                                         <div key={item.number}>
                                             {item.ns}
@@ -278,8 +320,10 @@ const OrdersIndex = observer(() => {
                                     <td className="align-middle text-center">{change.status.title}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
+                                                data-toggle="modal"
+                                                data-target="#modal-default"
                                                 onClick={() => {
-                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_ORDER_DOMAIN_ROUTE + '/' + change.id);
+                                                    updateChangeNsModal(change.id);
                                                 }}
                                         >
                                             <i className="fas fa-folder m-1">
@@ -291,6 +335,58 @@ const OrdersIndex = observer(() => {
                             ))}
                             </tbody>
                         </Table>
+                    </div>
+                </div>
+                <div className="modal fade" id="modal-default">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Поменять статус для {changeNsModal.url}</h4>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                {loadingStatusNs ?
+                                            <div className="d-flex justify-content-center">
+                                                <div className="spinner-border" role="status">
+                                                    <span className="visually-hidden"></span>
+                                                </div>
+                                            </div>
+                                    : ''}
+                                {!loadingStatusNs &&
+                                        <div className="form-group">
+                                            <label>Выберите текущий статус</label>
+                                            <select defaultValue={changeNsModal.statusId} className="form-control" name="status_id"
+                                                    onChange={e => setChangeNsModal(changeNsModal =>  ({...changeNsModal, 'statusId': Number(e.target.value)}))}
+                                            >
+                                                <option value="0">Выберите статус</option>
+                                                {changeNsModal.status.map((item, index) =>
+                                                    <option key={index} value={item.id}>{item.title}</option>
+                                                )}
+                                            </select>
+                                        </div>
+                                }
+
+                            </div>
+                            <div className="modal-footer justify-content-between">
+                                <button type="button" id="close-button" className="btn btn-default" data-dismiss="modal">Отмена</button>
+                                <button type="button" className="btn btn-primary" onClick={sendNewStatus}>
+                                    {loadingStatusNsButton ?
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        :
+                                        ''
+                                    }
+                                    Обновить
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <ReactTooltip anchorSelect=".tooltip_el" />

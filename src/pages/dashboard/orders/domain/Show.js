@@ -138,6 +138,11 @@ const OrdersDomainShow = observer(() => {
                                                     </div>
                                                     )}
                                                 </span>
+                                                {domain.orderDomain.change_ns &&
+                                                    <span className="text-info">
+                                                        Статус: {domain.orderDomain.change_ns.status.title}
+                                                    </span>
+                                                }
                                             </div>
                                             <div className="col-12 col-lg-4 pt-3 pb-3 bg-light">
                                                 Стоимость
