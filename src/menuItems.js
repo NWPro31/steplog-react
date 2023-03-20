@@ -124,5 +124,12 @@ export const menuItems = [
         icon: 'fas fa-receipt nav-icon',
         path: '/dashboard/invoices/index',
         perm: 'user,admin'
+    },
+    {
+        id: 18,
+        name: 'Поддержка',
+        icon: 'fas fa-receipt nav-icon',
+        path: '/dashboard/tickets/index',
+        perm: 'user,admin'
     }
 ];

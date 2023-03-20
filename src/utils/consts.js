@@ -38,3 +38,5 @@ export const SHOW_ORDER_DOMAIN_ROUTE = 'orders/domain/show';
 export const UPDATE_ORDER_DOMAIN_ROUTE = 'orders/domain/update';
 export const INDEX_CUSTOMER_HOSTING_ROUTE = 'customer/hosting/index';
 export const CREATE_CUSTOMER_HOSTING_ROUTE = 'customer/hosting/create';
+export const INDEX_TICKETS_ROUTE = 'tickets/index';
+export const CREATE_TICKETS_ROUTE = 'tickets/create';

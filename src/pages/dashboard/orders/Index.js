@@ -434,7 +434,7 @@ const OrdersIndex = observer(() => {
                                     <td className="align-middle">{hosting.id}</td>
                                     <td className="align-middle">{hosting.name}</td>
                                     <td className="align-middle text-center">{hosting.hosting.title}</td>
-                                    <td className="align-middle text-center">{hosting.price}</td>
+                                    <td className="align-middle text-center">{hosting.price}р.</td>
                                     <td className="align-middle text-center">{hosting.status.title}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"

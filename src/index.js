@@ -6,6 +6,7 @@ import HostingStore from "./store/HostingStore";
 import DomainStore from "./store/DomainStore";
 import ServiceStore from "./store/ServiceStore";
 import InvoiceStore from "./store/InvoiceStore";
+import TicketStore from "./store/TicketStore";
 //import  'bootstrap/dist/css/bootstrap.min.css';
 
 export const Context = createContext(null);
@@ -17,7 +18,8 @@ root.render(
         hosting: new HostingStore(),
         domain: new DomainStore(),
         service: new ServiceStore(),
-        invoice: new InvoiceStore()
+        invoice: new InvoiceStore(),
+        ticket: new TicketStore()
     }}>
         <App />
     </Context.Provider>
