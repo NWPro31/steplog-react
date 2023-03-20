@@ -22,6 +22,11 @@ export const indexOrderHosting = async () => {
     return data;
 };
 
+export const indexChangeHostingStatus = async () => {
+    const {data} = await $authHost.get('api/change_hosting_status', {});
+    return data;
+};
+
 export const editHosting = async (hostingId) => {
     const {data} = await $authHost.get('api/hostings/' + hostingId + '/edit', {});
     return data;
@@ -29,6 +34,11 @@ export const editHosting = async (hostingId) => {
 
 export const updateHosting = async (title, description, price, is_stored, hostingId) => {
     const {data} = await $authHost.patch('api/hostings/'+ hostingId, {title, description, price, is_stored});
+    return data;
+};
+
+export const updateHostingStatus = async (status_id, hostingId) => {
+    const {data} = await $authHost.patch('api/order_hosting/'+ hostingId, {status_id});
     return data;
 };
 

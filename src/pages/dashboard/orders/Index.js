@@ -20,7 +20,7 @@ import {
     updateChangeNsStatus
 } from "../../../http/domainAPI";
 import Spinner from "react-bootstrap/Spinner";
-import {indexOrderHosting} from "../../../http/hostingAPI";
+import {indexChangeHostingStatus, indexOrderHosting, updateHostingStatus} from "../../../http/hostingAPI";
 
 
 const OrdersIndex = observer(() => {
@@ -33,12 +33,15 @@ const OrdersIndex = observer(() => {
     const [orderHostings,setOrderHostings] = useState([]);
     const [changeNs, setChangeNs] = useState([]);
     const [changeNsModal, setChangeNsModal] = useState({});
+    const [changeHostingModal, setChangeHostingModal] = useState({});
     const [loadingServices,setLoadingServices] = useState(true);
     const [loadingDomains,setLoadingDomains] = useState(true);
     const [loadingHostings,setLoadingHostings] = useState(true);
     const [loadingChangeNs, setLoadingChangeNs] = useState(true);
     const [loadingStatusNs, setLoadingStatusNs] = useState(true);
+    const [loadingStatusHosting, setLoadingStatusHosting] = useState(true);
     const [loadingStatusNsButton, setLoadingStatusNsButton] = useState(false);
+    const [loadingStatusHostingButton, setLoadingStatusHostingButton] = useState(false);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { name: "Список заказов" },
@@ -95,7 +98,19 @@ const OrdersIndex = observer(() => {
 
     }
 
-    const sendNewStatus = async () => {
+    const updateHostingModal = (id) => {
+        let name = orderHostings.filter(items => items.id === id).map(hosting => hosting.name)[0];
+        let statusId = orderHostings.filter(items => items.id === id).map(hosting => hosting.status_id)[0];
+        setChangeHostingModal(changeHostingModal => ({...changeHostingModal, 'name': name, 'statusId': statusId, 'order_hosting_id': id}));
+        setLoadingStatusHosting(true);
+        indexChangeHostingStatus().then(data => {
+            setChangeHostingModal(changeHostingModal => ({...changeHostingModal, 'status': data.change_hosting_status}));
+        }).finally(()=>{
+            setLoadingStatusHosting(false);
+        }).catch(err => console.log(err));
+    }
+
+    const sendNewNsStatus = async () => {
         try {
             setLoadingStatusNsButton(true);
             let data;
@@ -113,6 +128,29 @@ const OrdersIndex = observer(() => {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    const sendNewHostingStatus = async () => {
+        try {
+            setLoadingStatusHostingButton(true);
+            let data;
+            data = await updateHostingStatus(changeHostingModal.statusId, changeHostingModal.order_hosting_id);
+            setLoadingStatusHostingButton(false);
+            if(data.success) {
+                setLoadingHostings(true);
+                indexOrderHosting().then(data => {
+                    hosting.setOrderHosting(data.order_hostings);
+                    setOrderHostings(data.order_hostings);
+                }).finally(()=>{
+                    setLoadingHostings(false);
+                }).catch(err => console.log(err));
+                document.getElementById('close-button-hosting').click();
+            }
+        }
+        catch (e){
+            console.log(e);
+        }
+
     }
 
     return(
@@ -400,13 +438,13 @@ const OrdersIndex = observer(() => {
                                     <td className="align-middle text-center">{hosting.status.title}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
-                                                onClick={() => {
-                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_ORDER_DOMAIN_ROUTE + '/' + hosting.id);
-                                                }}
+                                                data-toggle="modal"
+                                                data-target="#modal-hosting"
+                                                onClick={() => {updateHostingModal(hosting.id);}}
                                         >
                                             <i className="fas fa-folder m-1">
                                             </i>
-                                            детали
+                                            поменять статус
                                         </Button>
                                     </td>
                                 </tr>
@@ -415,6 +453,7 @@ const OrdersIndex = observer(() => {
                         </Table>
                     </div>
                 </div>
+
                 <div className="modal fade" id="modal-default">
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -449,8 +488,60 @@ const OrdersIndex = observer(() => {
                             </div>
                             <div className="modal-footer justify-content-between">
                                 <button type="button" id="close-button" className="btn btn-default" data-dismiss="modal">Отмена</button>
-                                <button type="button" className="btn btn-primary" onClick={sendNewStatus}>
+                                <button type="button" className="btn btn-primary" onClick={sendNewNsStatus}>
                                     {loadingStatusNsButton ?
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        :
+                                        ''
+                                    }
+                                    Обновить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="modal fade" id="modal-hosting">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Поменять статус для {changeHostingModal.name}</h4>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                {loadingStatusHosting ?
+                                    <div className="d-flex justify-content-center">
+                                        <div className="spinner-border" role="status">
+                                            <span className="visually-hidden"></span>
+                                        </div>
+                                    </div>
+                                    : ''}
+                                {!loadingStatusHosting &&
+                                    <div className="form-group">
+                                        <label>Выберите текущий статус</label>
+                                        <select defaultValue={changeHostingModal.statusId} className="form-control" name="status_id"
+                                                onChange={e => setChangeHostingModal(changeHostingModal =>  ({...changeHostingModal, 'statusId': Number(e.target.value)}))}
+                                        >
+                                            <option value="0">Выберите статус</option>
+                                            {changeHostingModal.status.map((item, index) =>
+                                                <option key={index} value={item.id}>{item.title}</option>
+                                            )}
+                                        </select>
+                                    </div>
+                                }
+
+                            </div>
+                            <div className="modal-footer justify-content-between">
+                                <button type="button" id="close-button-hosting" className="btn btn-default" data-dismiss="modal">Отмена</button>
+                                <button type="button" className="btn btn-primary" onClick={sendNewHostingStatus}>
+                                    {loadingStatusHostingButton ?
                                         <Spinner
                                             as="span"
                                             animation="border"
