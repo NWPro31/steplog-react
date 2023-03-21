@@ -4,13 +4,20 @@ import {Context} from "../../../index";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {
-    CREATE_HOSTING_ROUTE, CREATE_TICKETS_ROUTE,
-    DASHBOARD_ROUTE, SELECT_INVOICES_ROUTE, SHOW_ORDERS_ROUTE, UPDATE_HOSTING_ROUTE, UPDATE_INVOICES_ROUTE
+    CREATE_HOSTING_ROUTE,
+    CREATE_TICKETS_ROUTE,
+    DASHBOARD_ROUTE,
+    SELECT_INVOICES_ROUTE,
+    SHOW_ORDERS_ROUTE,
+    SHOW_TICKETS_ROUTE,
+    UPDATE_HOSTING_ROUTE,
+    UPDATE_INVOICES_ROUTE
 } from "../../../utils/consts";
 import ContentHeader from "../../../components/ContentHeader";
 import {useNavigate} from "react-router-dom";
-import {indexInvoice} from "../../../http/invoiceAPI";
 import {indexTicket} from "../../../http/ticketAPI";
+import moment from "moment";
+import 'moment/locale/ru';
 
 
 const TicketsIndex = observer(() => {
@@ -74,6 +81,10 @@ const TicketsIndex = observer(() => {
                             <tr>
                                 <th width={'8%'}>#</th>
                                 <th width={'25%'}>Тема</th>
+                                <th width={'15%'} className="text-center">Категория</th>
+                                <th width={'15%'} className="text-center">Заказ</th>
+                                <th width={'15%'} className="text-center">Последнее сообщение</th>
+                                <th></th>
                                 {user.user.user.role === 'admin' ?
                                     <th></th>
                                     :
@@ -108,6 +119,25 @@ const TicketsIndex = observer(() => {
                                 <tr key={item.id}>
                                     <td className="align-middle">{item.id}</td>
                                     <td className="align-middle">{item.title}</td>
+                                    <td className="align-middle text-center">
+                                        {item.service_order_id !== null ? 'Обслуживание сайта' : item.domain_order_id !== null ? 'Домены' : item.hosting_order_id !== null ? 'Хостинг' : 'Общие вопросы'}
+                                    </td>
+                                    <td className="align-middle text-center">
+                                        {item.order ? item.order.url : ''}
+                                    </td>
+                                    <td className="align-middle text-center">
+                                        {item.last_message ? moment(item.last_message.updated_at).locale('ru').fromNow() : ''}
+                                    </td>
+                                    <td className="align-middle project-actions text-right">
+                                        <Button className="btn btn-primary btn-sm m-1"
+                                                onClick={() => {
+                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_TICKETS_ROUTE + '/' + item.id);
+                                                }}>
+                                            <i className="fas fa-pencil-alt m-1">
+                                            </i>
+                                            открыть
+                                        </Button>
+                                    </td>
                                     {user.user.user.role === 'admin' ?
                                     <td className="align-middle project-actions text-right">
                                             <Button className="btn btn-info btn-sm m-1"

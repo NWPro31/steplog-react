@@ -98,7 +98,7 @@ const TicketCreate = () => {
                                 :
                                 ''
                             }
-                            Создать заказ
+                            Отправить
                         </Button>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ import {makeAutoObservable} from "mobx";
 export default class TicketStore {
     constructor() {
         this._ticket = {};
+        this._ticketMessages = {};
         makeAutoObservable(this);
     }
 
@@ -10,7 +11,15 @@ export default class TicketStore {
         this._ticket = ticket;
     }
 
+    setTicketMessages(ticketMessages){
+        this._ticketMessages = ticketMessages;
+    }
+
     get ticket(){
         return this._ticket;
+    }
+
+    get ticketMessages(){
+        return this._ticketMessages;
     }
 }

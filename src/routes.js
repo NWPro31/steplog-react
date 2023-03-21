@@ -16,7 +16,7 @@ import {
     REGISTER_ROUTE, SELECT_INVOICES_ROUTE, SHOW_COMMENT_ORDER_SERVICE_ROUTE, SHOW_CUSTOMER_SERVICES_ROUTE,
     SHOW_DOMAIN_REG_ROUTE,
     SHOW_DOMAIN_ROUTE,
-    SHOW_HOSTING_ROUTE, SHOW_ORDER_DOMAIN_ROUTE, SHOW_ORDERS_ROUTE,
+    SHOW_HOSTING_ROUTE, SHOW_ORDER_DOMAIN_ROUTE, SHOW_ORDERS_ROUTE, SHOW_TICKETS_ROUTE,
     SITES_ROUTE,
     UPDATE_DOMAIN_REG_ROUTE,
     UPDATE_DOMAIN_ROUTE,
@@ -65,6 +65,7 @@ import CustomerHostingIndex from "./pages/dashboard/customer/hosting/Index";
 import CustomerHostingCreate from "./pages/dashboard/customer/hosting/Create";
 import TicketsIndex from "./pages/dashboard/tickets/Index";
 import TicketCreate from "./pages/dashboard/tickets/Create";
+import TicketsShow from "./pages/dashboard/tickets/Show";
 
 export const authRoutes = [
     {
@@ -218,6 +219,10 @@ export const authRoutes = [
     {
         path: CREATE_TICKETS_ROUTE,
         Component: TicketCreate
+    },
+    {
+        path: SHOW_TICKETS_ROUTE  + '/:id',
+        Component: TicketsShow
     }
 ];
 

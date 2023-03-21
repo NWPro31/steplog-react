@@ -11,3 +11,8 @@ export const createTicket = async (title, message, order) => {
     const {data} = await $authHost.post('api/tickets', {title, message, order});
     return data;
 };
+
+export const showTicketMessages = async (ticket_id) => {
+    const {data} = await $authHost.post('api/ticket_messages', {ticket_id});
+    return data;
+};
