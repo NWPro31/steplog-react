@@ -5,11 +5,11 @@ import {
     DASHBOARD_ROUTE, INDEX_TICKETS_ROUTE
 } from "../../../utils/consts";
 import ContentHeader from "../../../components/ContentHeader";
-import {createCommentOrderService} from "../../../http/serviceAPI";
 import moment from "moment";
 import 'moment/locale/ru';
 import {useNavigate, useParams} from "react-router-dom";
-import {showTicketMessages} from "../../../http/ticketAPI";
+import {createTicketMessages, showTicketMessages} from "../../../http/ticketAPI";
+import Spinner from "react-bootstrap/Spinner";
 
 
 const TicketsShow = observer(() => {
@@ -18,6 +18,8 @@ const TicketsShow = observer(() => {
     const {ticket} = useContext(Context);
     const [comment, setComment] = useState('');
     const [loading,setLoading] = useState(true);
+    const [loadingButton,setLoadingButton] = useState(false);
+    const [error, setError] = useState(null);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_TICKETS_ROUTE, name: "Поддержка" },
@@ -31,15 +33,16 @@ const TicketsShow = observer(() => {
             setLoading(false);
         })
             .catch(err => {
+                setError(err.response.status === 403 ? 'Доступ запрещен' : null);
                 console.log(err)
                 ticket.setTicketMessages([]);
             });
     },[]);
 
     useEffect(() => {
-        document.getElementById('comments-div').scrollTop = document.getElementById('comments-div').scrollHeight + 100;
-        //loading
-    },[ticket.ticketMessages]);
+        window.scrollBy(0,document.getElementById('comments-div').scrollHeight - 300);
+        console.log(document.getElementById('comments-div').scrollHeight + 100);
+    },[ticket.ticketMessages, error]);
 
     const timeRule = (time) => {
         return moment(time).locale('ru').fromNow()
@@ -48,13 +51,14 @@ const TicketsShow = observer(() => {
     const click = async () => {
         if(comment==="") return;
         try {
-            //setLoading(true);
+            setLoadingButton(true);
             let data;
-            data = await createCommentOrderService(id, comment);
-            ticket.setTicketMessages([...ticket.ticketMessages, data.comment]);
+            data = await createTicketMessages(id, comment);
+            ticket.setTicketMessages([...ticket.ticketMessages, data.messageTicket]);
             setComment('');
-            //setLoading(false);
+            setLoadingButton(false);
         } catch (e) {
+            setLoadingButton(false);
             console.log(e.response.data.message);
         }
 
@@ -63,7 +67,7 @@ const TicketsShow = observer(() => {
     return(
         <>
             <ContentHeader hrefs={hrefs} name="Сообщения"/>
-            <div className="content">
+            <div className="content" id="comments-div">
                 <div className="card">
                     <div className="card-header">
                         <h3 className="card-title">Сообщения</h3>
@@ -74,7 +78,7 @@ const TicketsShow = observer(() => {
                         </div>
                     </div>
                     <div className="card-body">
-                        <div className="direct-chat-messages" style={{height:"350px"}} id="comments-div">
+                        <div>
                             {loading && (
                                 <div className="d-flex justify-content-center m-5">
                                     <div className="spinner-border" role="status">
@@ -82,24 +86,35 @@ const TicketsShow = observer(() => {
                                     </div>
                                 </div>
                             )}
-                            {!loading && ticket.ticketMessages.length > 0  && ticket.ticketMessages.map(comment => (
-                                <div key={comment.id} className={`direct-chat-msg ${comment.user_role !== "admin" ? 'right' : ''}`}>
+                            {error && (
+                                <div className="d-flex justify-content-center">
+                                    <div>
+                                        <h3>Ошибка: {error}</h3>
+                                    </div>
+                                </div>
+                            )}
+                            {!loading && ticket.ticketMessages.length > 0  && ticket.ticketMessages.map(message => (
+                                <div key={message.id} className={`direct-chat-msg ${message.user_role !== "admin" ? 'right' : ''}`}>
                                     <div className="direct-chat-infos clearfix">
-                                        <span className={`direct-chat-name ${comment.user_role !== "admin" ? 'float-right' : 'float-left'}`}>{comment.user_name}</span>
-                                        <span className={`direct-chat-timestamp ${comment.user_role !== "admin" ? 'float-left' : 'float-right'}`}>{timeRule(comment.updated_at)}</span>
+                                        <span className={`direct-chat-name ${message.user_role !== "admin" ? 'float-right' : 'float-left'}`}>{message.user_name}</span>
+                                        <span className={`direct-chat-timestamp ${message.user_role !== "admin" ? 'float-left' : 'float-right'}`}>{timeRule(message.updated_at)}</span>
                                     </div>
                                     <img className="direct-chat-img" src="/img/user1-128x128.jpg"
                                          alt="message user image"/>
 
                                     <div className="direct-chat-text bg-light" style={{whiteSpace:'pre-wrap'}}>
-                                        {comment.message}
+                                        {message.message}
                                     </div>
 
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <div className="card-footer">
+                </div>
+            </div>
+            <div className="fixed-bottom" style={{bottom: '5rem', zIndex: 100, height: '4rem'}}>
+                <div className="content-wrapper bg-light" style={{borderTop: '1px solid #dee2e6'}}>
+                    <div className="container-fluid pt-2">
                         <form action="#" method="post">
                             <div className="input-group">
                                 <textarea name="message"
@@ -107,9 +122,23 @@ const TicketsShow = observer(() => {
                                           value={comment}
                                           placeholder="Ваше сообщение ..."
                                           className="form-control">{comment}</textarea>
-                    <span className="input-group-append">
-                      <button onClick={click} type="button" className="btn btn-primary">Отправить</button>
-                    </span>
+                                <span className="input-group-append">
+                                  <button onClick={click} type="button" className="btn btn-primary">
+                                      {loadingButton ?
+                                          <Spinner
+                                              className="mr-1"
+                                              as="span"
+                                              animation="border"
+                                              size="sm"
+                                              role="status"
+                                              aria-hidden="true"
+                                          />
+                                          :
+                                          ''
+                                      }
+                                      Отправить
+                                  </button>
+                                </span>
                             </div>
                         </form>
                     </div>

@@ -12,7 +12,12 @@ export const createTicket = async (title, message, order) => {
     return data;
 };
 
+export const createTicketMessages = async (ticket_id, message) => {
+    const {data} = await $authHost.post('api/ticket_messages', {ticket_id, message});
+    return data;
+};
+
 export const showTicketMessages = async (ticket_id) => {
-    const {data} = await $authHost.post('api/ticket_messages', {ticket_id});
+    const {data} = await $authHost.get('api/ticket_messages/' + ticket_id, {});
     return data;
 };
