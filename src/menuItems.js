@@ -131,5 +131,12 @@ export const menuItems = [
         icon: 'fas fa-receipt nav-icon',
         path: '/dashboard/tickets/index',
         perm: 'user,admin'
+    },
+    {
+        id: 19,
+        name: 'Профиль',
+        icon: 'fas fa-receipt nav-icon',
+        path: '/dashboard/customer/profile/index',
+        perm: 'user,admin'
     }
 ];
