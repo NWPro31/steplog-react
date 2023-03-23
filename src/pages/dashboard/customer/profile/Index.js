@@ -1,17 +1,26 @@
 import ContentHeader from "../../../../components/ContentHeader";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {
     DASHBOARD_ROUTE
 } from "../../../../utils/consts";
 import {useNavigate} from "react-router-dom";
 import 'moment/locale/ru';
 import 'react-tooltip/dist/react-tooltip.css';
+import Spinner from "react-bootstrap/Spinner";
+import './Index.css';
 
 
 const CustomerProfileIndex = () => {
     const navigate = useNavigate();
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [passwordOld, setPasswordOld] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const hrefs = [
+const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { name: "Профиль" },
     ];
@@ -58,47 +67,97 @@ const CustomerProfileIndex = () => {
                             </li>
                         </ul>
                         <div className="tab-content" id="custom-content-below-tabContent">
-                            <div className="tab-pane fade show active" id="custom-content-below-home" role="tabpanel"
+                            <div className="tab-pane show active" id="custom-content-below-home" role="tabpanel"
                                  aria-labelledby="custom-content-below-home-tab">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus
-                                ullamcorper dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna
-                                feugiat commodo. Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula.
-                                Proin pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque
-                                habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin
-                                id orci eu lectus blandit suscipit. Phasellus porta, ante et varius ornare, sem enim
-                                sollicitudin eros, at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor
-                                porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus pulvinar non
-                                consequat neque. Mauris lacus elit, condimentum ac condimentum at, semper vitae lectus.
-                                Cras lacinia erat eget sapien porta consectetur.
+                                <div className="form-group">
+                                    <label htmlFor="inputName">Как к вам обращаться?</label>
+                                    <input type="text" id="inputName" name="name" value={name}
+                                           onChange={e => setName(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="inputPhone">Контактный телефон</label>
+                                    <input type="text" id="inputPhone" name="phone" value={phone}
+                                           onChange={e => setPhone(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="inputEmail">Адрес электронной почты</label>
+                                    <input type="text" id="inputEmail" name="email" value={email}
+                                           onChange={e => setEmail(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <button
+                                    className="btn btn-primary float-right">
+                                    {loading ?
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        :
+                                        ''
+                                    }
+                                    Сохранить
+                                </button>
                             </div>
-                            <div className="tab-pane fade" id="custom-content-below-profile" role="tabpanel"
+                            <div className="tab-pane" id="custom-content-below-profile" role="tabpanel"
                                  aria-labelledby="custom-content-below-profile-tab">
-                                Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus
-                                ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-                                posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula
-                                placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet
-                                ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.
+                                <div className="form-group">
+                                    <label htmlFor="inputPasswordOld">Текущий пароль</label>
+                                    <input type="password"
+                                           id="inputPasswordOld"
+                                           autoComplete="new-password"
+                                           name="password_old"
+                                           value={passwordOld}
+                                           onChange={e => setPasswordOld(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="inputPassword">Новый пароль</label>
+                                    <input type="password"
+                                           id="inputPassword"
+                                           autoComplete="new-password"
+                                           name="password"
+                                           value={password}
+                                           onChange={e => setPassword(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="inputPasswordConfirm">Повторите ввод нового пароля</label>
+                                    <input type="password"
+                                           id="inputPasswordConfirm"
+                                           autoComplete="new-password"
+                                           name="password_confirm"
+                                           value={passwordConfirm}
+                                           onChange={e => setPasswordConfirm(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <button
+                                    className="btn btn-primary float-right">
+                                    {loading ?
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        :
+                                        ''
+                                    }
+                                    Сохранить
+                                </button>
                             </div>
-                            <div className="tab-pane fade" id="custom-content-below-messages" role="tabpanel"
+                            <div className="tab-pane" id="custom-content-below-messages" role="tabpanel"
                                  aria-labelledby="custom-content-below-messages-tab">
-                                Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus
-                                volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce
-                                nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue
-                                ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur
-                                eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur,
-                                ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex
-                                vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus.
-                                Curabitur eget sem eu risus tincidunt eleifend ac ornare magna.
+                                Пополнение внутреннего баланса
                             </div>
-                            <div className="tab-pane fade" id="custom-content-below-settings" role="tabpanel"
+                            <div className="tab-pane" id="custom-content-below-settings" role="tabpanel"
                                  aria-labelledby="custom-content-below-settings-tab">
-                                Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus
-                                turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis
-                                vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum
-                                pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget
-                                aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac
-                                habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
+                                Ссылка для привлечения партнеров
                             </div>
                         </div>
                     </div>
