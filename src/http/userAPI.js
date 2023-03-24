@@ -32,8 +32,8 @@ export const usersList = async () => {
     return data;
 };
 
-export const updateCustomerProfile = async (name, email, phone) => {
-    const {data} = await $authHost.patch('api/customer_update/', {name, email, phone});
+export const updateCustomerProfile = async (profile) => {
+    const {data} = await $authHost.post('api/customer_update/', profile);
     return data;
 };
 

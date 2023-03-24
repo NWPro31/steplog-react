@@ -22,6 +22,7 @@ const CustomerProfileIndex = () => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [image, setImage] = useState(null);
     const [passwordOld, setPasswordOld] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -46,7 +47,13 @@ const CustomerProfileIndex = () => {
         try {
             setLoadingCustomer(true);
             let data;
-            data = await updateCustomerProfile(name, email, phone ?? null);
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('phone', phone ?? null);
+            formData.append('image', image ?? '');
+            console.log(formData);
+            data = await updateCustomerProfile(formData);
             user.setUser(data);
             setLoadingCustomer(false);
             toastrDefaultSuccess('Данные успешно обновлены!', 'success');
@@ -91,6 +98,10 @@ const CustomerProfileIndex = () => {
             setLoadingBalance(false);
             toastrDefaultSuccess('Ошибка при создании платежа!', 'error');
         }
+    }
+
+    const selectImage = (e) => {
+        setImage(e.target.files[0]);
     }
 
     const toastrDefaultSuccess = (msg, type) => {
@@ -158,6 +169,14 @@ const CustomerProfileIndex = () => {
                                     <label htmlFor="inputEmail">Адрес электронной почты</label>
                                     <input type="text" id="inputEmail" name="email" value={email ?? ''}
                                            onChange={e => setEmail(e.target.value)}
+                                           className="form-control"/>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="inputImage">Загрузить аватарку</label>
+                                    <input type="file"
+                                           id="inputImage"
+                                           accept="image/*" name="image"
+                                           onChange={selectImage}
                                            className="form-control"/>
                                 </div>
                                 <button
