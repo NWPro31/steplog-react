@@ -30,6 +30,7 @@
     "react-spring": "^9.6.1",
     "react-tooltip": "^5.8.3",
     "sass": "^1.58.3",
+    "toastr": "^2.1.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

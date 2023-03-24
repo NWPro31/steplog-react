@@ -21,3 +21,8 @@ export const showInvoice = async (invoiceId) => {
     const {data} = await $authHost.get('api/invoices/' + invoiceId, {});
     return data;
 };
+
+export const createInvoice = async (title, amount) => {
+    const {data} = await $authHost.post('api/invoices', {title, amount});
+    return data;
+};

@@ -31,3 +31,13 @@ export const usersList = async () => {
     const {data} = await $authHost.post('api/users', {});
     return data;
 };
+
+export const updateCustomerProfile = async (name, email, phone) => {
+    const {data} = await $authHost.patch('api/customer_update/', {name, email, phone});
+    return data;
+};
+
+export const updatePasswordProfile = async (old_password, new_password, confirm_password) => {
+    const {data} = await $authHost.patch('api/password_update/', {old_password, new_password, confirm_password});
+    return data;
+};
