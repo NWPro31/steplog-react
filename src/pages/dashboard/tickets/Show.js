@@ -10,7 +10,7 @@ import 'moment/locale/ru';
 import {useNavigate, useParams} from "react-router-dom";
 import {createTicketMessages, showTicketMessages} from "../../../http/ticketAPI";
 import Spinner from "react-bootstrap/Spinner";
-
+import "./Show.css";
 
 const TicketsShow = observer(() => {
     const navigate = useNavigate();
@@ -108,9 +108,10 @@ const TicketsShow = observer(() => {
                                         <span className={`direct-chat-name ${message.user_role !== "admin" ? 'float-right' : 'float-left'}`}>{message.user_name}</span>
                                         <span className={`direct-chat-timestamp ${message.user_role !== "admin" ? 'float-left' : 'float-right'}`}>{timeRule(message.updated_at)}</span>
                                     </div>
-                                    <img className="direct-chat-img" src="/img/user1-128x128.jpg"
-                                         alt="message user image"/>
-
+                                    <div className="ticket-img img-circle direct-chat-img">
+                                        <img className="circle-img" src={message.image_url ? `http://localhost:8000/thumbnail/${message.image_url}` : `/img/user2-160x160.jpg`}
+                                            alt="message user image"/>
+                                    </div>
                                     <div className="direct-chat-text bg-light" style={{whiteSpace:'pre-wrap'}}>
                                         {message.message}
                                     </div>

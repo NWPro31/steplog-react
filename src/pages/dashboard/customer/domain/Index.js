@@ -1,7 +1,7 @@
 import ContentHeader from "../../../../components/ContentHeader";
 import React, {useContext, useEffect, useState} from "react";
 import {
-    DASHBOARD_ROUTE, SHOW_CUSTOMER_SERVICES_ROUTE, WHOIS_CUSTOMER_DOMAIN_ROUTE
+    DASHBOARD_ROUTE, SHOW_CUSTOMER_DOMAIN_ROUTE, WHOIS_CUSTOMER_DOMAIN_ROUTE
 } from "../../../../utils/consts";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -39,9 +39,6 @@ const CustomerDomainIndex = () => {
         //loading
     },[orderDomains]);
 
-    const timeRule = (time) => {
-        return moment(time).locale('ru').fromNow()
-    }
 
     return (
         <>
@@ -101,7 +98,7 @@ const CustomerDomainIndex = () => {
                                     </td>
                                 </tr>
                             )}
-                            {orderDomains && orderDomains.map(domain => (
+                            {orderDomains && orderDomains.slice(0).reverse().map(domain => (
                                 <tr key={domain.id}>
                                     <td className="align-middle">{domain.id}</td>
                                     <td className="align-middle">{domain.url}</td>
@@ -115,14 +112,14 @@ const CustomerDomainIndex = () => {
                                     <td className="align-middle tooltip_el text-center"
                                         style={{cursor:'help'}}
                                         data-tooltip-float="true"
-                                        data-tooltip-content="Срок действия отобразится после активации домена">
-                                        ?
+                                        data-tooltip-content={`Срок действия ${domain.reg_before ? 'до ' + domain.reg_before.replace(/\s.*/, '').trim() : 'отобразится после активации домена'}`}>
+                                        {domain.reg_before ? domain.reg_before.replace(/\s.*/, '').trim() : '?'}
                                     </td>
                                     <td className="align-middle text-center">{domain.status && domain.status.title}</td>
                                     <td className="project-actions text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
                                                 onClick={() => {
-                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_CUSTOMER_SERVICES_ROUTE + '/' + service.id);
+                                                    navigate(DASHBOARD_ROUTE + '/' + SHOW_CUSTOMER_DOMAIN_ROUTE + '/' + domain.id);
                                                 }}
                                                 >
                                             <i className="fas fa-folder m-1">

@@ -104,9 +104,10 @@ const InvoicesIndex = observer(() => {
                                     <td className="align-middle text-center tooltip_el">{formatDate(item.created_at)}</td>
                                     <td className="align-middle text-center">{item.amount}р.</td>
                                     <td className="align-middle text-center tooltip_el">
-                                        {item.service_order_id ? 'Обслуживаение сайта' : ''}
-                                        {item.domain_order_id ? 'Домены' : ''}
-                                        {item.hosting_order_id ? 'Хостинг' : ''}
+                                        {item.service_order_id ? 'Обслуживаение сайта'
+                                            : item.domain_order_id ? 'Домены'
+                                            : item.hosting_order_id ? 'Хостинг'
+                                            : 'Пополнение баланса'}
                                     </td>
                                     <td className={`align-middle text-center 
                                     ${item.status && item.status.id === 1 ? 'text-warning' : ''}

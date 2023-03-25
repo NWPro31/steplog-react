@@ -69,7 +69,7 @@ const InvoicesSelect = observer(() => {
                                 <th width={'8%'}>#</th>
                                 <th width={'20%'}>Назначение</th>
                                 <th width={'10%'} className="text-center">Сумма</th>
-                                <th width={'30%'} className="text-center">Метод оплаты</th>
+                                <th width={'35%'} className="text-center">Метод оплаты</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -92,7 +92,7 @@ const InvoicesSelect = observer(() => {
                                     <td className="align-middle text-center">
                                         Банковский перевод (оплата на реквизиты по счету)
                                     </td>
-                                    <td className="align-middle text-center">
+                                    <td className="align-middle text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
                                                 data-toggle="modal"
                                                 data-target="#modal-default"
@@ -110,7 +110,7 @@ const InvoicesSelect = observer(() => {
                                     <td className="align-middle text-center">
                                         Freekassa (оплата картой, qiwi, и т.д.)
                                     </td>
-                                    <td className="align-middle text-center">
+                                    <td className="align-middle text-right">
                                         <Button className="btn btn-primary btn-sm m-1"
                                                 data-toggle="modal"
                                                 data-target="#modal-freekassa"
@@ -137,7 +137,7 @@ const InvoicesSelect = observer(() => {
                         </div>
                         <div className="modal-body" style={{whiteSpace:'pre'}}>
                             <p>{bank}</p>
-                            <p>Назначение платежа: {title} {id}</p>
+                            <p>Назначение платежа: {title} №{id}</p>
                         </div>
                         <div className="modal-footer float-right">
                             <button type="button" id="close-button" className="btn btn-default" data-dismiss="modal">Закрыть окно</button>

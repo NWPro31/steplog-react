@@ -70,8 +70,10 @@ const DashSidebar = observer(()=>{
 
             <div className="sidebar">
                 <div className="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div className="pad-img img-circle elevation-2 mt-1 ml-3">
-                        <img src={user.user.user.image_url ? `http://localhost:8000/thumbnail/${user.user.user.image_url}` : `/img/user2-160x160.jpg`} className="circle-img" alt="User Image"/>
+                    <div className="image">
+                        <div className="pad-img img-circle elevation-2 mt-1">
+                            <img src={user.user.user.image_url ? `http://localhost:8000/thumbnail/${user.user.user.image_url}` : `/img/user2-160x160.jpg`} className="circle-img" alt="User Image"/>
+                        </div>
                     </div>
                     <div className="info" style={{paddingLeft: '5px'}}>
                         <a href="#" className="d-block">{userEmail}</a>
