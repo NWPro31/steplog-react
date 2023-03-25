@@ -1,7 +1,7 @@
 import ContentHeader from "../../../../components/ContentHeader";
 import React, {useContext, useEffect, useState} from "react";
 import {
-    DASHBOARD_ROUTE, INDEX_CUSTOMER_HOSTING_ROUTE
+    DASHBOARD_ROUTE, INDEX_CUSTOMER_HOSTING_ROUTE, SELECT_INVOICES_ROUTE
 } from "../../../../utils/consts";
 import {useNavigate} from "react-router-dom";
 import 'moment/locale/ru';
@@ -52,7 +52,6 @@ const CustomerProfileIndex = () => {
             formData.append('email', email);
             formData.append('phone', phone ?? null);
             formData.append('image', image ?? '');
-            console.log(formData);
             data = await updateCustomerProfile(formData);
             user.setUser(data);
             setLoadingCustomer(false);
@@ -89,6 +88,7 @@ const CustomerProfileIndex = () => {
                 data = await createInvoice('Пополнение баланса ' + user.user.user.email, balance);
                 toastrDefaultSuccess('Платеж успешно создан!', 'success');
                 setLoadingBalance(false);
+                navigate(DASHBOARD_ROUTE + '/' + SELECT_INVOICES_ROUTE + '/' + data.invoice.id);
             }else
             {
                 console.error("insufficient amount");

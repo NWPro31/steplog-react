@@ -1,0 +1,11 @@
+.pad-img {
+    width: 30px;
+    height: 30px;
+    border: 2px solid silver;
+    overflow: hidden;
+}
+.circle-img {
+    height: 100%;
+    transform: translateX(-50%);
+    margin-left: 50%;
+}

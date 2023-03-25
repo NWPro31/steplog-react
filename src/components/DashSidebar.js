@@ -6,8 +6,10 @@ import {Context} from "../index";
 import {HOME_ROUTE} from "../utils/consts";
 import {menuItems} from "../menuItems";
 import {check} from "../http/userAPI";
+import "./DashSidebar.css";
+import {observer} from "mobx-react-lite";
 
-const DashSidebar = ()=>{
+const DashSidebar = observer(()=>{
     const navigate = useNavigate();
     const location = useLocation();
     const {user} = useContext(Context);
@@ -68,10 +70,10 @@ const DashSidebar = ()=>{
 
             <div className="sidebar">
                 <div className="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div className="image">
-                        <img src="/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User Image"/>
+                    <div className="pad-img img-circle elevation-2 mt-1 ml-3">
+                        <img src={user.user.user.image_url ? `http://localhost:8000/thumbnail/${user.user.user.image_url}` : `/img/user2-160x160.jpg`} className="circle-img" alt="User Image"/>
                     </div>
-                    <div className="info">
+                    <div className="info" style={{paddingLeft: '5px'}}>
                         <a href="#" className="d-block">{userEmail}</a>
                     </div>
                 </div>
@@ -133,6 +135,6 @@ const DashSidebar = ()=>{
         </aside>
         </div>
     );
-};
+});
 
 export default DashSidebar;
