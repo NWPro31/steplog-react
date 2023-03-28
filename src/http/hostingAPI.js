@@ -12,6 +12,11 @@ export const createOrderHosting = async (name, url, hosting_id) => {
     return data;
 };
 
+export const showOrderHosting = async (hostingId) => {
+    const {data} = await $authHost.get('api/order_hosting/' + hostingId, {});
+    return data;
+};
+
 export const indexHosting = async () => {
     const {data} = await $authHost.get('api/hostings', {});
     return data;

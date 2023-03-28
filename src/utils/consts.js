@@ -43,4 +43,5 @@ export const INDEX_TICKETS_ROUTE = 'tickets/index';
 export const CREATE_TICKETS_ROUTE = 'tickets/create';
 export const SHOW_TICKETS_ROUTE = 'tickets/show';
 export const INDEX_CUSTOMER_PROFILE_ROUTE = 'customer/profile/index';
+export const SHOW_CUSTOMER_HOSTING_ROUTE = 'customer/hosting/show';
 
