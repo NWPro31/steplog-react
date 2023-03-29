@@ -19,7 +19,10 @@ const CustomerHostingShow = observer(() => {
     const [loading, setLoading] = useState(false);
     const {hosting} = useContext(Context);
     const [loadingData, setLoadingData] = useState(true);
-    const [ns, setNs] = useState([]);
+    const [changeTarifModal, setChangeTarifModal] = useState(true);
+    const [loadingChangeTarif, setLoadingChangeTarif] = useState(true);
+    const [loadingChangeTarifButton, setLoadingChangeTarifButton] = useState(false);
+    const [changeTarif, setChangeTarif] = useState(0);
     const hrefs = [
         { href: DASHBOARD_ROUTE, name: "Главная" },
         { href: DASHBOARD_ROUTE + '/' + INDEX_CUSTOMER_HOSTING_ROUTE, name: "Список хостинг аккаунтов" },
@@ -29,8 +32,10 @@ const CustomerHostingShow = observer(() => {
     useEffect(()=>{
         showOrderHosting(id).then(data => {
             hosting.setOrderHosting(data.order_hosting);
+            setChangeTarif(data.order_hosting.hosting_id);
         }).finally(()=>{
             setLoadingData(false);
+            setLoadingChangeTarif(false);
         }).catch(err => console.log(err));
     },[id]);
 
@@ -111,17 +116,25 @@ const CustomerHostingShow = observer(() => {
                                                 </span>
                                             </div>
                                             <div className="col-12 col-lg-4 pt-3 pb-3">
-                                                Стоимость
+                                                Тариф
                                             </div>
                                             <div className="col-12 col-lg-8 pt-3 pb-3">
+                                                <span>
+                                                    {hosting.orderHosting.hosting.title}
+                                                </span>
+                                            </div>
+                                            <div className="col-12 col-lg-4 pt-3 pb-3 bg-light">
+                                                Стоимость
+                                            </div>
+                                            <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
                                                 <span>
                                                     {hosting.orderHosting.price}р.
                                                 </span>
                                             </div>
-                                            <div className="col-12 col-lg-4 pt-3 pb-3 bg-light">
+                                            <div className="col-12 col-lg-4 pt-3 pb-3">
                                                 Оплачен
                                             </div>
-                                            <div className="col-12 col-lg-8 pt-3 pb-3 bg-light">
+                                            <div className="col-12 col-lg-8 pt-3 pb-3">
                                                 <span>
                                                     до
                                                 </span>
@@ -130,7 +143,13 @@ const CustomerHostingShow = observer(() => {
                                     </div>
                                     <div className="col-12 col-md-12 col-lg-3 order-1 order-md-2">
                                         {/* Кнопки смены тарифа, продления, отключения */}
-
+                                        <button className="btn btn-info btn-sm m-1"
+                                                data-toggle="modal"
+                                                data-target="#modal-default">
+                                            <i className="fas fa-file-invoice m-1">
+                                            </i>
+                                            Поменять тариф
+                                        </button>
 
                                     </div>
                                 </div>
@@ -144,6 +163,58 @@ const CustomerHostingShow = observer(() => {
                         </div>
                     </div>
                 }
+                <div className="modal fade" id="modal-default">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Поменять тариф для {hosting.orderHosting.url}</h4>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                {loadingChangeTarif ?
+                                    <div className="d-flex justify-content-center">
+                                        <div className="spinner-border" role="status">
+                                            <span className="visually-hidden"></span>
+                                        </div>
+                                    </div>
+                                    : ''}
+                                {!loadingChangeTarif &&
+                                    <div className="form-group">
+                                        <label>Выберите новый тариф</label>
+                                        <select defaultValue={changeTarif} className="form-control" name="status_id"
+                                                onChange={e => setChangeTarif(Number(e.target.value))}
+                                        >
+                                            <option value="0">Выберите тариф</option>
+                                            {hosting.orderHosting.tarifs.map((item, index) =>
+                                                <option key={index} value={item.id}>{item.title}</option>
+                                            )}
+                                        </select>
+                                    </div>
+                                }
+
+                            </div>
+                            <div className="modal-footer justify-content-between">
+                                <button type="button" id="close-button" className="btn btn-default" data-dismiss="modal">Отмена</button>
+                                <button type="button" className="btn btn-primary">
+                                    {loadingChangeTarifButton ?
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        :
+                                        ''
+                                    }
+                                    Обновить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </>
     );

@@ -109,7 +109,7 @@ const TicketsShow = observer(() => {
                                         <span className={`direct-chat-timestamp ${message.user_role !== "admin" ? 'float-left' : 'float-right'}`}>{timeRule(message.updated_at)}</span>
                                     </div>
                                     <div className="ticket-img img-circle direct-chat-img">
-                                        <img className="circle-img" src={message.image_url ? `http://localhost:8000/thumbnail/${message.image_url}` : `/img/user2-160x160.jpg`}
+                                        <img className="circle-img" style={{maxWidth: '40px', maxHeight: '40px'}} src={message.image_url ? `http://localhost:8000/thumbnail/${message.image_url}` : `/img/user2-160x160.jpg`}
                                             alt="message user image"/>
                                     </div>
                                     <div className="direct-chat-text bg-light" style={{whiteSpace:'pre-wrap'}}>
