@@ -33,11 +33,11 @@ export const usersList = async () => {
 };
 
 export const updateCustomerProfile = async (profile) => {
-    const {data} = await $authHost.post('api/customer_update/', profile);
+    const {data} = await $authHost.post('api/customer_update', profile);
     return data;
 };
 
 export const updatePasswordProfile = async (old_password, new_password, confirm_password) => {
-    const {data} = await $authHost.patch('api/password_update/', {old_password, new_password, confirm_password});
+    const {data} = await $authHost.patch('api/password_update', {old_password, new_password, confirm_password});
     return data;
 };

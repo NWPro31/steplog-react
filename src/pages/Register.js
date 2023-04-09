@@ -27,7 +27,7 @@ const Register = observer(() => {
             if (isRegister) {
                 data = await registration(name, email, password, password_confirmation);
             }
-
+            data.user.role = 'user';
             user.setUser(data);
             user.setIsAuth(true);
             navigate(HOME_ROUTE);
